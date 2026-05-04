@@ -1,0 +1,112 @@
+- main [ref=e3]:
+  - region "终极井字棋变体" [ref=e4]:
+    - generic [ref=e5]: Ultimate Tic-Tac-Toe Variant
+    - heading "终极井字棋变体" [level=1] [ref=e6]
+    - paragraph [ref=e7]: 9 个小棋盘互相投影，上一手的位置决定下一手的战场。占领更多小棋盘的一方赢得整局。
+    - generic "当前占领小棋盘数量" [ref=e8]:
+      - generic [ref=e9]:
+        - strong [ref=e11]: "0"
+        - generic [ref=e12]: 黑方占领
+      - generic [ref=e13]:
+        - strong [ref=e15]: "0"
+        - generic [ref=e16]: 白方占领
+    - generic [ref=e19]:
+      - strong [ref=e20]: 黑方行棋 · 可在任意未占领小棋盘落子
+      - generic [ref=e21]: 第一手可在任意位置落子。
+    - generic "游戏操作" [ref=e22]:
+      - button "主动结算" [ref=e23] [cursor=pointer]
+      - button "求和 (3 次)" [ref=e24] [cursor=pointer]
+      - button "认输" [ref=e25] [cursor=pointer]
+      - button "重新开始" [ref=e26] [cursor=pointer]
+  - region "游戏棋盘" [ref=e27]:
+    - generic [ref=e29]:
+      - generic "小棋盘 0" [ref=e30]:
+        - button "小棋盘 0，位置 0" [ref=e31] [cursor=pointer]
+        - button "小棋盘 0，位置 1" [ref=e32] [cursor=pointer]
+        - button "小棋盘 0，位置 2" [ref=e33] [cursor=pointer]
+        - button "小棋盘 0，位置 3" [ref=e34] [cursor=pointer]
+        - button "小棋盘 0，位置 4" [ref=e35] [cursor=pointer]
+        - button "小棋盘 0，位置 5" [ref=e36] [cursor=pointer]
+        - button "小棋盘 0，位置 6" [ref=e37] [cursor=pointer]
+        - button "小棋盘 0，位置 7" [ref=e38] [cursor=pointer]
+        - button "小棋盘 0，位置 8" [ref=e39] [cursor=pointer]
+      - generic "小棋盘 1" [ref=e40]:
+        - button "小棋盘 1，位置 0" [ref=e41] [cursor=pointer]
+        - button "小棋盘 1，位置 1" [ref=e42] [cursor=pointer]
+        - button "小棋盘 1，位置 2" [ref=e43] [cursor=pointer]
+        - button "小棋盘 1，位置 3" [ref=e44] [cursor=pointer]
+        - button "小棋盘 1，位置 4" [ref=e45] [cursor=pointer]
+        - button "小棋盘 1，位置 5" [ref=e46] [cursor=pointer]
+        - button "小棋盘 1，位置 6" [ref=e47] [cursor=pointer]
+        - button "小棋盘 1，位置 7" [ref=e48] [cursor=pointer]
+        - button "小棋盘 1，位置 8" [ref=e49] [cursor=pointer]
+      - generic "小棋盘 2" [ref=e50]:
+        - button "小棋盘 2，位置 0" [ref=e51] [cursor=pointer]
+        - button "小棋盘 2，位置 1" [ref=e52] [cursor=pointer]
+        - button "小棋盘 2，位置 2" [ref=e53] [cursor=pointer]
+        - button "小棋盘 2，位置 3" [ref=e54] [cursor=pointer]
+        - button "小棋盘 2，位置 4" [ref=e55] [cursor=pointer]
+        - button "小棋盘 2，位置 5" [ref=e56] [cursor=pointer]
+        - button "小棋盘 2，位置 6" [ref=e57] [cursor=pointer]
+        - button "小棋盘 2，位置 7" [ref=e58] [cursor=pointer]
+        - button "小棋盘 2，位置 8" [ref=e59] [cursor=pointer]
+      - generic "小棋盘 3" [ref=e60]:
+        - button "小棋盘 3，位置 0" [ref=e61] [cursor=pointer]
+        - button "小棋盘 3，位置 1" [ref=e62] [cursor=pointer]
+        - button "小棋盘 3，位置 2" [ref=e63] [cursor=pointer]
+        - button "小棋盘 3，位置 3" [ref=e64] [cursor=pointer]
+        - button "小棋盘 3，位置 4" [ref=e65] [cursor=pointer]
+        - button "小棋盘 3，位置 5" [ref=e66] [cursor=pointer]
+        - button "小棋盘 3，位置 6" [ref=e67] [cursor=pointer]
+        - button "小棋盘 3，位置 7" [ref=e68] [cursor=pointer]
+        - button "小棋盘 3，位置 8" [ref=e69] [cursor=pointer]
+      - generic "小棋盘 4" [ref=e70]:
+        - button "小棋盘 4，位置 0" [ref=e71] [cursor=pointer]
+        - button "小棋盘 4，位置 1" [ref=e72] [cursor=pointer]
+        - button "小棋盘 4，位置 2" [ref=e73] [cursor=pointer]
+        - button "小棋盘 4，位置 3" [ref=e74] [cursor=pointer]
+        - button "小棋盘 4，位置 4" [ref=e75] [cursor=pointer]
+        - button "小棋盘 4，位置 5" [ref=e76] [cursor=pointer]
+        - button "小棋盘 4，位置 6" [ref=e77] [cursor=pointer]
+        - button "小棋盘 4，位置 7" [ref=e78] [cursor=pointer]
+        - button "小棋盘 4，位置 8" [ref=e79] [cursor=pointer]
+      - generic "小棋盘 5" [ref=e80]:
+        - button "小棋盘 5，位置 0" [ref=e81] [cursor=pointer]
+        - button "小棋盘 5，位置 1" [ref=e82] [cursor=pointer]
+        - button "小棋盘 5，位置 2" [ref=e83] [cursor=pointer]
+        - button "小棋盘 5，位置 3" [ref=e84] [cursor=pointer]
+        - button "小棋盘 5，位置 4" [ref=e85] [cursor=pointer]
+        - button "小棋盘 5，位置 5" [ref=e86] [cursor=pointer]
+        - button "小棋盘 5，位置 6" [ref=e87] [cursor=pointer]
+        - button "小棋盘 5，位置 7" [ref=e88] [cursor=pointer]
+        - button "小棋盘 5，位置 8" [ref=e89] [cursor=pointer]
+      - generic "小棋盘 6" [ref=e90]:
+        - button "小棋盘 6，位置 0" [ref=e91] [cursor=pointer]
+        - button "小棋盘 6，位置 1" [ref=e92] [cursor=pointer]
+        - button "小棋盘 6，位置 2" [ref=e93] [cursor=pointer]
+        - button "小棋盘 6，位置 3" [ref=e94] [cursor=pointer]
+        - button "小棋盘 6，位置 4" [ref=e95] [cursor=pointer]
+        - button "小棋盘 6，位置 5" [ref=e96] [cursor=pointer]
+        - button "小棋盘 6，位置 6" [ref=e97] [cursor=pointer]
+        - button "小棋盘 6，位置 7" [ref=e98] [cursor=pointer]
+        - button "小棋盘 6，位置 8" [ref=e99] [cursor=pointer]
+      - generic "小棋盘 7" [ref=e100]:
+        - button "小棋盘 7，位置 0" [ref=e101] [cursor=pointer]
+        - button "小棋盘 7，位置 1" [ref=e102] [cursor=pointer]
+        - button "小棋盘 7，位置 2" [ref=e103] [cursor=pointer]
+        - button "小棋盘 7，位置 3" [ref=e104] [cursor=pointer]
+        - button "小棋盘 7，位置 4" [ref=e105] [cursor=pointer]
+        - button "小棋盘 7，位置 5" [ref=e106] [cursor=pointer]
+        - button "小棋盘 7，位置 6" [ref=e107] [cursor=pointer]
+        - button "小棋盘 7，位置 7" [ref=e108] [cursor=pointer]
+        - button "小棋盘 7，位置 8" [ref=e109] [cursor=pointer]
+      - generic "小棋盘 8" [ref=e110]:
+        - button "小棋盘 8，位置 0" [ref=e111] [cursor=pointer]
+        - button "小棋盘 8，位置 1" [ref=e112] [cursor=pointer]
+        - button "小棋盘 8，位置 2" [ref=e113] [cursor=pointer]
+        - button "小棋盘 8，位置 3" [ref=e114] [cursor=pointer]
+        - button "小棋盘 8，位置 4" [ref=e115] [cursor=pointer]
+        - button "小棋盘 8，位置 5" [ref=e116] [cursor=pointer]
+        - button "小棋盘 8，位置 6" [ref=e117] [cursor=pointer]
+        - button "小棋盘 8，位置 7" [ref=e118] [cursor=pointer]
+        - button "小棋盘 8，位置 8" [ref=e119] [cursor=pointer]

@@ -25,10 +25,10 @@ function statusText(state: GameState): string {
   }
 
   if (state.targetBoard === null) {
-    return `${playerLabel(state.currentPlayer)}行棋 · 可在任意未占领小棋盘落子`;
+    return `${playerLabel(state.currentPlayer)}行棋 · 可在任意可用区域落子`;
   }
 
-  return `${playerLabel(state.currentPlayer)}行棋 · 请在小棋盘 ${state.targetBoard} 落子`;
+  return `${playerLabel(state.currentPlayer)}行棋 · 请在高亮区域落子`;
 }
 
 function actionMessage(message: string): string {
@@ -147,26 +147,39 @@ export default function App() {
             {state.boards.map((board, boardIndex) => {
               const winner = state.boardWinners[boardIndex];
               const legalBoard = legalBoards.includes(boardIndex);
+              const boardRow = Math.floor(boardIndex / 3);
+              const boardColumn = boardIndex % 3;
+              const boundaryClass = [
+                boardColumn < 2 ? 'with-right-divider' : '',
+                boardRow < 2 ? 'with-bottom-divider' : '',
+              ]
+                .filter(Boolean)
+                .join(' ');
               return (
                 <div
-                  className={`small-board ${legalBoard ? 'legal' : 'locked'} ${winner ? `won ${winner}` : ''}`}
+                  className={`small-board ${boundaryClass} ${legalBoard ? 'legal' : 'locked'} ${winner ? `won ${winner}` : ''}`}
                   key={boardIndex}
                   aria-label={`小棋盘 ${boardIndex}${winner ? `，${playerLabel(winner)}已占领` : ''}`}
                 >
                   {board.map((cell, cellIndex) => {
                     const isLastMove =
                       state.lastMove?.boardIndex === boardIndex && state.lastMove.cellIndex === cellIndex;
+                    const cellRow = Math.floor(cellIndex / 3);
+                    const cellColumn = cellIndex % 3;
+                    const globalRow = boardRow * 3 + cellRow;
+                    const globalColumn = boardColumn * 3 + cellColumn;
+                    const squareTone = (globalRow + globalColumn) % 2 === 0 ? 'light-square' : 'dark-square';
                     const disabled = state.status !== 'playing' || Boolean(cell) || Boolean(winner) || !legalBoard;
                     return (
                       <button
                         type="button"
-                        className={`cell ${cell ? `occupied ${cell}` : ''} ${isLastMove ? 'last-move' : ''}`}
+                        className={`cell ${squareTone} ${cell ? `occupied ${cell}` : ''} ${isLastMove ? 'last-move' : ''}`}
                         key={`${boardIndex}-${cellIndex}`}
                         onClick={() => handleMove(boardIndex, cellIndex)}
                         disabled={disabled}
                         aria-label={`小棋盘 ${boardIndex}，位置 ${cellIndex}${cell ? `，${playerLabel(cell)}棋子` : ''}`}
                       >
-                        {cell ? <span className={`stone ${cell}`} /> : <span className="cell-index">{cellIndex}</span>}
+                        {cell ? <span className={`stone ${cell}`} /> : null}
                       </button>
                     );
                   })}
