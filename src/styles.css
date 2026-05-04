@@ -1,0 +1,385 @@
+:root {
+  color: #f8efe1;
+  background: #120d0a;
+  font-family: Georgia, 'Songti SC', 'Noto Serif SC', serif;
+  --walnut: #5a351f;
+  --walnut-dark: #241209;
+  --gold: #d6a756;
+  --jade: #d8ceb7;
+  --ink: #0b0908;
+  --mist: rgba(255, 245, 224, 0.76);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(214, 167, 86, 0.16), transparent 30rem),
+    radial-gradient(circle at 78% 70%, rgba(125, 72, 35, 0.38), transparent 34rem),
+    linear-gradient(135deg, #100b08, #1f130d 46%, #070604);
+}
+
+button {
+  font: inherit;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(19rem, 27rem) minmax(22rem, 1fr);
+  gap: clamp(1.25rem, 4vw, 4rem);
+  align-items: center;
+  padding: clamp(1rem, 4vw, 4rem);
+  position: relative;
+  overflow: hidden;
+}
+
+.app-shell::before {
+  content: '';
+  position: absolute;
+  inset: 1.5rem;
+  pointer-events: none;
+  border: 1px solid rgba(214, 167, 86, 0.18);
+  border-radius: 2rem;
+  box-shadow: inset 0 0 6rem rgba(214, 167, 86, 0.06);
+}
+
+.hero-panel,
+.board-stage {
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow {
+  color: var(--gold);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+h1 {
+  margin: 0.75rem 0 1rem;
+  font-size: clamp(2.4rem, 6vw, 5.8rem);
+  line-height: 0.94;
+  letter-spacing: -0.07em;
+  text-shadow: 0 1.2rem 2rem rgba(0, 0, 0, 0.45);
+}
+
+p {
+  color: var(--mist);
+  line-height: 1.85;
+  margin: 0 0 1.5rem;
+}
+
+.score-card,
+.status-card,
+.draw-banner {
+  border: 1px solid rgba(214, 167, 86, 0.22);
+  background: linear-gradient(145deg, rgba(255, 244, 224, 0.09), rgba(30, 15, 8, 0.64));
+  border-radius: 1.4rem;
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(18px);
+}
+
+.score-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  padding: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.score-card > div {
+  display: grid;
+  gap: 0.2rem;
+  align-items: center;
+  justify-items: start;
+  padding: 0.85rem;
+  border-radius: 1rem;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.score-card strong {
+  font-size: 2.2rem;
+}
+
+.score-card span:last-child,
+.status-card small {
+  color: rgba(255, 245, 224, 0.68);
+}
+
+.score-dot,
+.turn-stone,
+.stone {
+  display: inline-block;
+  border-radius: 999px;
+}
+
+.score-dot {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.score-dot.black,
+.turn-stone.black,
+.stone.black {
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.24), transparent 14%),
+    radial-gradient(circle at 65% 70%, #050403, #17120f 54%, #030202);
+}
+
+.score-dot.white,
+.turn-stone.white,
+.stone.white {
+  background:
+    radial-gradient(circle at 32% 24%, #fffdf3, transparent 28%),
+    radial-gradient(circle at 60% 74%, #b9ad94, #efe6d1 58%, #fff8e8);
+}
+
+.status-card {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+}
+
+.turn-stone {
+  width: 2.75rem;
+  height: 2.75rem;
+  box-shadow: 0 0.8rem 1.5rem rgba(0, 0, 0, 0.38);
+  flex: 0 0 auto;
+}
+
+.status-card strong,
+.status-card small {
+  display: block;
+}
+
+.draw-banner {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 0.8rem;
+}
+
+.draw-banner span {
+  margin-right: auto;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.controls button,
+.draw-banner button {
+  border: 1px solid rgba(214, 167, 86, 0.32);
+  color: #f8efe1;
+  background: rgba(255, 244, 224, 0.08);
+  border-radius: 999px;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease, opacity 180ms ease;
+}
+
+.controls button:hover:not(:disabled),
+.draw-banner button:hover {
+  transform: translateY(-2px);
+  background: rgba(214, 167, 86, 0.2);
+}
+
+.controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.controls .primary {
+  background: linear-gradient(135deg, #c99944, #745124);
+  color: #160e08;
+  font-weight: 700;
+}
+
+.board-stage {
+  perspective: 1200px;
+}
+
+.board-frame {
+  width: min(76vmin, 48rem);
+  margin-inline: auto;
+  padding: clamp(0.8rem, 2vw, 1.4rem);
+  border-radius: 2.2rem;
+  background:
+    linear-gradient(135deg, rgba(255, 226, 158, 0.4), transparent 18%),
+    repeating-linear-gradient(90deg, #6d4225 0 1.2rem, #54301a 1.2rem 2.4rem);
+  box-shadow:
+    0 3rem 5rem rgba(0, 0, 0, 0.52),
+    inset 0 0 0 0.4rem rgba(36, 18, 9, 0.72),
+    inset 0 0 2.5rem rgba(255, 224, 166, 0.18);
+  transform: rotateX(7deg) rotateZ(-1deg);
+}
+
+.macro-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.5rem, 1.2vw, 0.95rem);
+  padding: clamp(0.45rem, 1vw, 0.8rem);
+  border-radius: 1.35rem;
+  background:
+    radial-gradient(circle at 25% 22%, rgba(255, 240, 196, 0.22), transparent 18rem),
+    linear-gradient(145deg, #785135, #342014);
+  box-shadow: inset 0 0 3rem rgba(0, 0, 0, 0.42);
+}
+
+.small-board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.2rem, 0.55vw, 0.42rem);
+  aspect-ratio: 1;
+  padding: clamp(0.45rem, 0.9vw, 0.75rem);
+  border-radius: 1rem;
+  background:
+    linear-gradient(135deg, rgba(255, 250, 224, 0.14), transparent),
+    repeating-linear-gradient(35deg, rgba(255, 255, 255, 0.03) 0 0.2rem, transparent 0.2rem 0.52rem),
+    #2d231d;
+  border: 1px solid rgba(255, 230, 179, 0.18);
+  box-shadow: inset 0 0 1rem rgba(0, 0, 0, 0.48);
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+
+.small-board.legal {
+  box-shadow:
+    inset 0 0 1rem rgba(0, 0, 0, 0.48),
+    0 0 0 0.18rem rgba(214, 167, 86, 0.75),
+    0 0 2rem rgba(214, 167, 86, 0.22);
+}
+
+.small-board.locked {
+  filter: saturate(0.72) brightness(0.84);
+}
+
+.small-board.won {
+  box-shadow:
+    inset 0 0 0 0.2rem rgba(255, 244, 224, 0.16),
+    inset 0 0 3rem rgba(0, 0, 0, 0.52);
+}
+
+.small-board.won.black {
+  background: linear-gradient(145deg, rgba(0, 0, 0, 0.74), rgba(54, 42, 34, 0.9));
+}
+
+.small-board.won.white {
+  background: linear-gradient(145deg, rgba(255, 248, 229, 0.58), rgba(80, 62, 44, 0.72));
+}
+
+.board-index,
+.owner-mark {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.board-index {
+  top: 0.32rem;
+  left: 0.45rem;
+  color: rgba(255, 244, 224, 0.36);
+  font-size: 0.72rem;
+}
+
+.owner-mark {
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(1.6rem, 5vw, 4.2rem);
+  color: rgba(214, 167, 86, 0.22);
+  font-weight: 900;
+}
+
+.cell {
+  position: relative;
+  border: 1px solid rgba(255, 231, 182, 0.15);
+  border-radius: 0.55rem;
+  background: rgba(14, 10, 8, 0.28);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  cursor: pointer;
+  min-width: 0;
+  transition: transform 150ms ease, background 150ms ease, box-shadow 150ms ease;
+}
+
+.cell:not(:disabled):hover {
+  transform: translateY(-2px) scale(1.03);
+  background: rgba(214, 167, 86, 0.16);
+}
+
+.cell:disabled {
+  cursor: not-allowed;
+}
+
+.cell-index {
+  color: rgba(255, 244, 224, 0.22);
+  font-size: clamp(0.58rem, 1.2vw, 0.86rem);
+}
+
+.stone {
+  width: 72%;
+  height: 72%;
+  box-shadow:
+    inset -0.4rem -0.5rem 0.8rem rgba(0, 0, 0, 0.28),
+    inset 0.28rem 0.24rem 0.4rem rgba(255, 255, 255, 0.18),
+    0 0.48rem 0.6rem rgba(0, 0, 0, 0.42);
+  animation: dropStone 260ms cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.cell.last-move {
+  box-shadow: 0 0 0 0.16rem rgba(118, 204, 255, 0.82), 0 0 1.4rem rgba(118, 204, 255, 0.38);
+}
+
+@keyframes dropStone {
+  from {
+    opacity: 0;
+    transform: translateY(-34%) scale(1.18);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 900px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .board-frame {
+    width: min(92vw, 44rem);
+    transform: rotateX(4deg);
+  }
+}
+
+@media (max-width: 520px) {
+  .app-shell {
+    padding: 1rem;
+  }
+
+  .app-shell::before {
+    display: none;
+  }
+
+  .score-card {
+    grid-template-columns: 1fr;
+  }
+
+  .controls button {
+    flex: 1 1 10rem;
+  }
+}
