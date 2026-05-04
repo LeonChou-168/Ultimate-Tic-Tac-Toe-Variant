@@ -16,9 +16,11 @@
 - Implemented files include Vite/React scaffold, `src/App.tsx`, `src/styles.css`, `src/main.tsx`, and reusable game logic under `src/game/`.
 - Existing engine already models players, cells, board winners, game status, settlement, draw offers, legal boards, move placement, resignation, and draw response.
 - Tooling now uses Vite, React, TypeScript, and Vitest with `npm test` and `npm run build` scripts.
+- Tooling now also exposes a lightweight global CLI command (`uttv`) via npm `bin` + `npm link`.
 - Main gap found: `canManualSettle` only returns true when every unoccupied board is full. The spec allows manual settlement once every unoccupied board is a drawn/dead board that cannot produce a winner, even before it is fully occupied.
 - Later full root listing showed Vite/React project scaffolding (`package.json`, `index.html`, `vite.config.ts`, `src/App.tsx`, etc.) and existing npm scripts.
 - `src/App.tsx` already routes the “主动结算” button through `settleGame`, so the engine correction is automatically exposed in the UI.
+- Documentation now includes a repo-root `README.md` for local startup and a dedicated `docs/联机服务器教程.md` for adding a future Socket.io-based multiplayer backend.
 
 ## Visual Direction Implemented
 

@@ -14,6 +14,10 @@
 - Webapp helper `--help` worked with `python3`; browser automation did not run because Playwright is not installed in the project.
 - Final `npm test` passed: 1 test file, 12 tests.
 - Final `npm run build` passed: `tsc -b && vite build` completed and emitted `dist/` assets.
+- Expanded `README.md` with explicit local run instructions.
+- Added `docs/联机服务器教程.md` covering Socket.io server setup, room model, event design, and deployment path.
+- Added a global CLI wrapper at `bin/uttv.js` and exposed it through `package.json` `bin` entries.
+- Verified `node ./bin/uttv.js help`, `npm test`, and `npm run build` all pass after CLI setup.
 
 ## Verification Log
 

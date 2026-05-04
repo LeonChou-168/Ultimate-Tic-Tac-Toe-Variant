@@ -20,6 +20,8 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 - Bootstrap a frontend-first React/Vite app because the repository initially had no complete runnable scaffold.
 - Keep game rules in `src/game` as pure TypeScript so UI, future online mode, and future AI mode can share one source of truth.
 - Implement manual settlement by detecting boards where neither player can still complete any three-in-a-row, not only completely full boards.
+- Document local startup in `README.md` and put multiplayer-server implementation guidance in a separate doc to keep setup instructions short and the backend roadmap detailed.
+- Expose a global developer command through npm `bin` and `npm link`, so terminal usage stays aligned with the existing npm scripts.
 
 ## Errors Encountered
 

@@ -153,8 +153,6 @@ export default function App() {
                   key={boardIndex}
                   aria-label={`小棋盘 ${boardIndex}${winner ? `，${playerLabel(winner)}已占领` : ''}`}
                 >
-                  <span className="board-index">{boardIndex}</span>
-                  {winner ? <span className="owner-mark">{winner === 'black' ? '黑' : '白'}</span> : null}
                   {board.map((cell, cellIndex) => {
                     const isLastMove =
                       state.lastMove?.boardIndex === boardIndex && state.lastMove.cellIndex === cellIndex;
