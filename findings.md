@@ -62,3 +62,4 @@
 - HUD-style compact rails work better when text is minimized and the collapsed state reads like a narrow instrument strip rather than a miniature content panel.
 - The current AI slowness was not search/heuristic cost; it was an intentionally inserted 520ms timeout in the UI turn runner. Lowering that delay is the correct first fix.
 - The gold target-border bug came from coupling legal-board highlighting to `displayState`, which swaps to replay state during replay mode. Live guidance should stay tied to the live game state, while replay mode should not present active target guidance.
+- A separate gold-border issue came from the tutorial focus ring being applied to `.board-stage fullscreen-board`, which spans the whole main board region. Applying it to the inner `.board-frame` scopes the border correctly.

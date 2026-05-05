@@ -64,3 +64,5 @@
 - Re-verified after the AI speed adjustment: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Removed the unwanted replay explanatory copy and fixed the gold target-highlighting behavior so live target guidance no longer gets replaced by replay-state legality.
 - Re-verified after the highlight/copy fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User clarified that the oversized gold border bug was the tutorial focus ring wrapping the entire main board region. Moved that focus class from the outer board section to the inner board frame.
+- Re-verified after the focus-scope fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

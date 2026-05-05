@@ -456,8 +456,8 @@ export default function App() {
 
   return (
     <main className={gameShellClass}>
-      <section className={`board-stage fullscreen-board ${tutorialHighlight('board')}`} aria-label="游戏棋盘">
-        <div className="board-frame board-frame-large">
+      <section className="board-stage fullscreen-board" aria-label="游戏棋盘">
+        <div className={`board-frame board-frame-large ${tutorialHighlight('board')}`}>
           <div className="macro-board">
             {displayState.boards.map((board, boardIndex) => {
               const winner = displayState.boardWinners[boardIndex];

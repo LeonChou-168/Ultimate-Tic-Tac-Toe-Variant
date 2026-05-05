@@ -28,6 +28,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 19. HUD micro-polish pass | complete | Make the compact rail more HUD-like and smooth the expanded drawer motion. |
 | 20. Speed up AI turns | complete | Reduce the artificial UI delay so human-vs-AI mode responds faster. |
 | 21. Remove replay copy + fix highlight | complete | Delete the unwanted replay explanatory copy and restore correct live target highlighting. |
+| 22. Scope tutorial gold border | complete | Move the tutorial focus ring from the outer board region to the inner board frame. |
 
 ## Decisions
 
