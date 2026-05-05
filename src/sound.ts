@@ -1,6 +1,7 @@
 type AudioCue = 'move' | 'claim' | 'invalid' | 'settlement' | 'draw-offer' | 'draw-accepted' | 'draw-declined' | 'resign';
 
 let audioContext: AudioContext | null = null;
+let masterVolume = 0.72;
 
 function getAudioContext(): AudioContext | null {
   if (typeof window === 'undefined') {
@@ -26,7 +27,7 @@ function getAudioContext(): AudioContext | null {
 function createEnvelope(context: AudioContext, startAt: number, duration: number, peak = 0.045): GainNode {
   const gain = context.createGain();
   gain.gain.setValueAtTime(0.0001, startAt);
-  gain.gain.exponentialRampToValueAtTime(peak, startAt + 0.01);
+  gain.gain.exponentialRampToValueAtTime(Math.max(peak * masterVolume, 0.0001), startAt + 0.01);
   gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
   gain.connect(context.destination);
   return gain;
@@ -109,4 +110,8 @@ export function playSound(cue: AudioCue): void {
       ]);
       break;
   }
+}
+
+export function setSoundVolume(volume: number): void {
+  masterVolume = Math.min(1, Math.max(0, volume));
 }

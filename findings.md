@@ -46,3 +46,5 @@
 - A lightweight tutorial can be implemented without measuring DOM geometry by using section-level highlight states and a synchronized step panel; this keeps the code simple and reliable while still feeling guided.
 - Real audio can be added without external assets or new dependencies by using Web Audio API synthesis; this avoids bundling sound files while still giving distinct UX feedback.
 - The most reliable hook point for sound is the UI event layer in `App.tsx`, because it already sees user intent plus the engine result and can distinguish move, invalid action, claim, settlement, draw flow, and resignation.
+- Volume control fits best as a master multiplier inside the audio envelope utility rather than duplicating scaling logic across each cue.
+- A claim celebration effect can stay purely in the UI by diffing previous vs next `boardWinners`, which avoids changing the engine API and still gives precise one-shot animation on newly occupied boards.

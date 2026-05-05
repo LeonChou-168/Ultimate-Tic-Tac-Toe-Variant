@@ -41,3 +41,5 @@
 - Fixed a TypeScript safety issue around tutorial-step selection, then re-verified successfully with clean diagnostics, passing tests, and a successful production build.
 - Continued M2 audio track: added `src/sound.ts` with lightweight Web Audio synthesis and connected real sounds to move, claim, invalid action, draw offer/response, settlement, and resignation events.
 - Converted the existing sound setting from placeholder to real functionality, then re-verified successfully with clean diagnostics, passing tests, and a successful production build.
+- Continued M2 polish again: added user-adjustable sound volume and a captured-board burst animation so visual and audio reward now reinforce each other.
+- Re-verified after the polish pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

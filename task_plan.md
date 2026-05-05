@@ -17,6 +17,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 8. Continue M2 onboarding/settings | complete | Add newcomer guidance, in-game settings toggles, and remove visible board numbering from the board UI. |
 | 9. Add step-by-step tutorial | complete | Convert static onboarding into a guided, progressive tutorial with highlighted focus areas. |
 | 10. Add real sound feedback | complete | Implement lightweight synthesized game audio and connect it to the in-game sound toggle. |
+| 11. Add volume + claim polish | complete | Add sound-volume control and a stronger captured-board visual burst effect. |
 
 ## Decisions
 

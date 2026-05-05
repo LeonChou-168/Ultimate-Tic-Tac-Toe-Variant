@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   canManualSettle,
   createInitialState,
@@ -11,7 +11,7 @@ import {
   settleGame,
 } from './game/engine';
 import type { GameState, Player } from './game/types';
-import { playSound } from './sound';
+import { playSound, setSoundVolume } from './sound';
 
 function playerLabel(player: Player): string {
   return player === 'black' ? '黑方' : '白方';
@@ -119,8 +119,10 @@ export default function App() {
   const [showMoveHints, setShowMoveHints] = useState(true);
   const [enableStoneAnimation, setEnableStoneAnimation] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(false);
+  const [soundVolume, setSoundVolumeState] = useState(72);
   const [showTutorial, setShowTutorial] = useState(true);
   const [tutorialStepIndex, setTutorialStepIndex] = useState(0);
+  const [celebratingBoards, setCelebratingBoards] = useState<number[]>([]);
   const legalBoards = useMemo(() => getLegalBoards(state), [state]);
   const manualSettleAvailable = useMemo(() => canManualSettle(state), [state]);
   const blackClaims = state.boardWinners.filter((winner) => winner === 'black').length;
@@ -133,6 +135,33 @@ export default function App() {
     }
 
     playSound(cue);
+  };
+
+  useEffect(() => {
+    setSoundVolume(soundVolume / 100);
+  }, [soundVolume]);
+
+  useEffect(() => {
+    if (celebratingBoards.length === 0) {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setCelebratingBoards([]);
+    }, 760);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [celebratingBoards]);
+
+  const triggerClaimCelebration = (previousWinners: Array<Player | null>, nextWinners: Array<Player | null>) => {
+    const newClaimedBoards = nextWinners
+      .map((winner, index) => ({ winner, index }))
+      .filter(({ winner, index }) => winner !== null && previousWinners[index] !== winner)
+      .map(({ index }) => index);
+
+    if (newClaimedBoards.length > 0) {
+      setCelebratingBoards(newClaimedBoards);
+    }
   };
 
   const updateFeedback = (nextMessage: string, ok: boolean) => {
@@ -151,6 +180,7 @@ export default function App() {
     if (result.ok) {
       const previousClaims = previousClaimCountRef.current;
       const nextClaims = result.state.boardWinners.filter(Boolean).length;
+      triggerClaimCelebration(state.boardWinners, result.state.boardWinners);
 
       if (result.state.status === 'settled') {
         maybePlaySound('settlement');
@@ -375,6 +405,24 @@ export default function App() {
                 {soundEnabled ? '已开启' : '已关闭'}
               </button>
             </div>
+
+            <div className="setting-row slider-row">
+              <div>
+                <strong>音量强度</strong>
+                <small>当前音量 {soundVolume}% 。关闭音效后仍可提前调好，下次开启立即生效。</small>
+              </div>
+              <label className="volume-slider" aria-label="音量滑杆">
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value={soundVolume}
+                  onChange={(event) => setSoundVolumeState(Number(event.target.value))}
+                />
+                <span>{soundVolume}%</span>
+              </label>
+            </div>
           </section>
         ) : null}
 
@@ -452,7 +500,7 @@ export default function App() {
                 .join(' ');
               return (
                 <div
-                  className={`small-board ${boundaryClass} ${legalBoard ? 'legal' : 'locked'} ${winner ? `won ${winner}` : ''}`}
+                  className={`small-board ${boundaryClass} ${legalBoard ? 'legal' : 'locked'} ${winner ? `won ${winner}` : ''} ${celebratingBoards.includes(boardIndex) ? 'claim-burst' : ''}`}
                   key={boardIndex}
                   aria-label={`小棋盘 ${boardIndex}${winner ? `，${playerLabel(winner)}已占领` : ''}`}
                 >
