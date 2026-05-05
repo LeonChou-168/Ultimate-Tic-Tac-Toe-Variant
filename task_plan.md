@@ -29,6 +29,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 20. Speed up AI turns | complete | Reduce the artificial UI delay so human-vs-AI mode responds faster. |
 | 21. Remove replay copy + fix highlight | complete | Delete the unwanted replay explanatory copy and restore correct live target highlighting. |
 | 22. Scope tutorial gold border | complete | Move the tutorial focus ring from the outer board region to the inner board frame. |
+| 23. Restrict gold to playable boards only | complete | Remove board-frame gold focus so only legal small-board targets remain highlighted in gold. |
 
 ## Decisions
 

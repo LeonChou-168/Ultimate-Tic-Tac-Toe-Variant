@@ -66,3 +66,5 @@
 - Re-verified after the highlight/copy fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - User clarified that the oversized gold border bug was the tutorial focus ring wrapping the entire main board region. Moved that focus class from the outer board section to the inner board frame.
 - Re-verified after the focus-scope fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User further clarified that gold highlighting should point only to playable small boards. Removed the remaining board-frame gold tutorial focus so only legal small-board highlights use gold guidance.
+- Re-verified after the final gold-guidance fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
