@@ -4,6 +4,8 @@ export type Cell = Player | null;
 
 export type BoardWinner = Player | null;
 
+export type GameMode = 'human-vs-human' | 'human-vs-ai';
+
 export type GameStatus = 'playing' | 'settled' | 'resigned' | 'draw-agreed';
 
 export type SettlementReason = 'automatic' | 'manual' | 'resignation' | 'draw-agreed';

@@ -19,6 +19,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 10. Add real sound feedback | complete | Implement lightweight synthesized game audio and connect it to the in-game sound toggle. |
 | 11. Add volume + claim polish | complete | Add sound-volume control and a stronger captured-board visual burst effect. |
 | 12. Add tutorial auto-follow + history + endgame summary | complete | Advance all three next M2 UX directions in one coordinated pass. |
+| 13. Redesign shell + replay + AI mode | complete | Add welcome/menu flow, board-first gameplay shell with hover-reveal sidebar, replay mode, and initial human-vs-AI mode. |
 
 ## Decisions
 

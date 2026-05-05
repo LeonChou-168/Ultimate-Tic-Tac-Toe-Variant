@@ -51,3 +51,6 @@
 - Tutorial auto-follow can be driven from coarse game milestones (`history.length`, pending draw state, manual settlement availability, and game end) without introducing a separate tutorial state machine.
 - A recent-move panel is a high-value way to teach the projection rule because it exposes concrete board/cell sequences instead of abstract explanations.
 - Richer endgame presentation works best as a dedicated summary panel that explains *why* the game ended, not just *who* won.
+- The user's requested sidebar behavior can be implemented as an idle-fading right rail plus a fixed edge hover trigger zone, which is much simpler and more reliable than geometric pointer detection.
+- Replacing textual move history with replay mode is feasible using existing `state.history` by reconstructing intermediate game states client-side.
+- A first AI mode fits best as a pure helper module consuming `placeMove`/`getLegalBoards`, keeping the core engine unchanged while allowing future heuristic upgrades.

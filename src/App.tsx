@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { chooseAIMove } from './game/ai';
 import {
   canManualSettle,
   createInitialState,
@@ -10,27 +11,55 @@ import {
   resignGame,
   settleGame,
 } from './game/engine';
-import type { GameState, Player } from './game/types';
+import type { GameMode, GameState, Player } from './game/types';
 import { playSound, setSoundVolume } from './sound';
+
+type MessageTone = 'info' | 'success' | 'warning';
+type Screen = 'welcome' | 'menu' | 'game';
+
+type TutorialStep = {
+  key: 'status' | 'battlefield' | 'board' | 'controls';
+  label: string;
+  title: string;
+  body: string;
+};
+
+const tutorialSteps: TutorialStep[] = [
+  {
+    key: 'status',
+    label: '第 1 步',
+    title: '先看当前轮到谁，以及系统刚刚反馈了什么',
+    body: '这里会告诉你当前行棋方，以及上一操作为什么成功、为什么失败。每次犹豫时，先看这一栏。',
+  },
+  {
+    key: 'battlefield',
+    label: '第 2 步',
+    title: '再看当前战场：指定落子还是自由落子',
+    body: '如果这里写“必须落在某个小棋盘”，就只去那个区域；如果写“自由落子”，你可以在所有可用区域里任选。',
+  },
+  {
+    key: 'board',
+    label: '第 3 步',
+    title: '然后去看棋盘上的高亮与上一手痕迹',
+    body: '金色高亮表示当前可落子的战场，蓝色边框表示上一手位置。两者结合起来，就能快速理解投影规则。',
+  },
+  {
+    key: 'controls',
+    label: '第 4 步',
+    title: '最后再使用动作按钮处理特殊局面',
+    body: '求和、认输、主动结算、重新开始都在这里。只有规则允许时，相应按钮才会进入可用状态。',
+  },
+];
+
+const fallbackTutorialStep: TutorialStep = tutorialSteps[0] ?? {
+  key: 'status',
+  label: '第 1 步',
+  title: '先看当前轮到谁',
+  body: '先看状态栏。',
+};
 
 function playerLabel(player: Player): string {
   return player === 'black' ? '黑方' : '白方';
-}
-
-function statusText(state: GameState): string {
-  if (state.settlement) {
-    if (state.settlement.winner === 'draw') {
-      return `本局平局 · 黑 ${state.settlement.blackBoards} : ${state.settlement.whiteBoards} 白`;
-    }
-
-    return `${formatPlayer(state.settlement.winner)}获胜 · 黑 ${state.settlement.blackBoards} : ${state.settlement.whiteBoards} 白`;
-  }
-
-  if (state.targetBoard === null) {
-    return `${playerLabel(state.currentPlayer)}行棋 · 可在任意可用区域落子`;
-  }
-
-  return `${playerLabel(state.currentPlayer)}行棋 · 请在高亮区域落子`;
 }
 
 function actionMessage(message: string): string {
@@ -104,55 +133,28 @@ function settlementTheme(state: GameState): 'black' | 'white' | 'draw' {
   return state.settlement.winner;
 }
 
-type MessageTone = 'info' | 'success' | 'warning';
+function statusHeadline(state: GameState): string {
+  if (state.settlement) {
+    if (state.settlement.winner === 'draw') {
+      return `本局平局 · 黑 ${state.settlement.blackBoards} : ${state.settlement.whiteBoards} 白`;
+    }
 
-type TutorialStep = {
-  key: 'status' | 'battlefield' | 'board' | 'controls';
-  label: string;
-  title: string;
-  body: string;
-};
+    return `${formatPlayer(state.settlement.winner)}获胜 · 黑 ${state.settlement.blackBoards} : ${state.settlement.whiteBoards} 白`;
+  }
 
-const tutorialSteps: TutorialStep[] = [
-  {
-    key: 'status',
-    label: '第 1 步',
-    title: '先看当前轮到谁，以及系统刚刚反馈了什么',
-    body: '这里会告诉你当前行棋方，以及上一操作为什么成功、为什么失败。每次犹豫时，先看这一栏。',
-  },
-  {
-    key: 'battlefield',
-    label: '第 2 步',
-    title: '再看当前战场：指定落子还是自由落子',
-    body: '如果这里写“必须落在某个小棋盘”，就只去那个区域；如果写“自由落子”，你可以在所有可用区域里任选。',
-  },
-  {
-    key: 'board',
-    label: '第 3 步',
-    title: '然后去看棋盘上的高亮与上一手痕迹',
-    body: '金色高亮表示当前可落子的战场，蓝色边框表示上一手位置。两者结合起来，就能快速理解投影规则。',
-  },
-  {
-    key: 'controls',
-    label: '第 4 步',
-    title: '最后再使用动作按钮处理特殊局面',
-    body: '求和、认输、主动结算、重新开始都在这里。只有规则允许时，相应按钮才会进入可用状态。',
-  },
-];
+  if (state.targetBoard === null) {
+    return `${playerLabel(state.currentPlayer)}行棋 · 可在任意可用区域落子`;
+  }
 
-const fallbackTutorialStep: TutorialStep = {
-  key: 'status',
-  label: '第 1 步',
-  title: '先看当前轮到谁，以及系统刚刚反馈了什么',
-  body: '这里会告诉你当前行棋方，以及上一操作为什么成功、为什么失败。每次犹豫时，先看这一栏。',
-};
+  return `${playerLabel(state.currentPlayer)}行棋 · 请在高亮区域落子`;
+}
 
 export default function App() {
+  const [screen, setScreen] = useState<Screen>('welcome');
+  const [gameMode, setGameMode] = useState<GameMode>('human-vs-human');
   const [state, setState] = useState<GameState>(() => createInitialState());
-  const [message, setMessage] = useState('第一手可在任意位置落子。');
+  const [message, setMessage] = useState('欢迎来到终极井字棋变体。');
   const [messageTone, setMessageTone] = useState<MessageTone>('info');
-  const [showGuide, setShowGuide] = useState(true);
-  const [showSettings, setShowSettings] = useState(false);
   const [showMoveHints, setShowMoveHints] = useState(true);
   const [enableStoneAnimation, setEnableStoneAnimation] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(false);
@@ -160,17 +162,40 @@ export default function App() {
   const [showTutorial, setShowTutorial] = useState(true);
   const [tutorialStepIndex, setTutorialStepIndex] = useState(0);
   const [celebratingBoards, setCelebratingBoards] = useState<number[]>([]);
-  const legalBoards = useMemo(() => getLegalBoards(state), [state]);
+  const [sidebarPinned, setSidebarPinned] = useState(true);
+  const [sidebarVisible, setSidebarVisible] = useState(true);
+  const [replayMode, setReplayMode] = useState(false);
+  const [replayIndex, setReplayIndex] = useState(0);
+  const [aiPending, setAiPending] = useState(false);
+  const [aiPlayer] = useState<Player>('white');
+
+  const previousClaimCountRef = useRef(0);
   const manualSettleAvailable = useMemo(() => canManualSettle(state), [state]);
-  const blackClaims = state.boardWinners.filter((winner) => winner === 'black').length;
-  const whiteClaims = state.boardWinners.filter((winner) => winner === 'white').length;
-  const previousClaimCountRef = useRef(blackClaims + whiteClaims);
+  const currentTutorialStep: TutorialStep = tutorialSteps[tutorialStepIndex] ?? fallbackTutorialStep;
+  const replayState = useMemo(() => {
+    let next = createInitialState();
+    for (let i = 0; i < replayIndex; i += 1) {
+      const move = state.history[i];
+      if (!move) {
+        break;
+      }
+
+      const result = placeMove(next, move.boardIndex, move.cellIndex);
+      if (!result.ok) {
+        break;
+      }
+
+      next = result.state;
+    }
+    return next;
+  }, [replayIndex, state.history]);
+  const displayState = replayMode ? replayState : state;
+  const displayLegalBoards = useMemo(() => getLegalBoards(displayState), [displayState]);
 
   const maybePlaySound = (cue: Parameters<typeof playSound>[0]) => {
     if (!soundEnabled) {
       return;
     }
-
     playSound(cue);
   };
 
@@ -183,12 +208,70 @@ export default function App() {
       return undefined;
     }
 
-    const timeoutId = window.setTimeout(() => {
-      setCelebratingBoards([]);
-    }, 760);
-
+    const timeoutId = window.setTimeout(() => setCelebratingBoards([]), 760);
     return () => window.clearTimeout(timeoutId);
   }, [celebratingBoards]);
+
+  useEffect(() => {
+    if (!showTutorial || replayMode) {
+      return;
+    }
+
+    if (state.status !== 'playing' || state.pendingDrawOffer || manualSettleAvailable) {
+      setTutorialStepIndex((index) => Math.max(index, 3));
+      return;
+    }
+
+    if (state.history.length >= 2) {
+      setTutorialStepIndex((index) => Math.max(index, 2));
+      return;
+    }
+
+    if (state.history.length >= 1) {
+      setTutorialStepIndex((index) => Math.max(index, 1));
+    }
+  }, [manualSettleAvailable, replayMode, showTutorial, state.history.length, state.pendingDrawOffer, state.status]);
+
+  useEffect(() => {
+    if (screen !== 'game' || replayMode || gameMode !== 'human-vs-ai' || aiPending) {
+      return;
+    }
+
+    if (state.status !== 'playing' || state.currentPlayer !== aiPlayer) {
+      return;
+    }
+
+    const move = chooseAIMove(state, aiPlayer);
+    if (!move) {
+      return;
+    }
+
+    setAiPending(true);
+    const timeoutId = window.setTimeout(() => {
+      setAiPending(false);
+      handleMove(move.boardIndex, move.cellIndex, true);
+    }, 520);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [aiPending, aiPlayer, gameMode, replayMode, screen, state]);
+
+  useEffect(() => {
+    if (screen !== 'game') {
+      setSidebarVisible(true);
+      return undefined;
+    }
+
+    if (sidebarPinned) {
+      setSidebarVisible(true);
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setSidebarVisible(false);
+    }, 1800);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [message, replayMode, screen, sidebarPinned, sidebarVisible, state]);
 
   const triggerClaimCelebration = (previousWinners: Array<Player | null>, nextWinners: Array<Player | null>) => {
     const newClaimedBoards = nextWinners
@@ -204,32 +287,41 @@ export default function App() {
   const updateFeedback = (nextMessage: string, ok: boolean) => {
     setMessage(nextMessage);
     setMessageTone(ok ? 'success' : 'warning');
+    setSidebarVisible(true);
   };
 
-  const handleMove = (boardIndex: number, cellIndex: number) => {
+  const handleMove = (boardIndex: number, cellIndex: number, fromAI = false) => {
+    if (replayMode) {
+      return;
+    }
+
+    if (!fromAI && gameMode === 'human-vs-ai' && state.currentPlayer === aiPlayer) {
+      updateFeedback('现在轮到电脑思考，请稍等。', false);
+      return;
+    }
+
     const result = placeMove(state, boardIndex, cellIndex);
     updateFeedback(result.message, result.ok);
 
     if (!result.ok) {
       maybePlaySound('invalid');
+      return;
     }
 
-    if (result.ok) {
-      const previousClaims = previousClaimCountRef.current;
-      const nextClaims = result.state.boardWinners.filter(Boolean).length;
-      triggerClaimCelebration(state.boardWinners, result.state.boardWinners);
+    const previousClaims = previousClaimCountRef.current;
+    const nextClaims = result.state.boardWinners.filter(Boolean).length;
+    triggerClaimCelebration(state.boardWinners, result.state.boardWinners);
 
-      if (result.state.status === 'settled') {
-        maybePlaySound('settlement');
-      } else if (nextClaims > previousClaims) {
-        maybePlaySound('claim');
-      } else {
-        maybePlaySound('move');
-      }
-
-      previousClaimCountRef.current = nextClaims;
-      setState(result.state);
+    if (result.state.status === 'settled') {
+      maybePlaySound('settlement');
+    } else if (nextClaims > previousClaims) {
+      maybePlaySound('claim');
+    } else {
+      maybePlaySound('move');
     }
+
+    previousClaimCountRef.current = nextClaims;
+    setState(result.state);
   };
 
   const handleSettle = () => {
@@ -248,6 +340,7 @@ export default function App() {
     setMessage(`${playerLabel(state.currentPlayer)}认输，${playerLabel(nextState.settlement?.winner === 'white' ? 'white' : 'black')}获胜。`);
     setMessageTone('success');
     previousClaimCountRef.current = nextState.boardWinners.filter(Boolean).length;
+    setSidebarVisible(true);
     maybePlaySound('resign');
   };
 
@@ -263,46 +356,34 @@ export default function App() {
   const handleDrawResponse = (accept: boolean) => {
     const result = respondToDraw(state, accept);
     updateFeedback(result.message, result.ok);
-    if (!result.ok) {
-      maybePlaySound('invalid');
-    } else {
-      maybePlaySound(accept ? 'draw-accepted' : 'draw-declined');
-    }
+    maybePlaySound(!result.ok ? 'invalid' : accept ? 'draw-accepted' : 'draw-declined');
     if (result.ok) {
       previousClaimCountRef.current = result.state.boardWinners.filter(Boolean).length;
       setState(result.state);
     }
   };
 
-  const reset = () => {
+  const beginGame = (mode: GameMode) => {
+    setGameMode(mode);
     setState(createInitialState());
-    setMessage('已重开一局。第一手可在任意位置落子。');
+    setScreen('game');
+    setReplayMode(false);
+    setReplayIndex(0);
+    setAiPending(false);
+    setMessage(mode === 'human-vs-ai' ? '人机对战开始。你执黑先手，电脑执白后手。' : '双人对战开始。第一手可在任意位置落子。');
     setMessageTone('info');
+    setSidebarVisible(true);
     previousClaimCountRef.current = 0;
   };
 
-  const currentTutorialStep: TutorialStep = tutorialSteps[tutorialStepIndex] ?? fallbackTutorialStep;
-  const recentMoves = [...state.history].slice(-8).reverse();
+  const reset = () => {
+    beginGame(gameMode);
+  };
 
-  useEffect(() => {
-    if (!showTutorial) {
-      return;
-    }
-
-    if (state.status !== 'playing' || state.pendingDrawOffer || manualSettleAvailable) {
-      setTutorialStepIndex((index) => Math.max(index, 3));
-      return;
-    }
-
-    if (state.history.length >= 2) {
-      setTutorialStepIndex((index) => Math.max(index, 2));
-      return;
-    }
-
-    if (state.history.length >= 1) {
-      setTutorialStepIndex((index) => Math.max(index, 1));
-    }
-  }, [manualSettleAvailable, showTutorial, state.history.length, state.pendingDrawOffer, state.status]);
+  const restartTutorial = () => {
+    setTutorialStepIndex(0);
+    setShowTutorial(true);
+  };
 
   const nextTutorialStep = () => {
     setTutorialStepIndex((index) => Math.min(index + 1, tutorialSteps.length - 1));
@@ -312,139 +393,310 @@ export default function App() {
     setTutorialStepIndex((index) => Math.max(index - 1, 0));
   };
 
-  const restartTutorial = () => {
-    setTutorialStepIndex(0);
-    setShowTutorial(true);
-  };
-
   const tutorialHighlight = (key: TutorialStep['key']): string => (showTutorial && currentTutorialStep.key === key ? 'tutorial-focus' : '');
 
+  const openReplay = () => {
+    setReplayMode(true);
+    setReplayIndex(state.history.length);
+    setSidebarVisible(true);
+  };
+
+  const closeReplay = () => {
+    setReplayMode(false);
+    setSidebarVisible(true);
+  };
+
+  const gameShellClass = `game-shell ${sidebarVisible ? 'sidebar-visible' : 'sidebar-hidden'} ${sidebarPinned ? 'sidebar-pinned' : 'sidebar-floating'}`;
+
+  if (screen === 'welcome') {
+    return (
+      <main className="landing-screen">
+        <section className="welcome-card">
+          <div className="eyebrow">Ultimate Tic-Tac-Toe Variant</div>
+          <h1>欢迎来到终极井字棋变体</h1>
+          <p>
+            一个更沉浸、更聚焦主棋盘的版本：欢迎页、渐入渐出侧边栏、落子回溯演示，以及即将进入对局的人机模式都已整合进新的体验流。
+          </p>
+          <div className="welcome-actions">
+            <button type="button" className="hero-button primary" onClick={() => setScreen('menu')}>
+              进入主菜单
+            </button>
+            <button type="button" className="hero-button" onClick={() => beginGame('human-vs-human')}>
+              直接开始双人对战
+            </button>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  if (screen === 'menu') {
+    return (
+      <main className="landing-screen menu-screen">
+        <section className="welcome-card menu-card">
+          <div className="eyebrow">开始一局</div>
+          <h1>选择你的对战方式</h1>
+          <div className="menu-grid">
+            <button type="button" className="mode-card" onClick={() => beginGame('human-vs-human')}>
+              <strong>本地双人</strong>
+              <span>两位玩家轮流在同一棋盘上对弈。</span>
+            </button>
+            <button type="button" className="mode-card" onClick={() => beginGame('human-vs-ai')}>
+              <strong>人机对战</strong>
+              <span>你执黑先手，电脑执白应对，先体验一版轻量策略 AI。</span>
+            </button>
+          </div>
+          <div className="welcome-actions">
+            <button type="button" className="hero-button" onClick={() => setScreen('welcome')}>
+              返回欢迎页
+            </button>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
   return (
-    <main className="app-shell">
-      <section className="hero-panel" aria-labelledby="game-title">
-        <div className="eyebrow">Ultimate Tic-Tac-Toe Variant</div>
-        <h1 id="game-title">终极井字棋变体</h1>
-        <p>
-          9 个小棋盘互相投影，上一手的位置决定下一手的战场。占领更多小棋盘的一方赢得整局。
-        </p>
+    <main className={gameShellClass}>
+      <section className={`board-stage fullscreen-board ${tutorialHighlight('board')}`} aria-label="游戏棋盘">
+        <div className="board-frame board-frame-large">
+          <div className="macro-board">
+            {displayState.boards.map((board, boardIndex) => {
+              const winner = displayState.boardWinners[boardIndex];
+              const legalBoard = displayLegalBoards.includes(boardIndex);
+              const boardRow = Math.floor(boardIndex / 3);
+              const boardColumn = boardIndex % 3;
+              const boundaryClass = [boardColumn < 2 ? 'with-right-divider' : '', boardRow < 2 ? 'with-bottom-divider' : '']
+                .filter(Boolean)
+                .join(' ');
 
-        <div className="score-card" aria-label="当前占领小棋盘数量">
-          <div>
-            <span className="score-dot black" />
-            <strong>{blackClaims}</strong>
-            <span>黑方占领</span>
-          </div>
-          <div>
-            <span className="score-dot white" />
-            <strong>{whiteClaims}</strong>
-            <span>白方占领</span>
+              return (
+                <div
+                  className={`small-board ${boundaryClass} ${legalBoard ? 'legal' : 'locked'} ${winner ? `won ${winner}` : ''} ${celebratingBoards.includes(boardIndex) ? 'claim-burst' : ''}`}
+                  key={boardIndex}
+                  aria-label={`小棋盘 ${boardIndex}${winner ? `，${playerLabel(winner)}已占领` : ''}`}
+                >
+                  {board.map((cell, cellIndex) => {
+                    const isLastMove = displayState.lastMove?.boardIndex === boardIndex && displayState.lastMove.cellIndex === cellIndex;
+                    const cellRow = Math.floor(cellIndex / 3);
+                    const cellColumn = cellIndex % 3;
+                    const globalRow = boardRow * 3 + cellRow;
+                    const globalColumn = boardColumn * 3 + cellColumn;
+                    const squareTone = (globalRow + globalColumn) % 2 === 0 ? 'light-square' : 'dark-square';
+                    const disabled =
+                      replayMode ||
+                      displayState.status !== 'playing' ||
+                      Boolean(cell) ||
+                      Boolean(winner) ||
+                      !legalBoard ||
+                      aiPending;
+
+                    return (
+                      <button
+                        type="button"
+                        className={`cell ${squareTone} ${cell ? `occupied ${cell}` : ''} ${isLastMove ? 'last-move' : ''} ${disabled ? 'is-disabled' : ''} ${enableStoneAnimation ? 'animated-stone' : 'static-stone'}`}
+                        key={`${boardIndex}-${cellIndex}`}
+                        onClick={() => handleMove(boardIndex, cellIndex)}
+                        aria-disabled={disabled}
+                        aria-label={`小棋盘 ${boardIndex}，位置 ${cellIndex}${cell ? `，${playerLabel(cell)}棋子` : ''}`}
+                      >
+                        {cell ? <span className={`stone ${cell}`} /> : null}
+                      </button>
+                    );
+                  })}
+                </div>
+              );
+            })}
           </div>
         </div>
+      </section>
 
-        <div className={`status-card ${tutorialHighlight('status')}`}>
-          <span className={`turn-stone ${state.currentPlayer}`} />
-          <div>
-            <strong>{statusText(state)}</strong>
-            <small>{actionMessage(message)}</small>
-          </div>
-        </div>
+      <div
+        className="sidebar-trigger-zone"
+        onMouseEnter={() => setSidebarVisible(true)}
+        onFocus={() => setSidebarVisible(true)}
+        aria-hidden="true"
+      />
 
-        {state.settlement ? (
-          <section className={`endgame-panel ${settlementTheme(state)}`} aria-label="对局结果总结">
-            <div className="panel-heading">
-              <span className="insight-label">终局总结</span>
-              <strong>{settlementTitle(state)}</strong>
+      <aside
+        className="control-sidebar"
+        onMouseEnter={() => setSidebarVisible(true)}
+        onMouseLeave={() => {
+          if (!sidebarPinned) {
+            setSidebarVisible(false);
+          }
+        }}
+      >
+        <div className="sidebar-scroll">
+          <section className="sidebar-header">
+            <div>
+              <div className="eyebrow">{gameMode === 'human-vs-ai' ? 'Human vs AI' : 'Local Versus'}</div>
+              <h2>侧边指挥台</h2>
+              <p>{replayMode ? '当前处于落子回溯演示模式。' : '主棋盘保持纯净，状态与操作都收进侧边栏。'}</p>
             </div>
-            <p className="endgame-reason">{settlementReasonText(state)}</p>
-            <div className="endgame-stats">
-              <div>
-                <span>黑方占领</span>
-                <strong>{state.settlement.blackBoards}</strong>
-              </div>
-              <div>
-                <span>白方占领</span>
-                <strong>{state.settlement.whiteBoards}</strong>
-              </div>
-            </div>
-          </section>
-        ) : null}
-
-        <div className="top-actions" aria-label="辅助面板控制">
-          <button type="button" className="ghost-button" onClick={() => setShowGuide((value) => !value)}>
-            {showGuide ? '收起新手引导' : '查看新手引导'}
-          </button>
-          <button type="button" className="ghost-button" onClick={() => setShowSettings((value) => !value)}>
-            {showSettings ? '收起设置面板' : '打开设置面板'}
-          </button>
-          <button type="button" className="ghost-button" onClick={() => (showTutorial ? setShowTutorial(false) : restartTutorial())}>
-            {showTutorial ? '关闭分步教程' : '重开分步教程'}
-          </button>
-        </div>
-
-        {showGuide ? (
-          <section className="guide-panel" aria-label="新手引导">
-            <div className="panel-heading">
-              <span className="insight-label">新手引导</span>
-              <strong>三步看懂这一局怎么下</strong>
-            </div>
-            <ol className="guide-list">
-              <li>
-                <strong>第一手任意落子</strong>
-                <span>开局时可以直接点任意一个未占领小棋盘里的空位。</span>
-              </li>
-              <li>
-                <strong>之后看“当前位置编号”投影</strong>
-                <span>上一手落在小棋盘里的第几格，下一手就必须去编号相同的小棋盘。</span>
-              </li>
-              <li>
-                <strong>看高亮区域，不用硬记规则</strong>
-                <span>金色高亮区域就是当前允许落子的战场；如果没有指定区域，就代表自由落子。</span>
-              </li>
-            </ol>
-          </section>
-        ) : null}
-
-        {showTutorial ? (
-          <section className="tutorial-panel" aria-label="分步教程">
-            <div className="panel-heading">
-              <span className="insight-label">分步教程</span>
-              <strong>{currentTutorialStep.title}</strong>
-            </div>
-
-            <div className="tutorial-progress" aria-label="教程进度">
-              {tutorialSteps.map((step, index) => (
-                <span
-                  key={step.key}
-                  className={`tutorial-dot ${index === tutorialStepIndex ? 'active' : ''} ${index < tutorialStepIndex ? 'done' : ''}`}
-                />
-              ))}
-            </div>
-
-            <div className="tutorial-copy">
-              <span className="tutorial-step-label">{currentTutorialStep.label}</span>
-              <p>{currentTutorialStep.body}</p>
-              <small className="tutorial-auto-note">教程会随着你的实际对局进度自动推进，你也可以手动切换步骤。</small>
-            </div>
-
-            <div className="tutorial-actions">
-              <button type="button" className="ghost-button" onClick={previousTutorialStep} disabled={tutorialStepIndex === 0}>
-                上一步
+            <div className="sidebar-top-buttons">
+              <button type="button" className="ghost-button" onClick={() => setSidebarPinned((value) => !value)}>
+                {sidebarPinned ? '改为自动淡出' : '固定侧边栏'}
               </button>
-              <button type="button" className="ghost-button" onClick={restartTutorial}>
-                从头再看
+              <button type="button" className="ghost-button" onClick={() => setScreen('menu')}>
+                返回菜单
+              </button>
+            </div>
+          </section>
+
+          <section className={`status-card ${tutorialHighlight('status')}`}>
+            <span className={`turn-stone ${displayState.currentPlayer}`} />
+            <div>
+              <strong>{statusHeadline(displayState)}</strong>
+              <small>{aiPending ? '电脑正在思考下一手。' : actionMessage(message)}</small>
+            </div>
+          </section>
+
+          {displayState.settlement ? (
+            <section className={`endgame-panel ${settlementTheme(displayState)}`} aria-label="对局结果总结">
+              <div className="panel-heading">
+                <span className="insight-label">终局总结</span>
+                <strong>{settlementTitle(displayState)}</strong>
+              </div>
+              <p className="endgame-reason">{settlementReasonText(displayState)}</p>
+              <div className="endgame-stats">
+                <div>
+                  <span>黑方占领</span>
+                  <strong>{displayState.settlement.blackBoards}</strong>
+                </div>
+                <div>
+                  <span>白方占领</span>
+                  <strong>{displayState.settlement.whiteBoards}</strong>
+                </div>
+              </div>
+            </section>
+          ) : null}
+
+          {showTutorial ? (
+            <section className="tutorial-panel" aria-label="分步教程">
+              <div className="panel-heading">
+                <span className="insight-label">分步教程</span>
+                <strong>{currentTutorialStep.title}</strong>
+              </div>
+              <div className="tutorial-progress" aria-label="教程进度">
+                {tutorialSteps.map((step, index) => (
+                  <span key={step.key} className={`tutorial-dot ${index === tutorialStepIndex ? 'active' : ''} ${index < tutorialStepIndex ? 'done' : ''}`} />
+                ))}
+              </div>
+              <div className="tutorial-copy">
+                <span className="tutorial-step-label">{currentTutorialStep.label}</span>
+                <p>{currentTutorialStep.body}</p>
+                <small className="tutorial-auto-note">教程会随着你的实际对局进度自动推进，你也可以手动切换步骤。</small>
+              </div>
+              <div className="tutorial-actions">
+                <button type="button" className="ghost-button" onClick={previousTutorialStep} disabled={tutorialStepIndex === 0}>
+                  上一步
+                </button>
+                <button type="button" className="ghost-button" onClick={restartTutorial}>
+                  从头再看
+                </button>
+                <button
+                  type="button"
+                  className="ghost-button tutorial-primary"
+                  onClick={tutorialStepIndex === tutorialSteps.length - 1 ? () => setShowTutorial(false) : nextTutorialStep}
+                >
+                  {tutorialStepIndex === tutorialSteps.length - 1 ? '完成教程' : '下一步'}
+                </button>
+              </div>
+            </section>
+          ) : (
+            <button type="button" className="ghost-button" onClick={() => setShowTutorial(true)}>
+              重新打开教程
+            </button>
+          )}
+
+          <div className="insight-grid sidebar-grid" aria-label="对局信息面板">
+            <article className={`insight-card emphasis ${tutorialHighlight('battlefield')}`}>
+              <span className="insight-label">当前战场</span>
+              <strong>{boardModeText(displayState)}</strong>
+              <small>{showMoveHints ? lastMoveText(displayState) : '你已关闭落子引导提示，可随时在设置中重新开启。'}</small>
+            </article>
+
+            <article className="insight-card">
+              <span className="insight-label">主动结算</span>
+              <strong>{manualSettleAvailable ? '现在可以结算' : '暂不可结算'}</strong>
+              <small>{showMoveHints ? settlementHint(state) : '需要时可重新开启提示查看当前是否满足主动结算条件。'}</small>
+            </article>
+
+            <article className="insight-card">
+              <span className="insight-label">求和次数</span>
+              <strong>黑方剩余 {3 - state.drawOfferCounts.black} 次 · 白方剩余 {3 - state.drawOfferCounts.white} 次</strong>
+              <small>{state.pendingDrawOffer ? `${playerLabel(state.pendingDrawOffer.offeredBy)}已发起求和，等待回应。` : '当前没有待处理的求和请求。'}</small>
+            </article>
+          </div>
+
+          <section className="replay-panel">
+            <div className="panel-heading">
+              <span className="insight-label">落子回溯演示</span>
+              <strong>{replayMode ? `正在回看第 ${replayIndex} 手` : '把手顺改成可播放的演示模式'}</strong>
+            </div>
+            <p className="history-empty">
+              {state.history.length > 0
+                ? '不再只用文字列出最近手顺，而是可以直接拖动进度回看棋盘是如何一步步形成当前局面的。'
+                : '等对局开始后，这里会根据实际落子生成回放。'}
+            </p>
+            <div className="replay-controls">
+              <button type="button" className="ghost-button" onClick={() => setReplayIndex((index) => Math.max(index - 1, 0))} disabled={!replayMode || replayIndex === 0}>
+                上一手
+              </button>
+              <button type="button" className="ghost-button" onClick={() => (replayMode ? closeReplay() : openReplay())} disabled={state.history.length === 0}>
+                {replayMode ? '退出回放' : '进入回放'}
               </button>
               <button
                 type="button"
-                className="ghost-button tutorial-primary"
-                onClick={tutorialStepIndex === tutorialSteps.length - 1 ? () => setShowTutorial(false) : nextTutorialStep}
+                className="ghost-button"
+                onClick={() => setReplayIndex((index) => Math.min(index + 1, state.history.length))}
+                disabled={!replayMode || replayIndex >= state.history.length}
               >
-                {tutorialStepIndex === tutorialSteps.length - 1 ? '完成教程' : '下一步'}
+                下一手
               </button>
             </div>
+            {replayMode ? (
+              <label className="volume-slider replay-slider" aria-label="回放进度滑杆">
+                <input type="range" min="0" max={state.history.length} step="1" value={replayIndex} onChange={(event) => setReplayIndex(Number(event.target.value))} />
+                <span>{replayIndex} / {state.history.length} 手</span>
+              </label>
+            ) : null}
           </section>
-        ) : null}
 
-        {showSettings ? (
+          <div className={`message-card ${messageTone}`} role="status" aria-live="polite">
+            <span className="message-label">操作反馈</span>
+            <strong>{actionMessage(message)}</strong>
+            <small>{replayMode ? '回放模式下主棋盘不可落子，只用于观察局面演化。' : '鼠标移到右边缘即可再次唤出侧边栏，固定模式下则不会自动淡出。'}</small>
+          </div>
+
+          {state.pendingDrawOffer && !replayMode ? (
+            <div className="draw-banner">
+              <span>{playerLabel(state.pendingDrawOffer.offeredBy)}请求和棋</span>
+              <button type="button" onClick={() => handleDrawResponse(true)}>
+                接受
+              </button>
+              <button type="button" onClick={() => handleDrawResponse(false)}>
+                拒绝
+              </button>
+            </div>
+          ) : null}
+
+          <div className={`controls sidebar-controls ${tutorialHighlight('controls')}`} aria-label="游戏操作">
+            <button type="button" onClick={handleSettle} disabled={replayMode || state.status !== 'playing' || !manualSettleAvailable || aiPending}>
+              主动结算
+            </button>
+            <button type="button" onClick={handleOfferDraw} disabled={replayMode || state.status !== 'playing' || gameMode === 'human-vs-ai' || aiPending}>
+              求和 ({3 - state.drawOfferCounts[state.currentPlayer]} 次)
+            </button>
+            <button type="button" onClick={handleResign} disabled={replayMode || state.status !== 'playing' || aiPending}>
+              认输
+            </button>
+            <button type="button" className="primary" onClick={reset}>
+              重新开始
+            </button>
+          </div>
+
           <section className="settings-panel" aria-label="局内设置">
             <div className="panel-heading">
               <span className="insight-label">局内设置</span>
@@ -466,11 +718,7 @@ export default function App() {
                 <strong>棋子落下动效</strong>
                 <small>关闭后仍可正常对局，只是不再强调落子瞬间的动态反馈。</small>
               </div>
-              <button
-                type="button"
-                className={`toggle-button ${enableStoneAnimation ? 'active' : ''}`}
-                onClick={() => setEnableStoneAnimation((value) => !value)}
-              >
+              <button type="button" className={`toggle-button ${enableStoneAnimation ? 'active' : ''}`} onClick={() => setEnableStoneAnimation((value) => !value)}>
                 {enableStoneAnimation ? '已开启' : '已关闭'}
               </button>
             </div>
@@ -491,144 +739,13 @@ export default function App() {
                 <small>当前音量 {soundVolume}% 。关闭音效后仍可提前调好，下次开启立即生效。</small>
               </div>
               <label className="volume-slider" aria-label="音量滑杆">
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  step="1"
-                  value={soundVolume}
-                  onChange={(event) => setSoundVolumeState(Number(event.target.value))}
-                />
+                <input type="range" min="0" max="100" step="1" value={soundVolume} onChange={(event) => setSoundVolumeState(Number(event.target.value))} />
                 <span>{soundVolume}%</span>
               </label>
             </div>
           </section>
-        ) : null}
-
-        <div className="insight-grid" aria-label="对局信息面板">
-          <article className={`insight-card emphasis ${tutorialHighlight('battlefield')}`}>
-            <span className="insight-label">当前战场</span>
-            <strong>{boardModeText(state)}</strong>
-            <small>{showMoveHints ? lastMoveText(state) : '你已关闭落子引导提示，可随时在设置中重新开启。'}</small>
-          </article>
-
-          <article className="insight-card">
-            <span className="insight-label">主动结算</span>
-            <strong>{manualSettleAvailable ? '现在可以结算' : '暂不可结算'}</strong>
-            <small>{showMoveHints ? settlementHint(state) : '需要时可重新开启提示查看当前是否满足主动结算条件。'}</small>
-          </article>
-
-          <article className="insight-card">
-            <span className="insight-label">求和次数</span>
-            <strong>黑方剩余 {3 - state.drawOfferCounts.black} 次 · 白方剩余 {3 - state.drawOfferCounts.white} 次</strong>
-            <small>
-              {state.pendingDrawOffer
-                ? `${playerLabel(state.pendingDrawOffer.offeredBy)}已发起求和，等待回应。`
-                : '当前没有待处理的求和请求。'}
-            </small>
-          </article>
-
-          <article className="insight-card history-card">
-            <span className="insight-label">最近手顺</span>
-            {recentMoves.length > 0 ? (
-              <ol className="history-list">
-                {recentMoves.map((move, index) => (
-                  <li key={`${move.boardIndex}-${move.cellIndex}-${state.history.length - index}`}>
-                    <strong>{state.history.length - index}.</strong>
-                    <span>
-                      {playerLabel(move.player)}落在小棋盘 {move.boardIndex} 的位置 {move.cellIndex}
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            ) : (
-              <p className="history-empty">对局还没开始。第一手可以直接落在任意可用位置。</p>
-            )}
-          </article>
         </div>
-
-        <div className={`message-card ${messageTone}`} role="status" aria-live="polite">
-          <span className="message-label">操作反馈</span>
-          <strong>{actionMessage(message)}</strong>
-          <small>现在即使点到非法位置，也会明确告诉你原因。</small>
-        </div>
-
-        {state.pendingDrawOffer ? (
-          <div className="draw-banner">
-            <span>{playerLabel(state.pendingDrawOffer.offeredBy)}请求和棋</span>
-            <button type="button" onClick={() => handleDrawResponse(true)}>
-              接受
-            </button>
-            <button type="button" onClick={() => handleDrawResponse(false)}>
-              拒绝
-            </button>
-          </div>
-        ) : null}
-
-        <div className={`controls ${tutorialHighlight('controls')}`} aria-label="游戏操作">
-          <button type="button" onClick={handleSettle} disabled={state.status !== 'playing' || !manualSettleAvailable}>
-            主动结算
-          </button>
-          <button type="button" onClick={handleOfferDraw} disabled={state.status !== 'playing'}>
-            求和 ({3 - state.drawOfferCounts[state.currentPlayer]} 次)
-          </button>
-          <button type="button" onClick={handleResign} disabled={state.status !== 'playing'}>
-            认输
-          </button>
-          <button type="button" className="primary" onClick={reset}>
-            重新开始
-          </button>
-        </div>
-      </section>
-
-      <section className={`board-stage ${tutorialHighlight('board')}`} aria-label="游戏棋盘">
-        <div className="board-frame">
-          <div className="macro-board">
-            {state.boards.map((board, boardIndex) => {
-              const winner = state.boardWinners[boardIndex];
-              const legalBoard = legalBoards.includes(boardIndex);
-              const boardRow = Math.floor(boardIndex / 3);
-              const boardColumn = boardIndex % 3;
-              const boundaryClass = [
-                boardColumn < 2 ? 'with-right-divider' : '',
-                boardRow < 2 ? 'with-bottom-divider' : '',
-              ]
-                .filter(Boolean)
-                .join(' ');
-              return (
-                <div
-                  className={`small-board ${boundaryClass} ${legalBoard ? 'legal' : 'locked'} ${winner ? `won ${winner}` : ''} ${celebratingBoards.includes(boardIndex) ? 'claim-burst' : ''}`}
-                  key={boardIndex}
-                  aria-label={`小棋盘 ${boardIndex}${winner ? `，${playerLabel(winner)}已占领` : ''}`}
-                >
-                  {board.map((cell, cellIndex) => {
-                    const isLastMove =
-                      state.lastMove?.boardIndex === boardIndex && state.lastMove.cellIndex === cellIndex;
-                    const cellRow = Math.floor(cellIndex / 3);
-                    const cellColumn = cellIndex % 3;
-                    const globalRow = boardRow * 3 + cellRow;
-                    const globalColumn = boardColumn * 3 + cellColumn;
-                    const squareTone = (globalRow + globalColumn) % 2 === 0 ? 'light-square' : 'dark-square';
-                    const disabled = state.status !== 'playing' || Boolean(cell) || Boolean(winner) || !legalBoard;
-                    return (
-                      <button
-                        type="button"
-                        className={`cell ${squareTone} ${cell ? `occupied ${cell}` : ''} ${isLastMove ? 'last-move' : ''} ${disabled ? 'is-disabled' : ''} ${enableStoneAnimation ? 'animated-stone' : 'static-stone'}`}
-                        key={`${boardIndex}-${cellIndex}`}
-                        onClick={() => handleMove(boardIndex, cellIndex)}
-                        aria-disabled={disabled}
-                        aria-label={`小棋盘 ${boardIndex}，位置 ${cellIndex}${cell ? `，${playerLabel(cell)}棋子` : ''}`}
-                      >
-                        {cell ? <span className={`stone ${cell}`} /> : null}
-                      </button>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      </aside>
     </main>
   );
 }
