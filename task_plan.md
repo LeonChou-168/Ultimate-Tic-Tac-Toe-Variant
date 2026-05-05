@@ -13,6 +13,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 4. Implement requirements | complete | Bootstrap the app, implement core game rules, tests, and playable UI. |
 | 5. Verify | complete | Run diagnostics, tests, typecheck, and build where available. |
 | 6. Revise specification document | complete | Recover prior doc requirements, assess current draft, and append missing clarifications without deleting prior content. |
+| 7. Implement M2 interaction milestone | complete | Improve game-state clarity, invalid-action feedback, and action availability messaging in the local web UI. |
 
 ## Decisions
 

@@ -30,3 +30,8 @@
 - Recovered prior specification-writing context from session history and confirmed the earlier requirement was additive enhancement rather than destructive rewrite.
 - Re-read the current spec draft and identified remaining gaps: current-repo scope was not separated from target-state planning, rule edge cases were still implicit, and service/test constraints were not explicit enough for future implementers.
 - Appended new sections to the spec covering repository scope, rule clarifications, state/interaction constraints, multiplayer server authority, extra testing guidance, and milestone redefinition.
+- User clarified that project progress, not more spec editing, was the goal.
+- Reassessed repo vs spec and selected the next realistic milestone as M2 interaction clarity for the local web game.
+- Improved the game HUD and interaction feedback in `src/App.tsx` and `src/styles.css`, including target-board/free-move guidance, last-move text, manual-settlement readiness, draw-offer visibility, per-side remaining draw offers, and explicit feedback presentation.
+- Improved engine feedback in `src/game/engine.ts` so illegal moves now explain why they are invalid.
+- Added one extra engine test plus stronger invalid-message assertions; final `npm test` passed with 13 tests and `npm run build` passed after the UI milestone changes.

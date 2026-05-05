@@ -32,3 +32,10 @@
 - Recovered prior doc-improvement intent from session history: user previously wanted additive-only enhancement, clearer rule wording, stronger technical breakdown, checklist-style feature list, clearer acceptance criteria, and milestone guidance.
 - Current spec draft is broad but still benefits from explicit separation between target-state planning and the repository's already-implemented first milestone.
 - Best additive improvement is to append clarifying sections rather than rewrite earlier chapters: current repository scope, rule edge-case clarifications, state machine/interaction constraints, server-authoritative multiplayer constraints, concrete test coverage expectations, and milestone redefinition.
+
+## M2 Interaction Milestone Findings
+
+- The current repo already satisfies the first runnable M1 scope; the highest-value next step is improved usability and state visibility rather than backend multiplayer.
+- Existing board buttons used native `disabled`, which suppressed click events and prevented explicit invalid-action feedback. Replacing that with `aria-disabled` on cells allows the engine to explain illegal clicks while preserving styling and accessibility cues.
+- `placeMove` benefited from more granular illegal-move messages: occupied board, full board, occupied cell, ended game, and forced target board can now be distinguished in the UI.
+- The spec's interaction requirements map well to a compact HUD: current player, target/free-move state, last move, draw-offer state, remaining draw offers, and settlement readiness.

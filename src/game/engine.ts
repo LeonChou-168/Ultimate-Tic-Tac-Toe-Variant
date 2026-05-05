@@ -92,6 +92,44 @@ export function isLegalMove(state: GameState, boardIndex: number, cellIndex: num
   return getLegalBoards(state).includes(boardIndex);
 }
 
+function explainIllegalMove(state: GameState, boardIndex: number, cellIndex: number): string {
+  if (state.status !== 'playing') {
+    return '对局已结束，请重新开始新的一局。';
+  }
+
+  if (!isValidIndex(boardIndex) || !isValidIndex(cellIndex)) {
+    return '目标位置不存在。';
+  }
+
+  const board = state.boards[boardIndex];
+  if (!board) {
+    return '目标小棋盘不存在。';
+  }
+
+  if (state.boardWinners[boardIndex]) {
+    return '该小棋盘已被占领，不能继续落子。';
+  }
+
+  if (isBoardFull(board)) {
+    return '该小棋盘已经下满，不能继续落子。';
+  }
+
+  if (board[cellIndex] !== null) {
+    return '该位置已有棋子，请选择其他空位。';
+  }
+
+  const legalBoards = getLegalBoards(state);
+  if (!legalBoards.includes(boardIndex)) {
+    if (state.targetBoard !== null && isBoardPlayable(state, state.targetBoard)) {
+      return `当前必须在小棋盘 ${state.targetBoard} 内落子。`;
+    }
+
+    return '当前为自由落子阶段，但该小棋盘现在不可用。';
+  }
+
+  return '此位置当前不能落子。';
+}
+
 export function canManualSettle(state: GameState): boolean {
   if (state.status !== 'playing') {
     return false;
@@ -141,7 +179,7 @@ export function placeMove(state: GameState, boardIndex: number, cellIndex: numbe
     return {
       ok: false,
       state,
-      message: '此位置不符合当前投影限制，或小棋盘已被占领/填满。',
+      message: explainIllegalMove(state, boardIndex, cellIndex),
     };
   }
 

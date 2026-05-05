@@ -92,7 +92,9 @@ p {
 
 .score-card,
 .status-card,
-.draw-banner {
+.draw-banner,
+.insight-card,
+.message-card {
   border: 1px solid rgba(214, 167, 86, 0.22);
   background: linear-gradient(145deg, rgba(255, 244, 224, 0.09), rgba(30, 15, 8, 0.64));
   border-radius: 1.4rem;
@@ -171,6 +173,59 @@ p {
 .status-card strong,
 .status-card small {
   display: block;
+}
+
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.insight-card,
+.message-card {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.95rem 1rem;
+}
+
+.insight-card.emphasis {
+  background:
+    radial-gradient(circle at top right, rgba(255, 191, 71, 0.16), transparent 36%),
+    linear-gradient(145deg, rgba(255, 244, 224, 0.11), rgba(30, 15, 8, 0.72));
+}
+
+.insight-label,
+.message-label {
+  color: var(--gold);
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.insight-card strong,
+.message-card strong {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.insight-card small,
+.message-card small {
+  color: rgba(255, 245, 224, 0.68);
+  line-height: 1.6;
+}
+
+.message-card.info {
+  border-color: rgba(118, 204, 255, 0.28);
+}
+
+.message-card.success {
+  border-color: rgba(139, 205, 131, 0.32);
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.28), inset 0 0 0 1px rgba(139, 205, 131, 0.08);
+}
+
+.message-card.warning {
+  border-color: rgba(255, 191, 71, 0.38);
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.28), inset 0 0 0 1px rgba(255, 191, 71, 0.08);
 }
 
 .draw-banner {
@@ -276,6 +331,18 @@ p {
   z-index: 1;
 }
 
+.small-board-index {
+  position: absolute;
+  top: 0.42rem;
+  left: 0.5rem;
+  z-index: 2;
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  color: rgba(255, 245, 224, 0.82);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
 .small-board.locked {
   filter: saturate(0.86) brightness(0.88);
 }
@@ -354,6 +421,14 @@ p {
   cursor: not-allowed;
 }
 
+.cell.is-disabled {
+  cursor: not-allowed;
+}
+
+.cell.is-disabled:not(.occupied):not(.last-move) {
+  filter: saturate(0.82) brightness(0.94);
+}
+
 .stone {
   width: min(72%, 2.7rem);
   aspect-ratio: 1;
@@ -386,6 +461,10 @@ p {
 @media (max-width: 900px) {
   .app-shell {
     align-items: start;
+  }
+
+   .insight-grid {
+    grid-template-columns: 1fr;
   }
 
   .board-frame {

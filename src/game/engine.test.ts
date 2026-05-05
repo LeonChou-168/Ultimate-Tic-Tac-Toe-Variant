@@ -27,6 +27,7 @@ describe('Ultimate Tic-Tac-Toe Variant engine', () => {
 
     expect(illegal.ok).toBe(false);
     expect(illegal.state).toBe(first.state);
+    expect(illegal.message).toContain('小棋盘 7');
   });
 
   it('opens free play when the projected board is already occupied', () => {
@@ -51,6 +52,16 @@ describe('Ultimate Tic-Tac-Toe Variant engine', () => {
     const result = placeMove(state, 0, 8);
 
     expect(result.ok).toBe(false);
+    expect(result.message).toContain('已被占领');
+  });
+
+  it('rejects moves on occupied cells with explicit feedback', () => {
+    const first = placeMove(createInitialState(), 0, 4);
+    const second = placeMove(first.state, 4, 0);
+    const occupied = placeMove(second.state, 0, 4);
+
+    expect(occupied.ok).toBe(false);
+    expect(occupied.message).toContain('已有棋子');
   });
 
   it('supports resignation with the opponent as winner', () => {

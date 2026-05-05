@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import {
+  canManualSettle,
   createInitialState,
   formatPlayer,
   getLegalBoards,
@@ -35,14 +36,55 @@ function actionMessage(message: string): string {
   return message || '第一手可在任意位置落子。';
 }
 
+function boardModeText(state: GameState): string {
+  if (state.status !== 'playing') {
+    return '对局已结束';
+  }
+
+  if (state.targetBoard === null) {
+    return '当前为自由落子';
+  }
+
+  return `当前必须落在小棋盘 ${state.targetBoard}`;
+}
+
+function lastMoveText(state: GameState): string {
+  if (!state.lastMove) {
+    return '暂无上一手记录';
+  }
+
+  return `${playerLabel(state.lastMove.player)}刚刚落在小棋盘 ${state.lastMove.boardIndex} 的位置 ${state.lastMove.cellIndex}`;
+}
+
+function settlementHint(state: GameState): string {
+  if (state.status !== 'playing') {
+    return '对局已结束，不能再主动结算。';
+  }
+
+  return canManualSettle(state)
+    ? '当前所有未占领小棋盘都已无胜方可能，可主动结算。'
+    : '当前仍存在可争夺的小棋盘，暂不能主动结算。';
+}
+
+type MessageTone = 'info' | 'success' | 'warning';
+
 export default function App() {
   const [state, setState] = useState<GameState>(() => createInitialState());
   const [message, setMessage] = useState('第一手可在任意位置落子。');
+  const [messageTone, setMessageTone] = useState<MessageTone>('info');
   const legalBoards = useMemo(() => getLegalBoards(state), [state]);
+  const manualSettleAvailable = useMemo(() => canManualSettle(state), [state]);
+  const blackClaims = state.boardWinners.filter((winner) => winner === 'black').length;
+  const whiteClaims = state.boardWinners.filter((winner) => winner === 'white').length;
+
+  const updateFeedback = (nextMessage: string, ok: boolean) => {
+    setMessage(nextMessage);
+    setMessageTone(ok ? 'success' : 'warning');
+  };
 
   const handleMove = (boardIndex: number, cellIndex: number) => {
     const result = placeMove(state, boardIndex, cellIndex);
-    setMessage(result.message);
+    updateFeedback(result.message, result.ok);
     if (result.ok) {
       setState(result.state);
     }
@@ -50,7 +92,7 @@ export default function App() {
 
   const handleSettle = () => {
     const result = settleGame(state);
-    setMessage(result.message);
+    updateFeedback(result.message, result.ok);
     if (result.ok) {
       setState(result.state);
     }
@@ -60,11 +102,12 @@ export default function App() {
     const nextState = resignGame(state, state.currentPlayer);
     setState(nextState);
     setMessage(`${playerLabel(state.currentPlayer)}认输，${playerLabel(nextState.settlement?.winner === 'white' ? 'white' : 'black')}获胜。`);
+    setMessageTone('success');
   };
 
   const handleOfferDraw = () => {
     const result = offerDraw(state, state.currentPlayer);
-    setMessage(result.message);
+    updateFeedback(result.message, result.ok);
     if (result.ok) {
       setState(result.state);
     }
@@ -72,7 +115,7 @@ export default function App() {
 
   const handleDrawResponse = (accept: boolean) => {
     const result = respondToDraw(state, accept);
-    setMessage(result.message);
+    updateFeedback(result.message, result.ok);
     if (result.ok) {
       setState(result.state);
     }
@@ -81,6 +124,7 @@ export default function App() {
   const reset = () => {
     setState(createInitialState());
     setMessage('已重开一局。第一手可在任意位置落子。');
+    setMessageTone('info');
   };
 
   return (
@@ -95,12 +139,12 @@ export default function App() {
         <div className="score-card" aria-label="当前占领小棋盘数量">
           <div>
             <span className="score-dot black" />
-            <strong>{state.boardWinners.filter((winner) => winner === 'black').length}</strong>
+            <strong>{blackClaims}</strong>
             <span>黑方占领</span>
           </div>
           <div>
             <span className="score-dot white" />
-            <strong>{state.boardWinners.filter((winner) => winner === 'white').length}</strong>
+            <strong>{whiteClaims}</strong>
             <span>白方占领</span>
           </div>
         </div>
@@ -111,6 +155,36 @@ export default function App() {
             <strong>{statusText(state)}</strong>
             <small>{actionMessage(message)}</small>
           </div>
+        </div>
+
+        <div className="insight-grid" aria-label="对局信息面板">
+          <article className="insight-card emphasis">
+            <span className="insight-label">当前战场</span>
+            <strong>{boardModeText(state)}</strong>
+            <small>{lastMoveText(state)}</small>
+          </article>
+
+          <article className="insight-card">
+            <span className="insight-label">主动结算</span>
+            <strong>{manualSettleAvailable ? '现在可以结算' : '暂不可结算'}</strong>
+            <small>{settlementHint(state)}</small>
+          </article>
+
+          <article className="insight-card">
+            <span className="insight-label">求和次数</span>
+            <strong>黑方剩余 {3 - state.drawOfferCounts.black} 次 · 白方剩余 {3 - state.drawOfferCounts.white} 次</strong>
+            <small>
+              {state.pendingDrawOffer
+                ? `${playerLabel(state.pendingDrawOffer.offeredBy)}已发起求和，等待回应。`
+                : '当前没有待处理的求和请求。'}
+            </small>
+          </article>
+        </div>
+
+        <div className={`message-card ${messageTone}`} role="status" aria-live="polite">
+          <span className="message-label">操作反馈</span>
+          <strong>{actionMessage(message)}</strong>
+          <small>现在即使点到非法位置，也会明确告诉你原因。</small>
         </div>
 
         {state.pendingDrawOffer ? (
@@ -126,7 +200,7 @@ export default function App() {
         ) : null}
 
         <div className="controls" aria-label="游戏操作">
-          <button type="button" onClick={handleSettle} disabled={state.status !== 'playing'}>
+          <button type="button" onClick={handleSettle} disabled={state.status !== 'playing' || !manualSettleAvailable}>
             主动结算
           </button>
           <button type="button" onClick={handleOfferDraw} disabled={state.status !== 'playing'}>
@@ -161,6 +235,7 @@ export default function App() {
                   key={boardIndex}
                   aria-label={`小棋盘 ${boardIndex}${winner ? `，${playerLabel(winner)}已占领` : ''}`}
                 >
+                  <span className="small-board-index">#{boardIndex}</span>
                   {board.map((cell, cellIndex) => {
                     const isLastMove =
                       state.lastMove?.boardIndex === boardIndex && state.lastMove.cellIndex === cellIndex;
@@ -173,10 +248,10 @@ export default function App() {
                     return (
                       <button
                         type="button"
-                        className={`cell ${squareTone} ${cell ? `occupied ${cell}` : ''} ${isLastMove ? 'last-move' : ''}`}
+                        className={`cell ${squareTone} ${cell ? `occupied ${cell}` : ''} ${isLastMove ? 'last-move' : ''} ${disabled ? 'is-disabled' : ''}`}
                         key={`${boardIndex}-${cellIndex}`}
                         onClick={() => handleMove(boardIndex, cellIndex)}
-                        disabled={disabled}
+                        aria-disabled={disabled}
                         aria-label={`小棋盘 ${boardIndex}，位置 ${cellIndex}${cell ? `，${playerLabel(cell)}棋子` : ''}`}
                       >
                         {cell ? <span className={`stone ${cell}`} /> : null}
