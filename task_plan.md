@@ -27,6 +27,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 18. Verify sidebar bug in browser | complete | Use browser evidence to confirm the sidebar truly sits to the board’s right instead of below it. |
 | 19. HUD micro-polish pass | complete | Make the compact rail more HUD-like and smooth the expanded drawer motion. |
 | 20. Speed up AI turns | complete | Reduce the artificial UI delay so human-vs-AI mode responds faster. |
+| 21. Remove replay copy + fix highlight | complete | Delete the unwanted replay explanatory copy and restore correct live target highlighting. |
 
 ## Decisions
 

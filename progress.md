@@ -62,3 +62,5 @@
 - Code-side verification for the HUD polish passed cleanly (`lsp_diagnostics`, tests, build). Browser session context for this pass became inconsistent after navigation, so only the earlier anchoring fix was browser-confirmed in this round.
 - Tuned AI responsiveness by reducing the artificial turn delay in human-vs-AI mode from 520ms to 140ms so the opponent feels much snappier.
 - Re-verified after the AI speed adjustment: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Removed the unwanted replay explanatory copy and fixed the gold target-highlighting behavior so live target guidance no longer gets replaced by replay-state legality.
+- Re-verified after the highlight/copy fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

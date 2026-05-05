@@ -190,7 +190,7 @@ export default function App() {
     return next;
   }, [replayIndex, state.history]);
   const displayState = replayMode ? replayState : state;
-  const displayLegalBoards = useMemo(() => getLegalBoards(displayState), [displayState]);
+  const displayLegalBoards = useMemo(() => (replayMode ? [] : getLegalBoards(state)), [replayMode, state]);
 
   const maybePlaySound = (cue: Parameters<typeof playSound>[0]) => {
     if (!soundEnabled) {
@@ -650,11 +650,11 @@ export default function App() {
           <section className="replay-panel">
             <div className="panel-heading">
               <span className="insight-label">落子回溯演示</span>
-              <strong>{replayMode ? `正在回看第 ${replayIndex} 手` : '把手顺改成可播放的演示模式'}</strong>
+              <strong>{replayMode ? `正在回看第 ${replayIndex} 手` : '落子回溯'}</strong>
             </div>
             <p className="history-empty">
               {state.history.length > 0
-                ? '不再只用文字列出最近手顺，而是可以直接拖动进度回看棋盘是如何一步步形成当前局面的。'
+                ? '可拖动进度回看当前棋局的形成过程。'
                 : '等对局开始后，这里会根据实际落子生成回放。'}
             </p>
             <div className="replay-controls">

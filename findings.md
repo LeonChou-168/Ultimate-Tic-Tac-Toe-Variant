@@ -61,3 +61,4 @@
 - The real root cause of the persistent sidebar bug was that the first anchoring attempt still relied on a content-growing shell. Browser inspection showed the sidebar rendering below the board. A stable two-column desktop grid fixed it decisively.
 - HUD-style compact rails work better when text is minimized and the collapsed state reads like a narrow instrument strip rather than a miniature content panel.
 - The current AI slowness was not search/heuristic cost; it was an intentionally inserted 520ms timeout in the UI turn runner. Lowering that delay is the correct first fix.
+- The gold target-border bug came from coupling legal-board highlighting to `displayState`, which swaps to replay state during replay mode. Live guidance should stay tied to the live game state, while replay mode should not present active target guidance.
