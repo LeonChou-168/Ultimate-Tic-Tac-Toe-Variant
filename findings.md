@@ -26,3 +26,9 @@
 
 - CSS-only first milestone with dark walnut board, beveled small boards, legal target glow, last-move blue glow, and black/white glossy yunzi-like stones.
 - Responsive layout switches from side-by-side desktop board/status panel to stacked mobile layout.
+
+## Spec Revision Notes
+
+- Recovered prior doc-improvement intent from session history: user previously wanted additive-only enhancement, clearer rule wording, stronger technical breakdown, checklist-style feature list, clearer acceptance criteria, and milestone guidance.
+- Current spec draft is broad but still benefits from explicit separation between target-state planning and the repository's already-implemented first milestone.
+- Best additive improvement is to append clarifying sections rather than rewrite earlier chapters: current repository scope, rule edge-case clarifications, state machine/interaction constraints, server-authoritative multiplayer constraints, concrete test coverage expectations, and milestone redefinition.

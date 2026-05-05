@@ -12,6 +12,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 3. Explore implementation patterns | complete | Use direct tools and background agents to identify architecture, files, and relevant patterns. |
 | 4. Implement requirements | complete | Bootstrap the app, implement core game rules, tests, and playable UI. |
 | 5. Verify | complete | Run diagnostics, tests, typecheck, and build where available. |
+| 6. Revise specification document | complete | Recover prior doc requirements, assess current draft, and append missing clarifications without deleting prior content. |
 
 ## Decisions
 

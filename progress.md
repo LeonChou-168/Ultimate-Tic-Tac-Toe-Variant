@@ -24,3 +24,9 @@
 - `lsp_diagnostics` could not run: `typescript-language-server` is not installed in the environment.
 - `npm test` passed: 1 test file, 12 tests.
 - `npm run build` passed: `tsc -b && vite build` completed and emitted `dist/` assets.
+
+## Current Session Addendum
+
+- Recovered prior specification-writing context from session history and confirmed the earlier requirement was additive enhancement rather than destructive rewrite.
+- Re-read the current spec draft and identified remaining gaps: current-repo scope was not separated from target-state planning, rule edge cases were still implicit, and service/test constraints were not explicit enough for future implementers.
+- Appended new sections to the spec covering repository scope, rule clarifications, state/interaction constraints, multiplayer server authority, extra testing guidance, and milestone redefinition.
