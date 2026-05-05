@@ -72,6 +72,11 @@ export default function App() {
   const [state, setState] = useState<GameState>(() => createInitialState());
   const [message, setMessage] = useState('第一手可在任意位置落子。');
   const [messageTone, setMessageTone] = useState<MessageTone>('info');
+  const [showGuide, setShowGuide] = useState(true);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showMoveHints, setShowMoveHints] = useState(true);
+  const [enableStoneAnimation, setEnableStoneAnimation] = useState(true);
+  const [soundEnabled, setSoundEnabled] = useState(false);
   const legalBoards = useMemo(() => getLegalBoards(state), [state]);
   const manualSettleAvailable = useMemo(() => canManualSettle(state), [state]);
   const blackClaims = state.boardWinners.filter((winner) => winner === 'black').length;
@@ -157,17 +162,92 @@ export default function App() {
           </div>
         </div>
 
+        <div className="top-actions" aria-label="辅助面板控制">
+          <button type="button" className="ghost-button" onClick={() => setShowGuide((value) => !value)}>
+            {showGuide ? '收起新手引导' : '查看新手引导'}
+          </button>
+          <button type="button" className="ghost-button" onClick={() => setShowSettings((value) => !value)}>
+            {showSettings ? '收起设置面板' : '打开设置面板'}
+          </button>
+        </div>
+
+        {showGuide ? (
+          <section className="guide-panel" aria-label="新手引导">
+            <div className="panel-heading">
+              <span className="insight-label">新手引导</span>
+              <strong>三步看懂这一局怎么下</strong>
+            </div>
+            <ol className="guide-list">
+              <li>
+                <strong>第一手任意落子</strong>
+                <span>开局时可以直接点任意一个未占领小棋盘里的空位。</span>
+              </li>
+              <li>
+                <strong>之后看“当前位置编号”投影</strong>
+                <span>上一手落在小棋盘里的第几格，下一手就必须去编号相同的小棋盘。</span>
+              </li>
+              <li>
+                <strong>看高亮区域，不用硬记规则</strong>
+                <span>金色高亮区域就是当前允许落子的战场；如果没有指定区域，就代表自由落子。</span>
+              </li>
+            </ol>
+          </section>
+        ) : null}
+
+        {showSettings ? (
+          <section className="settings-panel" aria-label="局内设置">
+            <div className="panel-heading">
+              <span className="insight-label">局内设置</span>
+              <strong>把信息密度调成你舒服的样子</strong>
+            </div>
+
+            <div className="setting-row">
+              <div>
+                <strong>显示落子引导</strong>
+                <small>关闭后保留核心规则，但弱化信息面板中的提示依赖。</small>
+              </div>
+              <button type="button" className={`toggle-button ${showMoveHints ? 'active' : ''}`} onClick={() => setShowMoveHints((value) => !value)}>
+                {showMoveHints ? '已开启' : '已关闭'}
+              </button>
+            </div>
+
+            <div className="setting-row">
+              <div>
+                <strong>棋子落下动效</strong>
+                <small>关闭后仍可正常对局，只是不再强调落子瞬间的动态反馈。</small>
+              </div>
+              <button
+                type="button"
+                className={`toggle-button ${enableStoneAnimation ? 'active' : ''}`}
+                onClick={() => setEnableStoneAnimation((value) => !value)}
+              >
+                {enableStoneAnimation ? '已开启' : '已关闭'}
+              </button>
+            </div>
+
+            <div className="setting-row">
+              <div>
+                <strong>音效开关（占位）</strong>
+                <small>当前仓库还没有真实音效资源，这里先预留交互入口，方便后续继续推进。</small>
+              </div>
+              <button type="button" className={`toggle-button ${soundEnabled ? 'active' : ''}`} onClick={() => setSoundEnabled((value) => !value)}>
+                {soundEnabled ? '预设开启' : '预设关闭'}
+              </button>
+            </div>
+          </section>
+        ) : null}
+
         <div className="insight-grid" aria-label="对局信息面板">
           <article className="insight-card emphasis">
             <span className="insight-label">当前战场</span>
             <strong>{boardModeText(state)}</strong>
-            <small>{lastMoveText(state)}</small>
+            <small>{showMoveHints ? lastMoveText(state) : '你已关闭落子引导提示，可随时在设置中重新开启。'}</small>
           </article>
 
           <article className="insight-card">
             <span className="insight-label">主动结算</span>
             <strong>{manualSettleAvailable ? '现在可以结算' : '暂不可结算'}</strong>
-            <small>{settlementHint(state)}</small>
+            <small>{showMoveHints ? settlementHint(state) : '需要时可重新开启提示查看当前是否满足主动结算条件。'}</small>
           </article>
 
           <article className="insight-card">
@@ -235,7 +315,6 @@ export default function App() {
                   key={boardIndex}
                   aria-label={`小棋盘 ${boardIndex}${winner ? `，${playerLabel(winner)}已占领` : ''}`}
                 >
-                  <span className="small-board-index">#{boardIndex}</span>
                   {board.map((cell, cellIndex) => {
                     const isLastMove =
                       state.lastMove?.boardIndex === boardIndex && state.lastMove.cellIndex === cellIndex;
@@ -248,7 +327,7 @@ export default function App() {
                     return (
                       <button
                         type="button"
-                        className={`cell ${squareTone} ${cell ? `occupied ${cell}` : ''} ${isLastMove ? 'last-move' : ''} ${disabled ? 'is-disabled' : ''}`}
+                        className={`cell ${squareTone} ${cell ? `occupied ${cell}` : ''} ${isLastMove ? 'last-move' : ''} ${disabled ? 'is-disabled' : ''} ${enableStoneAnimation ? 'animated-stone' : 'static-stone'}`}
                         key={`${boardIndex}-${cellIndex}`}
                         onClick={() => handleMove(boardIndex, cellIndex)}
                         aria-disabled={disabled}

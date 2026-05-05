@@ -39,3 +39,6 @@
 - Existing board buttons used native `disabled`, which suppressed click events and prevented explicit invalid-action feedback. Replacing that with `aria-disabled` on cells allows the engine to explain illegal clicks while preserving styling and accessibility cues.
 - `placeMove` benefited from more granular illegal-move messages: occupied board, full board, occupied cell, ended game, and forced target board can now be distinguished in the UI.
 - The spec's interaction requirements map well to a compact HUD: current player, target/free-move state, last move, draw-offer state, remaining draw offers, and settlement readiness.
+- The next cohesive M2 slice after HUD clarity is lightweight onboarding plus user-controlled information density, not heavier feature work.
+- Removing visible board index labels makes the board feel cleaner, so guidance must move into surrounding copy and panels instead of living on the board itself.
+- A small settings panel can be meaningful even before real audio exists by establishing stable interaction points and future extension hooks.

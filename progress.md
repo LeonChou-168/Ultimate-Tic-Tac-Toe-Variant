@@ -35,3 +35,5 @@
 - Improved the game HUD and interaction feedback in `src/App.tsx` and `src/styles.css`, including target-board/free-move guidance, last-move text, manual-settlement readiness, draw-offer visibility, per-side remaining draw offers, and explicit feedback presentation.
 - Improved engine feedback in `src/game/engine.ts` so illegal moves now explain why they are invalid.
 - Added one extra engine test plus stronger invalid-message assertions; final `npm test` passed with 13 tests and `npm run build` passed after the UI milestone changes.
+- Continued M2 per user direction: added a collapsible newcomer guide, an in-game settings panel, toggles for move-hint density / stone animation / future sound placeholder, and removed visible board numbering from the board surface.
+- Re-verified after the additional M2 UI pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
