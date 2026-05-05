@@ -60,3 +60,5 @@
 - Browser verification confirmed the corrected positions: the board occupied the left column and the sidebar rendered on the right edge instead of the lower-left.
 - Continued with the requested HUD micro-polish: made the default rail thinner and more HUD-like, converted compact labels into denser vertical chips, gave the board slightly more space, and added a smoother drawer-style reveal for the expanded sidebar.
 - Code-side verification for the HUD polish passed cleanly (`lsp_diagnostics`, tests, build). Browser session context for this pass became inconsistent after navigation, so only the earlier anchoring fix was browser-confirmed in this round.
+- Tuned AI responsiveness by reducing the artificial turn delay in human-vs-AI mode from 520ms to 140ms so the opponent feels much snappier.
+- Re-verified after the AI speed adjustment: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

@@ -26,6 +26,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 17. Fix right-rail anchoring bug | complete | Correct the sidebar placement bug by anchoring the rail to the shell’s right edge. |
 | 18. Verify sidebar bug in browser | complete | Use browser evidence to confirm the sidebar truly sits to the board’s right instead of below it. |
 | 19. HUD micro-polish pass | complete | Make the compact rail more HUD-like and smooth the expanded drawer motion. |
+| 20. Speed up AI turns | complete | Reduce the artificial UI delay so human-vs-AI mode responds faster. |
 
 ## Decisions
 
