@@ -64,3 +64,4 @@
 - The gold target-border bug came from coupling legal-board highlighting to `displayState`, which swaps to replay state during replay mode. Live guidance should stay tied to the live game state, while replay mode should not present active target guidance.
 - A separate gold-border issue came from the tutorial focus ring being applied to `.board-stage fullscreen-board`, which spans the whole main board region. Applying it to the inner `.board-frame` scopes the border correctly.
 - The user’s intended meaning is stricter: **gold** should belong only to playable small-board targeting, not to any board-level tutorial framing. Removing the board-level gold focus entirely matches that expectation best.
+- The “ultra-fast AI” variant is just the same AI move chooser with zero artificial UI delay. No logic changes were required.

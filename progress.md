@@ -68,3 +68,5 @@
 - Re-verified after the focus-scope fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - User further clarified that gold highlighting should point only to playable small boards. Removed the remaining board-frame gold tutorial focus so only legal small-board highlights use gold guidance.
 - Re-verified after the final gold-guidance fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Switched human-vs-AI mode to an ultra-fast variant by removing the remaining artificial AI think-time delay.
+- Re-verified after the AI speed change: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

@@ -250,7 +250,7 @@ export default function App() {
     const timeoutId = window.setTimeout(() => {
       setAiPending(false);
       handleMove(move.boardIndex, move.cellIndex, true);
-    }, 140);
+    }, 0);
 
     return () => window.clearTimeout(timeoutId);
   }, [aiPending, aiPlayer, gameMode, replayMode, screen, state]);
