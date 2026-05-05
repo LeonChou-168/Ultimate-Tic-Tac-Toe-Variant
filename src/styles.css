@@ -130,11 +130,11 @@ button {
 .app-shell {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: clamp(0.8rem, 2vw, 1.6rem);
+  grid-template-columns: minmax(0, 1fr) minmax(21rem, 27rem);
+  gap: clamp(0.7rem, 1.6vw, 1.1rem);
   align-items: stretch;
   justify-items: stretch;
-  padding: clamp(1rem, 2.8vw, 2rem);
+  padding: clamp(0.9rem, 2vw, 1.4rem);
   position: relative;
   overflow: hidden;
 }
@@ -174,18 +174,18 @@ button {
   width: 100%;
   display: grid;
   align-items: center;
-  justify-items: center;
+  justify-items: end;
 }
 
 .board-frame-large {
-  width: min(82vmin, calc(100vw - 24rem));
+  width: min(78vmin, calc(100vw - 30rem));
   transition: transform 240ms ease, box-shadow 240ms ease, opacity 240ms ease;
   animation: fadeRise 520ms ease;
 }
 
 .control-sidebar {
-  width: min(26rem, 34vw);
-  min-width: 20rem;
+  width: 100%;
+  min-width: 0;
   max-height: calc(100vh - 2rem);
   align-self: stretch;
   border: 1px solid rgba(214, 167, 86, 0.18);
@@ -238,7 +238,7 @@ button {
   position: fixed;
   top: 0;
   right: 0;
-  width: 2rem;
+  width: 1rem;
   height: 100vh;
   z-index: 2;
 }

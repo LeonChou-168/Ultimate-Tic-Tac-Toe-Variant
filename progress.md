@@ -48,3 +48,5 @@
 - Executed a larger redesign pass: added welcome screen and menu flow, replaced move history with board-based replay mode, moved gameplay information and controls into a hover-reveal sidebar, and introduced a first local human-vs-AI mode.
 - Added new AI helper module `src/game/ai.ts`, introduced `GameMode` typing, and rebuilt `src/App.tsx` around welcome/menu/game screens and board-first interaction.
 - Added matching layout/motion CSS for landing screens, full-board gameplay shell, idle-fading sidebar, and replay controls; final diagnostics, tests, and build all passed.
+- Applied a focused UX refinement: removed the two user-rejected sentences and tightened the game shell so the board and sidebar sit more closely side-by-side for easier play.
+- Re-verified after the refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

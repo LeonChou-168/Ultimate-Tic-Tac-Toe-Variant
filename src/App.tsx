@@ -414,9 +414,6 @@ export default function App() {
         <section className="welcome-card">
           <div className="eyebrow">Ultimate Tic-Tac-Toe Variant</div>
           <h1>欢迎来到终极井字棋变体</h1>
-          <p>
-            一个更沉浸、更聚焦主棋盘的版本：欢迎页、渐入渐出侧边栏、落子回溯演示，以及即将进入对局的人机模式都已整合进新的体验流。
-          </p>
           <div className="welcome-actions">
             <button type="button" className="hero-button primary" onClick={() => setScreen('menu')}>
               进入主菜单
@@ -532,7 +529,7 @@ export default function App() {
             <div>
               <div className="eyebrow">{gameMode === 'human-vs-ai' ? 'Human vs AI' : 'Local Versus'}</div>
               <h2>侧边指挥台</h2>
-              <p>{replayMode ? '当前处于落子回溯演示模式。' : '主棋盘保持纯净，状态与操作都收进侧边栏。'}</p>
+              <p>{replayMode ? '当前处于落子回溯演示模式。' : '状态、回放、设置与操作都集中在这里。'}</p>
             </div>
             <div className="sidebar-top-buttons">
               <button type="button" className="ghost-button" onClick={() => setSidebarPinned((value) => !value)}>

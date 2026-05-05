@@ -54,3 +54,4 @@
 - The user's requested sidebar behavior can be implemented as an idle-fading right rail plus a fixed edge hover trigger zone, which is much simpler and more reliable than geometric pointer detection.
 - Replacing textual move history with replay mode is feasible using existing `state.history` by reconstructing intermediate game states client-side.
 - A first AI mode fits best as a pure helper module consuming `placeMove`/`getLegalBoards`, keeping the core engine unchanged while allowing future heuristic upgrades.
+- The original wider board/sidebar spacing made the shell feel more theatrical than playable; narrowing the grid and aligning the board toward the sidebar better matches actual gameplay ergonomics.
