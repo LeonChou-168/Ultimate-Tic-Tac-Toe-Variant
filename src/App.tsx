@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import {
   canManualSettle,
   createInitialState,
@@ -11,6 +11,7 @@ import {
   settleGame,
 } from './game/engine';
 import type { GameState, Player } from './game/types';
+import { playSound } from './sound';
 
 function playerLabel(player: Player): string {
   return player === 'black' ? '黑方' : '白方';
@@ -124,6 +125,15 @@ export default function App() {
   const manualSettleAvailable = useMemo(() => canManualSettle(state), [state]);
   const blackClaims = state.boardWinners.filter((winner) => winner === 'black').length;
   const whiteClaims = state.boardWinners.filter((winner) => winner === 'white').length;
+  const previousClaimCountRef = useRef(blackClaims + whiteClaims);
+
+  const maybePlaySound = (cue: Parameters<typeof playSound>[0]) => {
+    if (!soundEnabled) {
+      return;
+    }
+
+    playSound(cue);
+  };
 
   const updateFeedback = (nextMessage: string, ok: boolean) => {
     setMessage(nextMessage);
@@ -133,7 +143,24 @@ export default function App() {
   const handleMove = (boardIndex: number, cellIndex: number) => {
     const result = placeMove(state, boardIndex, cellIndex);
     updateFeedback(result.message, result.ok);
+
+    if (!result.ok) {
+      maybePlaySound('invalid');
+    }
+
     if (result.ok) {
+      const previousClaims = previousClaimCountRef.current;
+      const nextClaims = result.state.boardWinners.filter(Boolean).length;
+
+      if (result.state.status === 'settled') {
+        maybePlaySound('settlement');
+      } else if (nextClaims > previousClaims) {
+        maybePlaySound('claim');
+      } else {
+        maybePlaySound('move');
+      }
+
+      previousClaimCountRef.current = nextClaims;
       setState(result.state);
     }
   };
@@ -141,7 +168,9 @@ export default function App() {
   const handleSettle = () => {
     const result = settleGame(state);
     updateFeedback(result.message, result.ok);
+    maybePlaySound(result.ok ? 'settlement' : 'invalid');
     if (result.ok) {
+      previousClaimCountRef.current = result.state.boardWinners.filter(Boolean).length;
       setState(result.state);
     }
   };
@@ -151,11 +180,14 @@ export default function App() {
     setState(nextState);
     setMessage(`${playerLabel(state.currentPlayer)}认输，${playerLabel(nextState.settlement?.winner === 'white' ? 'white' : 'black')}获胜。`);
     setMessageTone('success');
+    previousClaimCountRef.current = nextState.boardWinners.filter(Boolean).length;
+    maybePlaySound('resign');
   };
 
   const handleOfferDraw = () => {
     const result = offerDraw(state, state.currentPlayer);
     updateFeedback(result.message, result.ok);
+    maybePlaySound(result.ok ? 'draw-offer' : 'invalid');
     if (result.ok) {
       setState(result.state);
     }
@@ -164,7 +196,13 @@ export default function App() {
   const handleDrawResponse = (accept: boolean) => {
     const result = respondToDraw(state, accept);
     updateFeedback(result.message, result.ok);
+    if (!result.ok) {
+      maybePlaySound('invalid');
+    } else {
+      maybePlaySound(accept ? 'draw-accepted' : 'draw-declined');
+    }
     if (result.ok) {
+      previousClaimCountRef.current = result.state.boardWinners.filter(Boolean).length;
       setState(result.state);
     }
   };
@@ -173,6 +211,7 @@ export default function App() {
     setState(createInitialState());
     setMessage('已重开一局。第一手可在任意位置落子。');
     setMessageTone('info');
+    previousClaimCountRef.current = 0;
   };
 
   const currentTutorialStep: TutorialStep = tutorialSteps[tutorialStepIndex] ?? fallbackTutorialStep;
@@ -329,11 +368,11 @@ export default function App() {
 
             <div className="setting-row">
               <div>
-                <strong>音效开关（占位）</strong>
-                <small>当前仓库还没有真实音效资源，这里先预留交互入口，方便后续继续推进。</small>
+                <strong>音效开关</strong>
+                <small>已接入轻量合成音：落子、占领、和棋、结算、认输和非法操作都会有不同反馈。</small>
               </div>
               <button type="button" className={`toggle-button ${soundEnabled ? 'active' : ''}`} onClick={() => setSoundEnabled((value) => !value)}>
-                {soundEnabled ? '预设开启' : '预设关闭'}
+                {soundEnabled ? '已开启' : '已关闭'}
               </button>
             </div>
           </section>

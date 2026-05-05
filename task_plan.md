@@ -16,6 +16,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 7. Implement M2 interaction milestone | complete | Improve game-state clarity, invalid-action feedback, and action availability messaging in the local web UI. |
 | 8. Continue M2 onboarding/settings | complete | Add newcomer guidance, in-game settings toggles, and remove visible board numbering from the board UI. |
 | 9. Add step-by-step tutorial | complete | Convert static onboarding into a guided, progressive tutorial with highlighted focus areas. |
+| 10. Add real sound feedback | complete | Implement lightweight synthesized game audio and connect it to the in-game sound toggle. |
 
 ## Decisions
 
