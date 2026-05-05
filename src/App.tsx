@@ -68,6 +68,47 @@ function settlementHint(state: GameState): string {
 
 type MessageTone = 'info' | 'success' | 'warning';
 
+type TutorialStep = {
+  key: 'status' | 'battlefield' | 'board' | 'controls';
+  label: string;
+  title: string;
+  body: string;
+};
+
+const tutorialSteps: TutorialStep[] = [
+  {
+    key: 'status',
+    label: '第 1 步',
+    title: '先看当前轮到谁，以及系统刚刚反馈了什么',
+    body: '这里会告诉你当前行棋方，以及上一操作为什么成功、为什么失败。每次犹豫时，先看这一栏。',
+  },
+  {
+    key: 'battlefield',
+    label: '第 2 步',
+    title: '再看当前战场：指定落子还是自由落子',
+    body: '如果这里写“必须落在某个小棋盘”，就只去那个区域；如果写“自由落子”，你可以在所有可用区域里任选。',
+  },
+  {
+    key: 'board',
+    label: '第 3 步',
+    title: '然后去看棋盘上的高亮与上一手痕迹',
+    body: '金色高亮表示当前可落子的战场，蓝色边框表示上一手位置。两者结合起来，就能快速理解投影规则。',
+  },
+  {
+    key: 'controls',
+    label: '第 4 步',
+    title: '最后再使用动作按钮处理特殊局面',
+    body: '求和、认输、主动结算、重新开始都在这里。只有规则允许时，相应按钮才会进入可用状态。',
+  },
+];
+
+const fallbackTutorialStep: TutorialStep = {
+  key: 'status',
+  label: '第 1 步',
+  title: '先看当前轮到谁，以及系统刚刚反馈了什么',
+  body: '这里会告诉你当前行棋方，以及上一操作为什么成功、为什么失败。每次犹豫时，先看这一栏。',
+};
+
 export default function App() {
   const [state, setState] = useState<GameState>(() => createInitialState());
   const [message, setMessage] = useState('第一手可在任意位置落子。');
@@ -77,6 +118,8 @@ export default function App() {
   const [showMoveHints, setShowMoveHints] = useState(true);
   const [enableStoneAnimation, setEnableStoneAnimation] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(true);
+  const [tutorialStepIndex, setTutorialStepIndex] = useState(0);
   const legalBoards = useMemo(() => getLegalBoards(state), [state]);
   const manualSettleAvailable = useMemo(() => canManualSettle(state), [state]);
   const blackClaims = state.boardWinners.filter((winner) => winner === 'black').length;
@@ -132,6 +175,23 @@ export default function App() {
     setMessageTone('info');
   };
 
+  const currentTutorialStep: TutorialStep = tutorialSteps[tutorialStepIndex] ?? fallbackTutorialStep;
+
+  const nextTutorialStep = () => {
+    setTutorialStepIndex((index) => Math.min(index + 1, tutorialSteps.length - 1));
+  };
+
+  const previousTutorialStep = () => {
+    setTutorialStepIndex((index) => Math.max(index - 1, 0));
+  };
+
+  const restartTutorial = () => {
+    setTutorialStepIndex(0);
+    setShowTutorial(true);
+  };
+
+  const tutorialHighlight = (key: TutorialStep['key']): string => (showTutorial && currentTutorialStep.key === key ? 'tutorial-focus' : '');
+
   return (
     <main className="app-shell">
       <section className="hero-panel" aria-labelledby="game-title">
@@ -154,7 +214,7 @@ export default function App() {
           </div>
         </div>
 
-        <div className="status-card">
+        <div className={`status-card ${tutorialHighlight('status')}`}>
           <span className={`turn-stone ${state.currentPlayer}`} />
           <div>
             <strong>{statusText(state)}</strong>
@@ -168,6 +228,9 @@ export default function App() {
           </button>
           <button type="button" className="ghost-button" onClick={() => setShowSettings((value) => !value)}>
             {showSettings ? '收起设置面板' : '打开设置面板'}
+          </button>
+          <button type="button" className="ghost-button" onClick={() => (showTutorial ? setShowTutorial(false) : restartTutorial())}>
+            {showTutorial ? '关闭分步教程' : '重开分步教程'}
           </button>
         </div>
 
@@ -191,6 +254,45 @@ export default function App() {
                 <span>金色高亮区域就是当前允许落子的战场；如果没有指定区域，就代表自由落子。</span>
               </li>
             </ol>
+          </section>
+        ) : null}
+
+        {showTutorial ? (
+          <section className="tutorial-panel" aria-label="分步教程">
+            <div className="panel-heading">
+              <span className="insight-label">分步教程</span>
+              <strong>{currentTutorialStep.title}</strong>
+            </div>
+
+            <div className="tutorial-progress" aria-label="教程进度">
+              {tutorialSteps.map((step, index) => (
+                <span
+                  key={step.key}
+                  className={`tutorial-dot ${index === tutorialStepIndex ? 'active' : ''} ${index < tutorialStepIndex ? 'done' : ''}`}
+                />
+              ))}
+            </div>
+
+            <div className="tutorial-copy">
+              <span className="tutorial-step-label">{currentTutorialStep.label}</span>
+              <p>{currentTutorialStep.body}</p>
+            </div>
+
+            <div className="tutorial-actions">
+              <button type="button" className="ghost-button" onClick={previousTutorialStep} disabled={tutorialStepIndex === 0}>
+                上一步
+              </button>
+              <button type="button" className="ghost-button" onClick={restartTutorial}>
+                从头再看
+              </button>
+              <button
+                type="button"
+                className="ghost-button tutorial-primary"
+                onClick={tutorialStepIndex === tutorialSteps.length - 1 ? () => setShowTutorial(false) : nextTutorialStep}
+              >
+                {tutorialStepIndex === tutorialSteps.length - 1 ? '完成教程' : '下一步'}
+              </button>
+            </div>
           </section>
         ) : null}
 
@@ -238,7 +340,7 @@ export default function App() {
         ) : null}
 
         <div className="insight-grid" aria-label="对局信息面板">
-          <article className="insight-card emphasis">
+          <article className={`insight-card emphasis ${tutorialHighlight('battlefield')}`}>
             <span className="insight-label">当前战场</span>
             <strong>{boardModeText(state)}</strong>
             <small>{showMoveHints ? lastMoveText(state) : '你已关闭落子引导提示，可随时在设置中重新开启。'}</small>
@@ -279,7 +381,7 @@ export default function App() {
           </div>
         ) : null}
 
-        <div className="controls" aria-label="游戏操作">
+        <div className={`controls ${tutorialHighlight('controls')}`} aria-label="游戏操作">
           <button type="button" onClick={handleSettle} disabled={state.status !== 'playing' || !manualSettleAvailable}>
             主动结算
           </button>
@@ -295,7 +397,7 @@ export default function App() {
         </div>
       </section>
 
-      <section className="board-stage" aria-label="游戏棋盘">
+      <section className={`board-stage ${tutorialHighlight('board')}`} aria-label="游戏棋盘">
         <div className="board-frame">
           <div className="macro-board">
             {state.boards.map((board, boardIndex) => {

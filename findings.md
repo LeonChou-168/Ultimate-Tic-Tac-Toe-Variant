@@ -42,3 +42,5 @@
 - The next cohesive M2 slice after HUD clarity is lightweight onboarding plus user-controlled information density, not heavier feature work.
 - Removing visible board index labels makes the board feel cleaner, so guidance must move into surrounding copy and panels instead of living on the board itself.
 - A small settings panel can be meaningful even before real audio exists by establishing stable interaction points and future extension hooks.
+- The natural continuation after static onboarding is a guided flow that teaches players where to look in order: status feedback, battlefield guidance, the highlighted board, then action controls.
+- A lightweight tutorial can be implemented without measuring DOM geometry by using section-level highlight states and a synchronized step panel; this keeps the code simple and reliable while still feeling guided.
