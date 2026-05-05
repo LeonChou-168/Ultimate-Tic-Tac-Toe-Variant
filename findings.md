@@ -48,3 +48,6 @@
 - The most reliable hook point for sound is the UI event layer in `App.tsx`, because it already sees user intent plus the engine result and can distinguish move, invalid action, claim, settlement, draw flow, and resignation.
 - Volume control fits best as a master multiplier inside the audio envelope utility rather than duplicating scaling logic across each cue.
 - A claim celebration effect can stay purely in the UI by diffing previous vs next `boardWinners`, which avoids changing the engine API and still gives precise one-shot animation on newly occupied boards.
+- Tutorial auto-follow can be driven from coarse game milestones (`history.length`, pending draw state, manual settlement availability, and game end) without introducing a separate tutorial state machine.
+- A recent-move panel is a high-value way to teach the projection rule because it exposes concrete board/cell sequences instead of abstract explanations.
+- Richer endgame presentation works best as a dedicated summary panel that explains *why* the game ended, not just *who* won.

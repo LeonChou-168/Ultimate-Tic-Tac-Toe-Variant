@@ -205,7 +205,8 @@ p {
 
 .guide-panel,
 .settings-panel,
-.tutorial-panel {
+.tutorial-panel,
+.endgame-panel {
   border: 1px solid rgba(214, 167, 86, 0.22);
   background:
     linear-gradient(145deg, rgba(255, 244, 224, 0.09), rgba(30, 15, 8, 0.7)),
@@ -244,6 +245,58 @@ p {
 .setting-row small {
   color: rgba(255, 245, 224, 0.68);
   line-height: 1.6;
+}
+
+.endgame-panel {
+  gap: 0.9rem;
+}
+
+.endgame-panel.black {
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 30%),
+    linear-gradient(145deg, rgba(24, 20, 18, 0.92), rgba(8, 7, 6, 0.88));
+}
+
+.endgame-panel.white {
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.22), transparent 30%),
+    linear-gradient(145deg, rgba(239, 230, 209, 0.24), rgba(54, 41, 28, 0.82));
+}
+
+.endgame-panel.draw {
+  background:
+    radial-gradient(circle at top right, rgba(118, 204, 255, 0.16), transparent 30%),
+    linear-gradient(145deg, rgba(255, 244, 224, 0.1), rgba(30, 15, 8, 0.72));
+}
+
+.endgame-reason,
+.history-empty,
+.tutorial-auto-note {
+  margin: 0;
+  color: rgba(255, 245, 224, 0.72);
+  line-height: 1.6;
+}
+
+.endgame-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.endgame-stats > div {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.85rem;
+  border-radius: 1rem;
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.endgame-stats span {
+  color: rgba(255, 245, 224, 0.7);
+}
+
+.endgame-stats strong {
+  font-size: 1.6rem;
 }
 
 .tutorial-progress {
@@ -379,6 +432,26 @@ p {
 .message-card strong {
   font-size: 1rem;
   line-height: 1.5;
+}
+
+.history-card {
+  grid-column: 1 / -1;
+}
+
+.history-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.history-list li {
+  color: rgba(255, 245, 224, 0.84);
+  line-height: 1.5;
+}
+
+.history-list strong {
+  margin-right: 0.35rem;
 }
 
 .insight-card small,
@@ -652,6 +725,10 @@ p {
   }
 
   .insight-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .endgame-stats {
     grid-template-columns: 1fr;
   }
 

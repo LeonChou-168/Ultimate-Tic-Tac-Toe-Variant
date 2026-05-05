@@ -67,6 +67,43 @@ function settlementHint(state: GameState): string {
     : '当前仍存在可争夺的小棋盘，暂不能主动结算。';
 }
 
+function settlementReasonText(state: GameState): string {
+  if (!state.settlement) {
+    return '';
+  }
+
+  switch (state.settlement.reason) {
+    case 'automatic':
+      return '所有可行棋区域都已结束，系统已自动结算本局。';
+    case 'manual':
+      return '当前所有未占领小棋盘都已无胜方可能，因此触发了主动结算。';
+    case 'resignation':
+      return '一方已认输，对局提前结束。';
+    case 'draw-agreed':
+      return '双方接受和棋，本局以平局收尾。';
+  }
+}
+
+function settlementTitle(state: GameState): string {
+  if (!state.settlement) {
+    return '';
+  }
+
+  if (state.settlement.winner === 'draw') {
+    return '本局平局';
+  }
+
+  return `${formatPlayer(state.settlement.winner)}取得胜利`;
+}
+
+function settlementTheme(state: GameState): 'black' | 'white' | 'draw' {
+  if (!state.settlement || state.settlement.winner === 'draw') {
+    return 'draw';
+  }
+
+  return state.settlement.winner;
+}
+
 type MessageTone = 'info' | 'success' | 'warning';
 
 type TutorialStep = {
@@ -245,6 +282,27 @@ export default function App() {
   };
 
   const currentTutorialStep: TutorialStep = tutorialSteps[tutorialStepIndex] ?? fallbackTutorialStep;
+  const recentMoves = [...state.history].slice(-8).reverse();
+
+  useEffect(() => {
+    if (!showTutorial) {
+      return;
+    }
+
+    if (state.status !== 'playing' || state.pendingDrawOffer || manualSettleAvailable) {
+      setTutorialStepIndex((index) => Math.max(index, 3));
+      return;
+    }
+
+    if (state.history.length >= 2) {
+      setTutorialStepIndex((index) => Math.max(index, 2));
+      return;
+    }
+
+    if (state.history.length >= 1) {
+      setTutorialStepIndex((index) => Math.max(index, 1));
+    }
+  }, [manualSettleAvailable, showTutorial, state.history.length, state.pendingDrawOffer, state.status]);
 
   const nextTutorialStep = () => {
     setTutorialStepIndex((index) => Math.min(index + 1, tutorialSteps.length - 1));
@@ -290,6 +348,26 @@ export default function App() {
             <small>{actionMessage(message)}</small>
           </div>
         </div>
+
+        {state.settlement ? (
+          <section className={`endgame-panel ${settlementTheme(state)}`} aria-label="对局结果总结">
+            <div className="panel-heading">
+              <span className="insight-label">终局总结</span>
+              <strong>{settlementTitle(state)}</strong>
+            </div>
+            <p className="endgame-reason">{settlementReasonText(state)}</p>
+            <div className="endgame-stats">
+              <div>
+                <span>黑方占领</span>
+                <strong>{state.settlement.blackBoards}</strong>
+              </div>
+              <div>
+                <span>白方占领</span>
+                <strong>{state.settlement.whiteBoards}</strong>
+              </div>
+            </div>
+          </section>
+        ) : null}
 
         <div className="top-actions" aria-label="辅助面板控制">
           <button type="button" className="ghost-button" onClick={() => setShowGuide((value) => !value)}>
@@ -345,6 +423,7 @@ export default function App() {
             <div className="tutorial-copy">
               <span className="tutorial-step-label">{currentTutorialStep.label}</span>
               <p>{currentTutorialStep.body}</p>
+              <small className="tutorial-auto-note">教程会随着你的实际对局进度自动推进，你也可以手动切换步骤。</small>
             </div>
 
             <div className="tutorial-actions">
@@ -447,6 +526,24 @@ export default function App() {
                 ? `${playerLabel(state.pendingDrawOffer.offeredBy)}已发起求和，等待回应。`
                 : '当前没有待处理的求和请求。'}
             </small>
+          </article>
+
+          <article className="insight-card history-card">
+            <span className="insight-label">最近手顺</span>
+            {recentMoves.length > 0 ? (
+              <ol className="history-list">
+                {recentMoves.map((move, index) => (
+                  <li key={`${move.boardIndex}-${move.cellIndex}-${state.history.length - index}`}>
+                    <strong>{state.history.length - index}.</strong>
+                    <span>
+                      {playerLabel(move.player)}落在小棋盘 {move.boardIndex} 的位置 {move.cellIndex}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p className="history-empty">对局还没开始。第一手可以直接落在任意可用位置。</p>
+            )}
           </article>
         </div>
 

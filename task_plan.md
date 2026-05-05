@@ -18,6 +18,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 9. Add step-by-step tutorial | complete | Convert static onboarding into a guided, progressive tutorial with highlighted focus areas. |
 | 10. Add real sound feedback | complete | Implement lightweight synthesized game audio and connect it to the in-game sound toggle. |
 | 11. Add volume + claim polish | complete | Add sound-volume control and a stronger captured-board visual burst effect. |
+| 12. Add tutorial auto-follow + history + endgame summary | complete | Advance all three next M2 UX directions in one coordinated pass. |
 
 ## Decisions
 

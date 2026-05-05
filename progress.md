@@ -43,3 +43,5 @@
 - Converted the existing sound setting from placeholder to real functionality, then re-verified successfully with clean diagnostics, passing tests, and a successful production build.
 - Continued M2 polish again: added user-adjustable sound volume and a captured-board burst animation so visual and audio reward now reinforce each other.
 - Re-verified after the polish pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Continued the next combined M2 pass per user request: implemented tutorial auto-follow based on live game progress, added a recent move history panel, and added a richer endgame summary with reason text and outcome-specific styling.
+- Re-verified after the combined pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
