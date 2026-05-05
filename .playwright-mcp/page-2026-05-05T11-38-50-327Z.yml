@@ -1,0 +1,7 @@
+- main [ref=e3]:
+  - generic [ref=e4]:
+    - generic [ref=e5]: Ultimate Tic-Tac-Toe Variant
+    - heading "欢迎来到终极井字棋变体" [level=1] [ref=e6]
+    - generic [ref=e7]:
+      - button "进入主菜单" [ref=e8] [cursor=pointer]
+      - button "直接开始双人对战" [ref=e9] [cursor=pointer]

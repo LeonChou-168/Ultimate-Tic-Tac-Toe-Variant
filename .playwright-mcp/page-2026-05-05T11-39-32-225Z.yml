@@ -1,0 +1,177 @@
+- main [ref=e3]:
+  - region "游戏棋盘" [ref=e10]:
+    - generic [ref=e11]:
+      - generic "小棋盘 0" [ref=e12]:
+        - button "小棋盘 0，位置 0" [ref=e13] [cursor=pointer]
+        - button "小棋盘 0，位置 1" [ref=e14] [cursor=pointer]
+        - button "小棋盘 0，位置 2" [ref=e15] [cursor=pointer]
+        - button "小棋盘 0，位置 3" [ref=e16] [cursor=pointer]
+        - button "小棋盘 0，位置 4" [ref=e17] [cursor=pointer]
+        - button "小棋盘 0，位置 5" [ref=e18] [cursor=pointer]
+        - button "小棋盘 0，位置 6" [ref=e19] [cursor=pointer]
+        - button "小棋盘 0，位置 7" [ref=e20] [cursor=pointer]
+        - button "小棋盘 0，位置 8" [ref=e21] [cursor=pointer]
+      - generic "小棋盘 1" [ref=e22]:
+        - button "小棋盘 1，位置 0" [ref=e23] [cursor=pointer]
+        - button "小棋盘 1，位置 1" [ref=e24] [cursor=pointer]
+        - button "小棋盘 1，位置 2" [ref=e25] [cursor=pointer]
+        - button "小棋盘 1，位置 3" [ref=e26] [cursor=pointer]
+        - button "小棋盘 1，位置 4" [ref=e27] [cursor=pointer]
+        - button "小棋盘 1，位置 5" [ref=e28] [cursor=pointer]
+        - button "小棋盘 1，位置 6" [ref=e29] [cursor=pointer]
+        - button "小棋盘 1，位置 7" [ref=e30] [cursor=pointer]
+        - button "小棋盘 1，位置 8" [ref=e31] [cursor=pointer]
+      - generic "小棋盘 2" [ref=e32]:
+        - button "小棋盘 2，位置 0" [ref=e33] [cursor=pointer]
+        - button "小棋盘 2，位置 1" [ref=e34] [cursor=pointer]
+        - button "小棋盘 2，位置 2" [ref=e35] [cursor=pointer]
+        - button "小棋盘 2，位置 3" [ref=e36] [cursor=pointer]
+        - button "小棋盘 2，位置 4" [ref=e37] [cursor=pointer]
+        - button "小棋盘 2，位置 5" [ref=e38] [cursor=pointer]
+        - button "小棋盘 2，位置 6" [ref=e39] [cursor=pointer]
+        - button "小棋盘 2，位置 7" [ref=e40] [cursor=pointer]
+        - button "小棋盘 2，位置 8" [ref=e41] [cursor=pointer]
+      - generic "小棋盘 3" [ref=e42]:
+        - button "小棋盘 3，位置 0" [ref=e43] [cursor=pointer]
+        - button "小棋盘 3，位置 1" [ref=e44] [cursor=pointer]
+        - button "小棋盘 3，位置 2" [ref=e45] [cursor=pointer]
+        - button "小棋盘 3，位置 3" [ref=e46] [cursor=pointer]
+        - button "小棋盘 3，位置 4" [ref=e47] [cursor=pointer]
+        - button "小棋盘 3，位置 5" [ref=e48] [cursor=pointer]
+        - button "小棋盘 3，位置 6" [ref=e49] [cursor=pointer]
+        - button "小棋盘 3，位置 7" [ref=e50] [cursor=pointer]
+        - button "小棋盘 3，位置 8" [ref=e51] [cursor=pointer]
+      - generic "小棋盘 4" [ref=e52]:
+        - button "小棋盘 4，位置 0" [ref=e53] [cursor=pointer]
+        - button "小棋盘 4，位置 1" [ref=e54] [cursor=pointer]
+        - button "小棋盘 4，位置 2" [ref=e55] [cursor=pointer]
+        - button "小棋盘 4，位置 3" [ref=e56] [cursor=pointer]
+        - button "小棋盘 4，位置 4" [ref=e57] [cursor=pointer]
+        - button "小棋盘 4，位置 5" [ref=e58] [cursor=pointer]
+        - button "小棋盘 4，位置 6" [ref=e59] [cursor=pointer]
+        - button "小棋盘 4，位置 7" [ref=e60] [cursor=pointer]
+        - button "小棋盘 4，位置 8" [ref=e61] [cursor=pointer]
+      - generic "小棋盘 5" [ref=e62]:
+        - button "小棋盘 5，位置 0" [ref=e63] [cursor=pointer]
+        - button "小棋盘 5，位置 1" [ref=e64] [cursor=pointer]
+        - button "小棋盘 5，位置 2" [ref=e65] [cursor=pointer]
+        - button "小棋盘 5，位置 3" [ref=e66] [cursor=pointer]
+        - button "小棋盘 5，位置 4" [ref=e67] [cursor=pointer]
+        - button "小棋盘 5，位置 5" [ref=e68] [cursor=pointer]
+        - button "小棋盘 5，位置 6" [ref=e69] [cursor=pointer]
+        - button "小棋盘 5，位置 7" [ref=e70] [cursor=pointer]
+        - button "小棋盘 5，位置 8" [ref=e71] [cursor=pointer]
+      - generic "小棋盘 6" [ref=e72]:
+        - button "小棋盘 6，位置 0" [ref=e73] [cursor=pointer]
+        - button "小棋盘 6，位置 1" [ref=e74] [cursor=pointer]
+        - button "小棋盘 6，位置 2" [ref=e75] [cursor=pointer]
+        - button "小棋盘 6，位置 3" [ref=e76] [cursor=pointer]
+        - button "小棋盘 6，位置 4" [ref=e77] [cursor=pointer]
+        - button "小棋盘 6，位置 5" [ref=e78] [cursor=pointer]
+        - button "小棋盘 6，位置 6" [ref=e79] [cursor=pointer]
+        - button "小棋盘 6，位置 7" [ref=e80] [cursor=pointer]
+        - button "小棋盘 6，位置 8" [ref=e81] [cursor=pointer]
+      - generic "小棋盘 7" [ref=e82]:
+        - button "小棋盘 7，位置 0" [ref=e83] [cursor=pointer]
+        - button "小棋盘 7，位置 1" [ref=e84] [cursor=pointer]
+        - button "小棋盘 7，位置 2" [ref=e85] [cursor=pointer]
+        - button "小棋盘 7，位置 3" [ref=e86] [cursor=pointer]
+        - button "小棋盘 7，位置 4" [ref=e87] [cursor=pointer]
+        - button "小棋盘 7，位置 5" [ref=e88] [cursor=pointer]
+        - button "小棋盘 7，位置 6" [ref=e89] [cursor=pointer]
+        - button "小棋盘 7，位置 7" [ref=e90] [cursor=pointer]
+        - button "小棋盘 7，位置 8" [ref=e91] [cursor=pointer]
+      - generic "小棋盘 8" [ref=e92]:
+        - button "小棋盘 8，位置 0" [ref=e93] [cursor=pointer]
+        - button "小棋盘 8，位置 1" [ref=e94] [cursor=pointer]
+        - button "小棋盘 8，位置 2" [ref=e95] [cursor=pointer]
+        - button "小棋盘 8，位置 3" [ref=e96] [cursor=pointer]
+        - button "小棋盘 8，位置 4" [ref=e97] [cursor=pointer]
+        - button "小棋盘 8，位置 5" [ref=e98] [cursor=pointer]
+        - button "小棋盘 8，位置 6" [ref=e99] [cursor=pointer]
+        - button "小棋盘 8，位置 7" [ref=e100] [cursor=pointer]
+        - button "小棋盘 8，位置 8" [ref=e101] [cursor=pointer]
+  - complementary [ref=e103]:
+    - generic [ref=e104]:
+      - generic [ref=e105]:
+        - generic [ref=e106]:
+          - generic [ref=e107]: Local Versus
+          - heading "侧边指挥台" [level=2] [ref=e108]
+          - paragraph [ref=e109]: 状态、回放、设置与操作都集中在这里。
+        - generic [ref=e110]:
+          - button "改为自动淡出" [ref=e111] [cursor=pointer]
+          - button "收起侧栏" [ref=e112] [cursor=pointer]
+          - button "返回菜单" [ref=e113] [cursor=pointer]
+      - generic [ref=e116]:
+        - strong [ref=e117]: 黑方行棋 · 可在任意可用区域落子
+        - generic [ref=e118]: 双人对战开始。第一手可在任意位置落子。
+      - region "分步教程" [ref=e119]:
+        - generic [ref=e120]:
+          - generic [ref=e121]: 分步教程
+          - strong [ref=e122]: 先看当前轮到谁，以及系统刚刚反馈了什么
+        - generic "教程进度" [ref=e123]
+        - generic [ref=e128]:
+          - generic [ref=e129]: 第 1 步
+          - paragraph [ref=e130]: 这里会告诉你当前行棋方，以及上一操作为什么成功、为什么失败。每次犹豫时，先看这一栏。
+          - generic [ref=e131]: 教程会随着你的实际对局进度自动推进，你也可以手动切换步骤。
+        - generic [ref=e132]:
+          - button "上一步" [disabled] [ref=e133] [cursor=pointer]
+          - button "从头再看" [ref=e134] [cursor=pointer]
+          - button "下一步" [ref=e135] [cursor=pointer]
+      - generic "对局信息面板" [ref=e136]:
+        - article [ref=e137]:
+          - generic [ref=e138]: 当前战场
+          - strong [ref=e139]: 当前为自由落子
+          - generic [ref=e140]: 暂无上一手记录
+        - article [ref=e141]:
+          - generic [ref=e142]: 主动结算
+          - strong [ref=e143]: 暂不可结算
+          - generic [ref=e144]: 当前仍存在可争夺的小棋盘，暂不能主动结算。
+        - article [ref=e145]:
+          - generic [ref=e146]: 求和次数
+          - strong [ref=e147]: 黑方剩余 3 次 · 白方剩余 3 次
+          - generic [ref=e148]: 当前没有待处理的求和请求。
+      - generic [ref=e149]:
+        - generic [ref=e150]:
+          - generic [ref=e151]: 落子回溯演示
+          - strong [ref=e152]: 把手顺改成可播放的演示模式
+        - paragraph [ref=e153]: 等对局开始后，这里会根据实际落子生成回放。
+        - generic [ref=e154]:
+          - button "上一手" [disabled] [ref=e155] [cursor=pointer]
+          - button "进入回放" [disabled] [ref=e156] [cursor=pointer]
+          - button "下一手" [disabled] [ref=e157] [cursor=pointer]
+      - status [ref=e158]:
+        - generic [ref=e159]: 操作反馈
+        - strong [ref=e160]: 双人对战开始。第一手可在任意位置落子。
+        - generic [ref=e161]: 鼠标移到右边缘即可再次唤出侧边栏，固定模式下则不会自动淡出。
+      - generic "游戏操作" [ref=e162]:
+        - button "主动结算" [disabled] [ref=e163]
+        - button "求和 (3 次)" [ref=e164] [cursor=pointer]
+        - button "认输" [ref=e165] [cursor=pointer]
+        - button "重新开始" [ref=e166] [cursor=pointer]
+      - region "局内设置" [ref=e167]:
+        - generic [ref=e168]:
+          - generic [ref=e169]: 局内设置
+          - strong [ref=e170]: 把信息密度调成你舒服的样子
+        - generic [ref=e171]:
+          - generic [ref=e172]:
+            - strong [ref=e173]: 显示落子引导
+            - text: 关闭后保留核心规则，但弱化信息面板中的提示依赖。
+          - button "已开启" [ref=e174] [cursor=pointer]
+        - generic [ref=e175]:
+          - generic [ref=e176]:
+            - strong [ref=e177]: 棋子落下动效
+            - text: 关闭后仍可正常对局，只是不再强调落子瞬间的动态反馈。
+          - button "已开启" [ref=e178] [cursor=pointer]
+        - generic [ref=e179]:
+          - generic [ref=e180]:
+            - strong [ref=e181]: 音效开关
+            - text: 已接入轻量合成音：落子、占领、和棋、结算、认输和非法操作都会有不同反馈。
+          - button "已关闭" [ref=e182] [cursor=pointer]
+        - generic [ref=e183]:
+          - generic [ref=e184]:
+            - strong [ref=e185]: 音量强度
+            - generic [ref=e186]: 当前音量 72% 。关闭音效后仍可提前调好，下次开启立即生效。
+          - generic "音量滑杆" [ref=e187]:
+            - slider "音量滑杆" [ref=e188]: "72"
+            - generic [ref=e189]: 72%

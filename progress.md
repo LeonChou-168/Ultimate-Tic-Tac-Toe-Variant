@@ -56,3 +56,5 @@
 - Re-verified after the rail/sidebar mode pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Fixed a layout bug reported by the user where the sidebar appeared at the board's lower-left instead of the right edge; anchored the sidebar explicitly to the shell and recalculated board width against it.
 - Re-verified after the bugfix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User reported the first sidebar fix was still wrong. Performed browser-based diagnosis with Playwright, confirmed the sidebar had been falling below the board, then switched the desktop shell to a stable two-column grid and re-checked actual rendered geometry.
+- Browser verification confirmed the corrected positions: the board occupied the left column and the sidebar rendered on the right edge instead of the lower-left.

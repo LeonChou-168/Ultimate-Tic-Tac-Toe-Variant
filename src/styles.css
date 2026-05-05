@@ -130,7 +130,10 @@ button {
 .app-shell {
   min-height: 100vh;
   position: relative;
-  display: block;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(0.35rem, 0.9vw, 0.7rem);
+  align-items: start;
   padding: clamp(0.75rem, 1.4vw, 1rem);
   overflow: hidden;
 }
@@ -167,7 +170,7 @@ button {
 }
 
 .fullscreen-board {
-  width: calc(100% - 19.25rem);
+  width: 100%;
   display: grid;
   min-height: calc(100vh - 2rem);
   align-items: center;
@@ -175,11 +178,7 @@ button {
 }
 
 .game-shell .fullscreen-board {
-  transition: width 260ms ease;
-}
-
-.game-shell.sidebar-hidden .fullscreen-board {
-  width: calc(100% - 4.9rem);
+  transition: transform 260ms ease;
 }
 
 .board-frame-large {
@@ -191,9 +190,8 @@ button {
 }
 
 .control-sidebar {
-  position: absolute;
+  position: sticky;
   top: clamp(0.75rem, 1.4vw, 1rem);
-  right: clamp(0.75rem, 1.4vw, 1rem);
   width: 18.75rem;
   min-width: 18.75rem;
   height: calc(100vh - 2rem);
@@ -1014,6 +1012,7 @@ p {
 @media (max-width: 900px) {
   .app-shell {
     display: grid;
+    grid-template-columns: 1fr;
     align-items: start;
   }
 
@@ -1026,7 +1025,6 @@ p {
   .control-sidebar {
     position: relative;
     top: auto;
-    right: auto;
     width: 100%;
     min-width: 0;
     height: auto;

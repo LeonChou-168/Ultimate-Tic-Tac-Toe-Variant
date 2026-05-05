@@ -24,6 +24,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 15. Compress sidebar further | complete | Shrink the sidebar and place it more directly on the board’s right side for play-first density. |
 | 16. Add compact rail sidebar mode | complete | Make the default sidebar a narrow right rail that expands into the full panel on hover or click. |
 | 17. Fix right-rail anchoring bug | complete | Correct the sidebar placement bug by anchoring the rail to the shell’s right edge. |
+| 18. Verify sidebar bug in browser | complete | Use browser evidence to confirm the sidebar truly sits to the board’s right instead of below it. |
 
 ## Decisions
 

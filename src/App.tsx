@@ -406,7 +406,7 @@ export default function App() {
     setSidebarVisible(true);
   };
 
-  const gameShellClass = `game-shell ${sidebarVisible ? 'sidebar-visible' : 'sidebar-hidden'} ${sidebarPinned ? 'sidebar-pinned' : 'sidebar-floating'}`;
+  const gameShellClass = `app-shell game-shell ${sidebarVisible ? 'sidebar-visible' : 'sidebar-hidden'} ${sidebarPinned ? 'sidebar-pinned' : 'sidebar-floating'}`;
   const sidebarExpanded = sidebarVisible || sidebarPinned;
 
   if (screen === 'welcome') {
