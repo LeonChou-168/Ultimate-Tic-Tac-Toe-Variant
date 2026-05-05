@@ -52,3 +52,5 @@
 - Re-verified after the refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Applied a second layout refinement focused on gameplay density: compressed the sidebar further and pushed it directly against the board-side workspace for more practical side-by-side play.
 - Re-verified after the compressed-shell pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Implemented the alternative sidebar mode: default gameplay now supports a narrow right rail that expands into the full sidebar on hover/click, while keeping the board-side adjacency intact.
+- Re-verified after the rail/sidebar mode pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

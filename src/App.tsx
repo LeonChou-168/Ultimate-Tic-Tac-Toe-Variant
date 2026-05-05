@@ -407,6 +407,7 @@ export default function App() {
   };
 
   const gameShellClass = `game-shell ${sidebarVisible ? 'sidebar-visible' : 'sidebar-hidden'} ${sidebarPinned ? 'sidebar-pinned' : 'sidebar-floating'}`;
+  const sidebarExpanded = sidebarVisible || sidebarPinned;
 
   if (screen === 'welcome') {
     return (
@@ -516,7 +517,7 @@ export default function App() {
       />
 
       <aside
-        className="control-sidebar"
+        className={`control-sidebar ${sidebarExpanded ? 'expanded' : 'collapsed'}`}
         onMouseEnter={() => setSidebarVisible(true)}
         onMouseLeave={() => {
           if (!sidebarPinned) {
@@ -524,7 +525,22 @@ export default function App() {
           }
         }}
       >
-        <div className="sidebar-scroll">
+        <div className="compact-rail" aria-hidden={sidebarExpanded}>
+          <button type="button" className="rail-chip" onClick={() => setSidebarVisible(true)}>
+            {gameMode === 'human-vs-ai' ? 'AI' : 'VS'}
+          </button>
+          <span className={`rail-stone ${displayState.currentPlayer}`} />
+          <div className="rail-score">
+            <strong>{displayState.boardWinners.filter((winner) => winner === 'black').length}</strong>
+            <span>:</span>
+            <strong>{displayState.boardWinners.filter((winner) => winner === 'white').length}</strong>
+          </div>
+          <button type="button" className="rail-chip" onClick={() => setSidebarPinned((value) => !value)}>
+            {sidebarPinned ? '锁' : '悬'}
+          </button>
+        </div>
+
+        <div className="sidebar-scroll full-sidebar-content">
           <section className="sidebar-header">
             <div>
               <div className="eyebrow">{gameMode === 'human-vs-ai' ? 'Human vs AI' : 'Local Versus'}</div>
@@ -534,6 +550,9 @@ export default function App() {
             <div className="sidebar-top-buttons">
               <button type="button" className="ghost-button" onClick={() => setSidebarPinned((value) => !value)}>
                 {sidebarPinned ? '改为自动淡出' : '固定侧边栏'}
+              </button>
+              <button type="button" className="ghost-button" onClick={() => setSidebarVisible(false)}>
+                收起侧栏
               </button>
               <button type="button" className="ghost-button" onClick={() => setScreen('menu')}>
                 返回菜单

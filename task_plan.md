@@ -22,6 +22,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 13. Redesign shell + replay + AI mode | complete | Add welcome/menu flow, board-first gameplay shell with hover-reveal sidebar, replay mode, and initial human-vs-AI mode. |
 | 14. Tighten board/sidebar play layout | complete | Remove rejected copy and bring board + sidebar closer together for actual play comfort. |
 | 15. Compress sidebar further | complete | Shrink the sidebar and place it more directly on the board’s right side for play-first density. |
+| 16. Add compact rail sidebar mode | complete | Make the default sidebar a narrow right rail that expands into the full panel on hover or click. |
 
 ## Decisions
 

@@ -130,7 +130,7 @@ button {
 .app-shell {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(17.5rem, 22rem);
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: clamp(0.35rem, 0.9vw, 0.7rem);
   align-items: stretch;
   justify-items: stretch;
@@ -157,8 +157,8 @@ button {
 }
 
 .game-shell.sidebar-hidden .control-sidebar {
-  opacity: 0.06;
-  transform: translateX(1.2rem);
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .game-shell.sidebar-visible .control-sidebar {
@@ -178,7 +178,7 @@ button {
 }
 
 .board-frame-large {
-  width: min(82vmin, calc(100vw - 24rem));
+  width: min(84vmin, calc(100vw - 19rem));
   margin-left: auto;
   margin-right: 0;
   transition: transform 240ms ease, box-shadow 240ms ease, opacity 240ms ease;
@@ -186,8 +186,8 @@ button {
 }
 
 .control-sidebar {
-  width: 100%;
-  min-width: 0;
+  width: 18.75rem;
+  min-width: 18.75rem;
   max-height: calc(100vh - 2rem);
   align-self: stretch;
   border: 1px solid rgba(214, 167, 86, 0.18);
@@ -197,7 +197,79 @@ button {
   backdrop-filter: blur(18px);
   position: relative;
   z-index: 3;
-  transition: opacity 280ms ease, transform 280ms ease;
+  transition: width 260ms ease, min-width 260ms ease, opacity 280ms ease, transform 280ms ease;
+  overflow: hidden;
+}
+
+.control-sidebar.collapsed {
+  width: 4.25rem;
+  min-width: 4.25rem;
+}
+
+.compact-rail {
+  height: 100%;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem 0.5rem;
+}
+
+.control-sidebar.expanded .compact-rail {
+  display: none;
+}
+
+.full-sidebar-content {
+  display: grid;
+}
+
+.control-sidebar.collapsed .full-sidebar-content {
+  display: none;
+}
+
+.rail-chip {
+  width: 100%;
+  border: 1px solid rgba(214, 167, 86, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 244, 224, 0.08);
+  color: #f8efe1;
+  padding: 0.55rem 0.25rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.rail-chip:hover {
+  background: rgba(214, 167, 86, 0.16);
+}
+
+.rail-stone {
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  box-shadow: 0 0.55rem 1rem rgba(0, 0, 0, 0.35);
+}
+
+.rail-stone.black {
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.24), transparent 14%),
+    radial-gradient(circle at 65% 70%, #050403, #17120f 54%, #030202);
+}
+
+.rail-stone.white {
+  background:
+    radial-gradient(circle at 32% 24%, #fffdf3, transparent 28%),
+    radial-gradient(circle at 60% 74%, #b9ad94, #efe6d1 58%, #fff8e8);
+}
+
+.rail-score {
+  display: grid;
+  justify-items: center;
+  gap: 0.12rem;
+  color: rgba(255, 245, 224, 0.86);
+}
+
+.rail-score strong {
+  font-size: 0.92rem;
 }
 
 .sidebar-scroll {
@@ -240,7 +312,7 @@ button {
   position: fixed;
   top: 0;
   right: 0;
-  width: 0.55rem;
+  width: 0.8rem;
   height: 100vh;
   z-index: 2;
 }
@@ -941,6 +1013,20 @@ p {
     width: 100%;
     min-width: 0;
     max-height: none;
+  }
+
+  .control-sidebar.collapsed {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .compact-rail {
+    display: none;
+  }
+
+  .full-sidebar-content,
+  .control-sidebar.collapsed .full-sidebar-content {
+    display: grid;
   }
 
   .sidebar-scroll {
