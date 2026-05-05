@@ -58,3 +58,5 @@
 - Re-verified after the bugfix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - User reported the first sidebar fix was still wrong. Performed browser-based diagnosis with Playwright, confirmed the sidebar had been falling below the board, then switched the desktop shell to a stable two-column grid and re-checked actual rendered geometry.
 - Browser verification confirmed the corrected positions: the board occupied the left column and the sidebar rendered on the right edge instead of the lower-left.
+- Continued with the requested HUD micro-polish: made the default rail thinner and more HUD-like, converted compact labels into denser vertical chips, gave the board slightly more space, and added a smoother drawer-style reveal for the expanded sidebar.
+- Code-side verification for the HUD polish passed cleanly (`lsp_diagnostics`, tests, build). Browser session context for this pass became inconsistent after navigation, so only the earlier anchoring fix was browser-confirmed in this round.

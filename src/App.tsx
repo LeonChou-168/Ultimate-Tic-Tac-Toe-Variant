@@ -526,8 +526,8 @@ export default function App() {
         }}
       >
         <div className="compact-rail" aria-hidden={sidebarExpanded}>
-          <button type="button" className="rail-chip" onClick={() => setSidebarVisible(true)}>
-            {gameMode === 'human-vs-ai' ? 'AI' : 'VS'}
+          <button type="button" className="rail-chip mode-chip" onClick={() => setSidebarVisible(true)} aria-label="展开侧边栏">
+            <span>{gameMode === 'human-vs-ai' ? 'AI' : 'VS'}</span>
           </button>
           <span className={`rail-stone ${displayState.currentPlayer}`} />
           <div className="rail-score">
@@ -535,9 +535,10 @@ export default function App() {
             <span>:</span>
             <strong>{displayState.boardWinners.filter((winner) => winner === 'white').length}</strong>
           </div>
-          <button type="button" className="rail-chip" onClick={() => setSidebarPinned((value) => !value)}>
-            {sidebarPinned ? '锁' : '悬'}
+          <button type="button" className="rail-chip pin-chip" onClick={() => setSidebarPinned((value) => !value)} aria-label="切换侧边栏固定状态">
+            <span>{sidebarPinned ? '锁' : '悬'}</span>
           </button>
+          <div className="rail-pulse" />
         </div>
 
         <div className="sidebar-scroll full-sidebar-content">

@@ -59,3 +59,4 @@
 - The “narrow default rail + expanded full sidebar” model can be layered onto the existing shell without changing gameplay logic by splitting sidebar markup into compact and expanded sections and switching visibility entirely with CSS classes.
 - When the shell mixes grid-based expectations with collapsed-width sidebars, the right rail can visually drift. Explicit right-edge anchoring is the safer model for this layout.
 - The real root cause of the persistent sidebar bug was that the first anchoring attempt still relied on a content-growing shell. Browser inspection showed the sidebar rendering below the board. A stable two-column desktop grid fixed it decisively.
+- HUD-style compact rails work better when text is minimized and the collapsed state reads like a narrow instrument strip rather than a miniature content panel.
