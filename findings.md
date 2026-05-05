@@ -57,3 +57,4 @@
 - The original wider board/sidebar spacing made the shell feel more theatrical than playable; narrowing the grid and aligning the board toward the sidebar better matches actual gameplay ergonomics.
 - Compressing the sidebar works best as a pure sizing pass: reduce the sidebar track width, internal padding, and shell gap together, while recalculating board width against the slimmer rail.
 - The “narrow default rail + expanded full sidebar” model can be layered onto the existing shell without changing gameplay logic by splitting sidebar markup into compact and expanded sections and switching visibility entirely with CSS classes.
+- When the shell mixes grid-based expectations with collapsed-width sidebars, the right rail can visually drift. Explicit right-edge anchoring is the safer model for this layout.

@@ -54,3 +54,5 @@
 - Re-verified after the compressed-shell pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Implemented the alternative sidebar mode: default gameplay now supports a narrow right rail that expands into the full sidebar on hover/click, while keeping the board-side adjacency intact.
 - Re-verified after the rail/sidebar mode pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Fixed a layout bug reported by the user where the sidebar appeared at the board's lower-left instead of the right edge; anchored the sidebar explicitly to the shell and recalculated board width against it.
+- Re-verified after the bugfix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
