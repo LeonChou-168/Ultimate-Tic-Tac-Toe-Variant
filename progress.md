@@ -50,3 +50,5 @@
 - Added matching layout/motion CSS for landing screens, full-board gameplay shell, idle-fading sidebar, and replay controls; final diagnostics, tests, and build all passed.
 - Applied a focused UX refinement: removed the two user-rejected sentences and tightened the game shell so the board and sidebar sit more closely side-by-side for easier play.
 - Re-verified after the refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Applied a second layout refinement focused on gameplay density: compressed the sidebar further and pushed it directly against the board-side workspace for more practical side-by-side play.
+- Re-verified after the compressed-shell pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

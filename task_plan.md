@@ -21,6 +21,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 12. Add tutorial auto-follow + history + endgame summary | complete | Advance all three next M2 UX directions in one coordinated pass. |
 | 13. Redesign shell + replay + AI mode | complete | Add welcome/menu flow, board-first gameplay shell with hover-reveal sidebar, replay mode, and initial human-vs-AI mode. |
 | 14. Tighten board/sidebar play layout | complete | Remove rejected copy and bring board + sidebar closer together for actual play comfort. |
+| 15. Compress sidebar further | complete | Shrink the sidebar and place it more directly on the board’s right side for play-first density. |
 
 ## Decisions
 
