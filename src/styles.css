@@ -64,7 +64,23 @@ button {
   background: linear-gradient(145deg, rgba(255, 244, 224, 0.08), rgba(17, 11, 7, 0.82));
   box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.36);
   backdrop-filter: blur(20px);
-  animation: fadeRise 480ms ease;
+  animation: panelReveal 720ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.welcome-card > * {
+  animation: contentReveal 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.welcome-card > :nth-child(1) {
+  animation-delay: 120ms;
+}
+
+.welcome-card > :nth-child(2) {
+  animation-delay: 180ms;
+}
+
+.welcome-card > :nth-child(3) {
+  animation-delay: 260ms;
 }
 
 .welcome-card h1,
@@ -185,8 +201,8 @@ button {
   width: min(85vmin, calc(100vw - 18rem));
   margin-left: auto;
   margin-right: 0;
-  transition: transform 280ms ease, box-shadow 280ms ease, opacity 280ms ease;
-  animation: fadeRise 520ms ease;
+  transition: transform 360ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 360ms ease, opacity 360ms ease;
+  animation: panelReveal 760ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .control-sidebar {
@@ -204,7 +220,7 @@ button {
   position: relative;
   z-index: 3;
   transform-origin: right center;
-  transition: width 300ms cubic-bezier(0.2, 0.8, 0.2, 1), min-width 300ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 280ms ease, background 280ms ease;
+  transition: width 380ms cubic-bezier(0.2, 0.82, 0.18, 1), min-width 380ms cubic-bezier(0.2, 0.82, 0.18, 1), box-shadow 320ms ease, background 320ms ease, border-color 320ms ease;
   overflow: hidden;
 }
 
@@ -232,7 +248,7 @@ button {
 
 .full-sidebar-content {
   display: grid;
-  animation: sidebarReveal 220ms ease;
+  animation: sidebarReveal 420ms cubic-bezier(0.2, 0.82, 0.18, 1);
 }
 
 .control-sidebar.collapsed .full-sidebar-content {
@@ -320,8 +336,19 @@ button {
   padding: 0.8rem;
   display: grid;
   gap: 0.75rem;
-  animation: sidebarReveal 220ms ease;
+  animation: sidebarReveal 420ms cubic-bezier(0.2, 0.82, 0.18, 1);
 }
+
+.sidebar-scroll > * {
+  animation: contentReveal 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.sidebar-scroll > :nth-child(1) { animation-delay: 80ms; }
+.sidebar-scroll > :nth-child(2) { animation-delay: 120ms; }
+.sidebar-scroll > :nth-child(3) { animation-delay: 160ms; }
+.sidebar-scroll > :nth-child(4) { animation-delay: 200ms; }
+.sidebar-scroll > :nth-child(5) { animation-delay: 240ms; }
+.sidebar-scroll > :nth-child(6) { animation-delay: 280ms; }
 
 .sidebar-header {
   display: grid;
@@ -1191,14 +1218,42 @@ p {
   }
 }
 
-@keyframes sidebarReveal {
+@keyframes panelReveal {
   from {
     opacity: 0;
-    transform: translateX(0.8rem);
+    transform: translateY(1.1rem) scale(0.985);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes contentReveal {
+  from {
+    opacity: 0;
+    transform: translateX(-0.7rem);
+    filter: blur(3px);
   }
   to {
     opacity: 1;
     transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes sidebarReveal {
+  from {
+    opacity: 0;
+    transform: translateX(1rem);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
   }
 }
 

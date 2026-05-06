@@ -75,3 +75,4 @@
 - The generic sidebar grid was too overloaded. The three 对局状态 modules needed their own dedicated layout hook (`status-strip`) to guarantee a horizontal arrangement independent of other sidebar sections.
 - In a narrow sidebar, “horizontal” also requires denser card sizing; otherwise the cards technically form columns but still feel like stacked blocks. Reducing padding and typography solves that practical issue.
 - The user’s intended meaning of “横向模块” was semantic, not row-based: each module should be a horizontally styled information card, while the three cards themselves remain vertically stacked.
+- Motion polish benefits from separating three phases: surface reveal, container reveal, then content reveal. A softer staggered left-to-right text entrance reads more deliberate and less abrupt than a single fade.

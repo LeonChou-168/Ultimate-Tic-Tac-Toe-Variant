@@ -89,3 +89,5 @@
 - Re-verified after the narrower status-strip refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - User clarified the real desired pattern: not one horizontal row of three modules, but three separate horizontal-style cards stacked vertically. Reworked the 对局状态 area to that structure.
 - Re-verified after the status-area interpretation fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Refined motion choreography across the welcome/menu panels and sidebar internal views: slower surface reveal, softer drawer expansion, and left-to-right staggered content reveal for a calmer layered feel.
+- Re-verified after the motion polish pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
