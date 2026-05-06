@@ -65,3 +65,5 @@
 - A separate gold-border issue came from the tutorial focus ring being applied to `.board-stage fullscreen-board`, which spans the whole main board region. Applying it to the inner `.board-frame` scopes the border correctly.
 - The user’s intended meaning is stricter: **gold** should belong only to playable small-board targeting, not to any board-level tutorial framing. Removing the board-level gold focus entirely matches that expectation best.
 - The “ultra-fast AI” variant is just the same AI move chooser with zero artificial UI delay. No logic changes were required.
+- The fade-mode “乱弹” bug was caused by `updateFeedback()` unconditionally calling `setSidebarVisible(true)`. Limiting sidebar reveal to deliberate/important events fixes the issue cleanly.
+- The sidebar can be converted to a multi-level structure without a full architectural rewrite by gating the existing blocks behind a selected `sidebarSection` and adding a first-layer entry menu.

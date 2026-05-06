@@ -31,6 +31,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 22. Scope tutorial gold border | complete | Move the tutorial focus ring from the outer board region to the inner board frame. |
 | 23. Restrict gold to playable boards only | complete | Remove board-frame gold focus so only legal small-board targets remain highlighted in gold. |
 | 24. Switch AI to ultra-fast mode | complete | Remove the remaining artificial AI delay so moves happen immediately. |
+| 25. Multi-level sidebar + stop auto-pop | complete | Convert the sidebar to the confirmed 5-section layered structure and stop fade mode from reopening on every move. |
 
 ## Decisions
 

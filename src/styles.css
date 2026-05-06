@@ -521,7 +521,8 @@ p {
 .guide-panel,
 .settings-panel,
 .tutorial-panel,
-.endgame-panel {
+.endgame-panel,
+.sidebar-menu-panel {
   border: 1px solid rgba(214, 167, 86, 0.22);
   background:
     linear-gradient(145deg, rgba(255, 244, 224, 0.09), rgba(30, 15, 8, 0.7)),
@@ -541,6 +542,39 @@ p {
 
 .panel-heading strong {
   font-size: 1.08rem;
+}
+
+.sidebar-entry-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.sidebar-entry {
+  border: 1px solid rgba(214, 167, 86, 0.2);
+  background: linear-gradient(145deg, rgba(255, 244, 224, 0.08), rgba(16, 10, 7, 0.56));
+  color: #f8efe1;
+  border-radius: 1.2rem;
+  padding: 0.95rem 1rem;
+  display: grid;
+  gap: 0.28rem;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.sidebar-entry:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(145deg, rgba(255, 244, 224, 0.12), rgba(28, 17, 10, 0.7));
+  border-color: rgba(255, 191, 71, 0.34);
+}
+
+.sidebar-entry strong {
+  font-size: 1rem;
+}
+
+.sidebar-entry small {
+  color: rgba(255, 245, 224, 0.68);
+  line-height: 1.55;
 }
 
 .guide-list {

@@ -70,3 +70,6 @@
 - Re-verified after the final gold-guidance fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Switched human-vs-AI mode to an ultra-fast variant by removing the remaining artificial AI think-time delay.
 - Re-verified after the AI speed change: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Refactored the sidebar into the confirmed five-category multi-level structure: 对局状态 / 操作 / 回放 / 设置 / 教程. The first layer now lists entries, and each entry fills the sidebar with that section’s content.
+- Fixed the fade-mode UX bug by stopping normal move feedback from auto-opening the sidebar every turn; deliberate interactions and important events still reveal it when needed.
+- Re-verified after the sidebar information-architecture pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

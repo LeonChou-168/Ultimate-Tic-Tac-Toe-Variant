@@ -24,6 +24,8 @@ type TutorialStep = {
   body: string;
 };
 
+type SidebarSection = 'menu' | 'status' | 'actions' | 'replay' | 'settings' | 'tutorial';
+
 const tutorialSteps: TutorialStep[] = [
   {
     key: 'status',
@@ -164,6 +166,7 @@ export default function App() {
   const [celebratingBoards, setCelebratingBoards] = useState<number[]>([]);
   const [sidebarPinned, setSidebarPinned] = useState(true);
   const [sidebarVisible, setSidebarVisible] = useState(true);
+  const [sidebarSection, setSidebarSection] = useState<SidebarSection>('menu');
   const [replayMode, setReplayMode] = useState(false);
   const [replayIndex, setReplayIndex] = useState(0);
   const [aiPending, setAiPending] = useState(false);
@@ -284,10 +287,12 @@ export default function App() {
     }
   };
 
-  const updateFeedback = (nextMessage: string, ok: boolean) => {
+  const updateFeedback = (nextMessage: string, ok: boolean, options?: { revealSidebar?: boolean }) => {
     setMessage(nextMessage);
     setMessageTone(ok ? 'success' : 'warning');
-    setSidebarVisible(true);
+    if (options?.revealSidebar) {
+      setSidebarVisible(true);
+    }
   };
 
   const handleMove = (boardIndex: number, cellIndex: number, fromAI = false) => {
@@ -301,7 +306,7 @@ export default function App() {
     }
 
     const result = placeMove(state, boardIndex, cellIndex);
-    updateFeedback(result.message, result.ok);
+    updateFeedback(result.message, result.ok, { revealSidebar: !result.ok });
 
     if (!result.ok) {
       maybePlaySound('invalid');
@@ -326,7 +331,7 @@ export default function App() {
 
   const handleSettle = () => {
     const result = settleGame(state);
-    updateFeedback(result.message, result.ok);
+    updateFeedback(result.message, result.ok, { revealSidebar: true });
     maybePlaySound(result.ok ? 'settlement' : 'invalid');
     if (result.ok) {
       previousClaimCountRef.current = result.state.boardWinners.filter(Boolean).length;
@@ -341,12 +346,13 @@ export default function App() {
     setMessageTone('success');
     previousClaimCountRef.current = nextState.boardWinners.filter(Boolean).length;
     setSidebarVisible(true);
+    setSidebarSection('status');
     maybePlaySound('resign');
   };
 
   const handleOfferDraw = () => {
     const result = offerDraw(state, state.currentPlayer);
-    updateFeedback(result.message, result.ok);
+    updateFeedback(result.message, result.ok, { revealSidebar: true });
     maybePlaySound(result.ok ? 'draw-offer' : 'invalid');
     if (result.ok) {
       setState(result.state);
@@ -355,7 +361,7 @@ export default function App() {
 
   const handleDrawResponse = (accept: boolean) => {
     const result = respondToDraw(state, accept);
-    updateFeedback(result.message, result.ok);
+    updateFeedback(result.message, result.ok, { revealSidebar: true });
     maybePlaySound(!result.ok ? 'invalid' : accept ? 'draw-accepted' : 'draw-declined');
     if (result.ok) {
       previousClaimCountRef.current = result.state.boardWinners.filter(Boolean).length;
@@ -373,6 +379,7 @@ export default function App() {
     setMessage(mode === 'human-vs-ai' ? '人机对战开始。你执黑先手，电脑执白后手。' : '双人对战开始。第一手可在任意位置落子。');
     setMessageTone('info');
     setSidebarVisible(true);
+    setSidebarSection('menu');
     previousClaimCountRef.current = 0;
   };
 
@@ -399,15 +406,24 @@ export default function App() {
     setReplayMode(true);
     setReplayIndex(state.history.length);
     setSidebarVisible(true);
+    setSidebarSection('replay');
   };
 
   const closeReplay = () => {
     setReplayMode(false);
     setSidebarVisible(true);
+    setSidebarSection('menu');
   };
 
   const gameShellClass = `app-shell game-shell ${sidebarVisible ? 'sidebar-visible' : 'sidebar-hidden'} ${sidebarPinned ? 'sidebar-pinned' : 'sidebar-floating'}`;
   const sidebarExpanded = sidebarVisible || sidebarPinned;
+  const sidebarEntries: Array<{ key: Exclude<SidebarSection, 'menu'>; label: string; summary: string }> = [
+    { key: 'status', label: '对局状态', summary: '查看当前轮次、战场与终局摘要' },
+    { key: 'actions', label: '操作', summary: '求和、认输、结算与重开' },
+    { key: 'replay', label: '回放', summary: '进入落子回溯演示模式' },
+    { key: 'settings', label: '设置', summary: '音效、动效、提示与侧栏方式' },
+    { key: 'tutorial', label: '教程', summary: '查看分步教程与新手引导' },
+  ];
 
   if (screen === 'welcome') {
     return (
@@ -555,21 +571,45 @@ export default function App() {
               <button type="button" className="ghost-button" onClick={() => setSidebarVisible(false)}>
                 收起侧栏
               </button>
+              {sidebarSection !== 'menu' ? (
+                <button type="button" className="ghost-button" onClick={() => setSidebarSection('menu')}>
+                  返回词条
+                </button>
+              ) : null}
               <button type="button" className="ghost-button" onClick={() => setScreen('menu')}>
                 返回菜单
               </button>
             </div>
           </section>
 
-          <section className={`status-card ${tutorialHighlight('status')}`}>
+          {sidebarSection === 'menu' ? (
+            <section className="sidebar-menu-panel" aria-label="侧边栏词条列表">
+              <div className="panel-heading">
+                <span className="insight-label">词条</span>
+                <strong>选择你要查看或操作的模块</strong>
+              </div>
+              <div className="sidebar-entry-list">
+                {sidebarEntries.map((entry) => (
+                  <button key={entry.key} type="button" className="sidebar-entry" onClick={() => setSidebarSection(entry.key)}>
+                    <strong>{entry.label}</strong>
+                    <small>{entry.summary}</small>
+                  </button>
+                ))}
+              </div>
+            </section>
+          ) : null}
+
+          {sidebarSection === 'status' ? (
+            <section className={`status-card ${tutorialHighlight('status')}`}>
             <span className={`turn-stone ${displayState.currentPlayer}`} />
             <div>
               <strong>{statusHeadline(displayState)}</strong>
               <small>{aiPending ? '电脑正在思考下一手。' : actionMessage(message)}</small>
             </div>
-          </section>
+            </section>
+          ) : null}
 
-          {displayState.settlement ? (
+          {sidebarSection === 'status' && displayState.settlement ? (
             <section className={`endgame-panel ${settlementTheme(displayState)}`} aria-label="对局结果总结">
               <div className="panel-heading">
                 <span className="insight-label">终局总结</span>
@@ -589,7 +629,7 @@ export default function App() {
             </section>
           ) : null}
 
-          {showTutorial ? (
+          {sidebarSection === 'tutorial' && showTutorial ? (
             <section className="tutorial-panel" aria-label="分步教程">
               <div className="panel-heading">
                 <span className="insight-label">分步教程</span>
@@ -621,13 +661,14 @@ export default function App() {
                 </button>
               </div>
             </section>
-          ) : (
+          ) : sidebarSection === 'tutorial' ? (
             <button type="button" className="ghost-button" onClick={() => setShowTutorial(true)}>
               重新打开教程
             </button>
-          )}
+          ) : null}
 
-          <div className="insight-grid sidebar-grid" aria-label="对局信息面板">
+          {sidebarSection === 'status' ? (
+            <div className="insight-grid sidebar-grid" aria-label="对局信息面板">
             <article className={`insight-card emphasis ${tutorialHighlight('battlefield')}`}>
               <span className="insight-label">当前战场</span>
               <strong>{boardModeText(displayState)}</strong>
@@ -645,9 +686,11 @@ export default function App() {
               <strong>黑方剩余 {3 - state.drawOfferCounts.black} 次 · 白方剩余 {3 - state.drawOfferCounts.white} 次</strong>
               <small>{state.pendingDrawOffer ? `${playerLabel(state.pendingDrawOffer.offeredBy)}已发起求和，等待回应。` : '当前没有待处理的求和请求。'}</small>
             </article>
-          </div>
+            </div>
+          ) : null}
 
-          <section className="replay-panel">
+          {sidebarSection === 'replay' ? (
+            <section className="replay-panel">
             <div className="panel-heading">
               <span className="insight-label">落子回溯演示</span>
               <strong>{replayMode ? `正在回看第 ${replayIndex} 手` : '落子回溯'}</strong>
@@ -679,15 +722,18 @@ export default function App() {
                 <span>{replayIndex} / {state.history.length} 手</span>
               </label>
             ) : null}
-          </section>
+            </section>
+          ) : null}
 
-          <div className={`message-card ${messageTone}`} role="status" aria-live="polite">
+          {sidebarSection === 'status' ? (
+            <div className={`message-card ${messageTone}`} role="status" aria-live="polite">
             <span className="message-label">操作反馈</span>
             <strong>{actionMessage(message)}</strong>
             <small>{replayMode ? '回放模式下主棋盘不可落子，只用于观察局面演化。' : '鼠标移到右边缘即可再次唤出侧边栏，固定模式下则不会自动淡出。'}</small>
-          </div>
+            </div>
+          ) : null}
 
-          {state.pendingDrawOffer && !replayMode ? (
+          {sidebarSection === 'actions' && state.pendingDrawOffer && !replayMode ? (
             <div className="draw-banner">
               <span>{playerLabel(state.pendingDrawOffer.offeredBy)}请求和棋</span>
               <button type="button" onClick={() => handleDrawResponse(true)}>
@@ -699,7 +745,8 @@ export default function App() {
             </div>
           ) : null}
 
-          <div className={`controls sidebar-controls ${tutorialHighlight('controls')}`} aria-label="游戏操作">
+          {sidebarSection === 'actions' ? (
+            <div className={`controls sidebar-controls ${tutorialHighlight('controls')}`} aria-label="游戏操作">
             <button type="button" onClick={handleSettle} disabled={replayMode || state.status !== 'playing' || !manualSettleAvailable || aiPending}>
               主动结算
             </button>
@@ -712,9 +759,11 @@ export default function App() {
             <button type="button" className="primary" onClick={reset}>
               重新开始
             </button>
-          </div>
+            </div>
+          ) : null}
 
-          <section className="settings-panel" aria-label="局内设置">
+          {sidebarSection === 'settings' ? (
+            <section className="settings-panel" aria-label="局内设置">
             <div className="panel-heading">
               <span className="insight-label">局内设置</span>
               <strong>把信息密度调成你舒服的样子</strong>
@@ -760,7 +809,8 @@ export default function App() {
                 <span>{soundVolume}%</span>
               </label>
             </div>
-          </section>
+            </section>
+          ) : null}
         </div>
       </aside>
     </main>
