@@ -71,3 +71,4 @@
 - The user prefers an even cleaner first layer: the badge + summary pattern is enough, so the explicit list heading and visible entry titles can be removed without breaking discoverability.
 - The header-level “返回词条” action reads better as a small back-chip than as a full-weight action button because it is secondary navigation, not a primary operation.
 - Removing internal numbering from the board UI works much better when replaced with a proper external coordinate system. Natural-language position names plus explicit coordinates give both readability and precision.
+- The next refinement after adding coordinates is consistency: compact `A1–C3`-style ranges are cleaner than separate “列/行” phrasing, and a dedicated coordinate pill makes the textual target feel visibly linked to the highlighted board region.

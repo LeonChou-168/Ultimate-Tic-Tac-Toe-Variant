@@ -36,6 +36,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 27. Remove first-layer titles | complete | Delete the visible “词条” heading and the visible category titles from the first-layer entry list. |
 | 28. Simplify back-to-list control | complete | Make the top “返回词条” control more minimal while keeping the same behavior. |
 | 29. Add board coordinates + coordinate copy | complete | Add the requested board coordinate system and update battle/replay microcopy accordingly. |
+| 30. Unify coordinate notation + horizontal strip | complete | Standardize coordinate style, strengthen battlefield coordinate linkage, and make the three status modules horizontal. |
 
 ## Decisions
 

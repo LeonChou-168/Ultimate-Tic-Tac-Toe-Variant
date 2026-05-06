@@ -82,7 +82,7 @@ function boardCoordinateRange(boardIndex: number): string {
   const endColumn = startColumn + 2;
   const topLetter = AXIS_LETTERS[boardRow * 3] ?? 'I';
   const bottomLetter = AXIS_LETTERS[boardRow * 3 + 2] ?? 'A';
-  return `${startColumn}-${endColumn}列，${bottomLetter}-${topLetter}行`;
+  return `${bottomLetter}${startColumn}–${topLetter}${endColumn}`;
 }
 
 function absoluteCoordinate(boardIndex: number, cellIndex: number): string {
@@ -96,6 +96,10 @@ function absoluteCoordinate(boardIndex: number, cellIndex: number): string {
   return `${letter}${globalColumn + 1}`;
 }
 
+function boardCenterCoordinate(boardIndex: number): string {
+  return absoluteCoordinate(boardIndex, 4);
+}
+
 function boardModeText(state: GameState): string {
   if (state.status !== 'playing') {
     return '对局已结束';
@@ -105,7 +109,7 @@ function boardModeText(state: GameState): string {
     return '当前战场：可在任意高亮区域落子';
   }
 
-  return `当前战场：请落在${positionLabel(state.targetBoard)}区域（${boardCoordinateRange(state.targetBoard)}）`;
+  return `当前战场：请落在${positionLabel(state.targetBoard)}区域 · ${boardCenterCoordinate(state.targetBoard)} · ${boardCoordinateRange(state.targetBoard)}`;
 }
 
 function lastMoveText(state: GameState): string {
@@ -113,7 +117,7 @@ function lastMoveText(state: GameState): string {
     return '暂无上一手记录';
   }
 
-  return `${playerLabel(state.lastMove.player)}刚刚落在${positionLabel(state.lastMove.boardIndex)}棋盘的${positionLabel(state.lastMove.cellIndex)}格（${absoluteCoordinate(state.lastMove.boardIndex, state.lastMove.cellIndex)}）`;
+  return `${playerLabel(state.lastMove.player)}刚刚落在${positionLabel(state.lastMove.boardIndex)}棋盘的${positionLabel(state.lastMove.cellIndex)}格 · ${absoluteCoordinate(state.lastMove.boardIndex, state.lastMove.cellIndex)}`;
 }
 
 function settlementHint(state: GameState): string {
@@ -707,6 +711,7 @@ export default function App() {
             <article className={`insight-card emphasis ${tutorialHighlight('battlefield')}`}>
               <span className="insight-label">当前战场</span>
               <strong>{boardModeText(displayState)}</strong>
+              {displayState.targetBoard !== null ? <span className="battlefield-coord">{boardCenterCoordinate(displayState.targetBoard)} · {boardCoordinateRange(displayState.targetBoard)}</span> : null}
               <small>{showMoveHints ? lastMoveText(displayState) : '你已关闭落子引导提示，可随时在设置中重新开启。'}</small>
             </article>
 
@@ -732,7 +737,7 @@ export default function App() {
               </div>
               <p className="history-empty">
                 {replayMove
-                  ? `${playerLabel(replayMove.player)}当时落在${positionLabel(replayMove.boardIndex)}棋盘的${positionLabel(replayMove.cellIndex)}格（${absoluteCoordinate(replayMove.boardIndex, replayMove.cellIndex)}）。`
+                  ? `${playerLabel(replayMove.player)} · ${boardCenterCoordinate(replayMove.boardIndex)} → ${absoluteCoordinate(replayMove.boardIndex, replayMove.cellIndex)} · ${positionLabel(replayMove.boardIndex)}棋盘的${positionLabel(replayMove.cellIndex)}格。`
                   : state.history.length > 0
                     ? '可拖动进度回看当前棋局的形成过程。'
                     : '等对局开始后，这里会根据实际落子生成回放。'}

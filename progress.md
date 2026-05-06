@@ -81,3 +81,5 @@
 - Re-verified after the control polish: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Added the requested 围棋式坐标系: lower-left origin, numbers on the bottom edge, letters on the left edge, and updated battle/last-move/replay microcopy to use natural-language positions plus coordinate supplements.
 - Re-verified after the coordinate-system pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Unified coordinate notation further to A1/C7-style range formatting, added a stronger coordinate pill inside the battlefield card, made replay feel more棋谱-like with origin→destination notation, and converted the three status modules into a horizontal strip.
+- Re-verified after the coordinate/layout refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

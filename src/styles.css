@@ -340,7 +340,8 @@ button {
 }
 
 .sidebar-grid {
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
 }
 
 .sidebar-controls {
@@ -815,6 +816,19 @@ p {
   line-height: 1.5;
 }
 
+.battlefield-coord {
+  display: inline-grid;
+  width: fit-content;
+  margin-top: 0.18rem;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 191, 71, 0.14);
+  border: 1px solid rgba(255, 191, 71, 0.28);
+  color: rgba(255, 245, 224, 0.96);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+}
+
 .history-card {
   grid-column: 1 / -1;
 }
@@ -1212,6 +1226,10 @@ p {
   }
 
   .insight-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-grid {
     grid-template-columns: 1fr;
   }
 
