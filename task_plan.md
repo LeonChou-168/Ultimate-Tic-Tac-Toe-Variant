@@ -38,6 +38,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 29. Add board coordinates + coordinate copy | complete | Add the requested board coordinate system and update battle/replay microcopy accordingly. |
 | 30. Unify coordinate notation + horizontal strip | complete | Standardize coordinate style, strengthen battlefield coordinate linkage, and make the three status modules horizontal. |
 | 31. Dedicated status-strip layout | complete | Ensure 当前战场 / 主动结算 / 求和次数 use their own explicit horizontal layout hook. |
+| 32. Tighten status-strip sizing | complete | Make the three horizontal status cards compact enough to read as one row inside the sidebar. |
 
 ## Decisions
 

@@ -346,8 +346,29 @@ button {
 
 .status-strip {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(8rem, 1fr));
   gap: 0.7rem;
+  align-items: stretch;
+}
+
+.status-strip .insight-card {
+  min-width: 0;
+  padding: 0.72rem 0.8rem;
+}
+
+.status-strip .insight-card strong {
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.status-strip .insight-card small {
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.status-strip .battlefield-coord {
+  font-size: 0.74rem;
+  padding: 0.18rem 0.45rem;
 }
 
 .sidebar-controls {

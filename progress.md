@@ -85,3 +85,5 @@
 - Re-verified after the coordinate/layout refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - User clarified that the three 对局状态 modules specifically needed their own horizontal layout. Added a dedicated `status-strip` wrapper so 当前战场 / 主动结算 / 求和次数 now render horizontally on wide screens.
 - Re-verified after the status-strip fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User reported the first horizontal-strip attempt still looked vertically stacked. Tightened the strip specifically for the narrow sidebar with smaller padding/type and explicit three-card width expectations.
+- Re-verified after the narrower status-strip refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
