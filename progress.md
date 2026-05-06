@@ -77,3 +77,5 @@
 - Re-verified after the HUD-style polish: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Applied a final first-layer text cleanup by removing the visible “词条” heading and hiding the visible entry titles, leaving only the compact badges and summaries.
 - Re-verified after the cleanup: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Simplified the top back-to-list control in the sidebar header by shortening the label and giving it a lighter chip-style treatment.
+- Re-verified after the control polish: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

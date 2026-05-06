@@ -514,6 +514,15 @@ p {
   background: rgba(214, 167, 86, 0.16);
 }
 
+.back-chip {
+  padding-inline: 0.78rem;
+  min-height: 2.1rem;
+  border-color: rgba(214, 167, 86, 0.18);
+  background: rgba(255, 244, 224, 0.04);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
+
 .toggle-button.active {
   border-color: rgba(255, 191, 71, 0.58);
   background: rgba(255, 191, 71, 0.16);

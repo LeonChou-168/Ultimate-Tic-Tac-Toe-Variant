@@ -572,8 +572,8 @@ export default function App() {
                 收起侧栏
               </button>
               {sidebarSection !== 'menu' ? (
-                <button type="button" className="ghost-button" onClick={() => setSidebarSection('menu')}>
-                  返回词条
+                <button type="button" className="ghost-button back-chip" onClick={() => setSidebarSection('menu')} aria-label="返回词条列表">
+                  ← 词条
                 </button>
               ) : null}
               <button type="button" className="ghost-button" onClick={() => setScreen('menu')}>

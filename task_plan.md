@@ -34,6 +34,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 25. Multi-level sidebar + stop auto-pop | complete | Convert the sidebar to the confirmed 5-section layered structure and stop fade mode from reopening on every move. |
 | 26. HUD-style sidebar polish | complete | Make the first-layer entries denser and more HUD-like, and smooth the detail-view reveal. |
 | 27. Remove first-layer titles | complete | Delete the visible “词条” heading and the visible category titles from the first-layer entry list. |
+| 28. Simplify back-to-list control | complete | Make the top “返回词条” control more minimal while keeping the same behavior. |
 
 ## Decisions
 
