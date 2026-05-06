@@ -39,6 +39,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 30. Unify coordinate notation + horizontal strip | complete | Standardize coordinate style, strengthen battlefield coordinate linkage, and make the three status modules horizontal. |
 | 31. Dedicated status-strip layout | complete | Ensure 当前战场 / 主动结算 / 求和次数 use their own explicit horizontal layout hook. |
 | 32. Tighten status-strip sizing | complete | Make the three horizontal status cards compact enough to read as one row inside the sidebar. |
+| 33. Correct status-card interpretation | complete | Change the three 对局状态 modules into horizontal-style cards stacked vertically. |
 
 ## Decisions
 

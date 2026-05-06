@@ -707,21 +707,21 @@ export default function App() {
           ) : null}
 
           {sidebarSection === 'status' ? (
-            <div className="status-strip" aria-label="对局信息面板">
-            <article className={`insight-card emphasis ${tutorialHighlight('battlefield')}`}>
+            <div className="status-stack" aria-label="对局信息面板">
+            <article className={`insight-card emphasis horizontal-status-card ${tutorialHighlight('battlefield')}`}>
               <span className="insight-label">当前战场</span>
               <strong>{boardModeText(displayState)}</strong>
               {displayState.targetBoard !== null ? <span className="battlefield-coord">{boardCenterCoordinate(displayState.targetBoard)} · {boardCoordinateRange(displayState.targetBoard)}</span> : null}
               <small>{showMoveHints ? lastMoveText(displayState) : '你已关闭落子引导提示，可随时在设置中重新开启。'}</small>
             </article>
 
-            <article className="insight-card">
+            <article className="insight-card horizontal-status-card">
               <span className="insight-label">主动结算</span>
               <strong>{manualSettleAvailable ? '现在可以结算' : '暂不可结算'}</strong>
               <small>{showMoveHints ? settlementHint(state) : '需要时可重新开启提示查看当前是否满足主动结算条件。'}</small>
             </article>
 
-            <article className="insight-card">
+            <article className="insight-card horizontal-status-card">
               <span className="insight-label">求和次数</span>
               <strong>黑方剩余 {3 - state.drawOfferCounts.black} 次 · 白方剩余 {3 - state.drawOfferCounts.white} 次</strong>
               <small>{state.pendingDrawOffer ? `${playerLabel(state.pendingDrawOffer.offeredBy)}已发起求和，等待回应。` : '当前没有待处理的求和请求。'}</small>
