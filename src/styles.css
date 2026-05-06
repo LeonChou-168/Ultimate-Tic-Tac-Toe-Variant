@@ -916,6 +916,46 @@ p {
     inset 0 0 0 1px rgba(255, 244, 223, 0.08);
 }
 
+.coordinate-frame {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 1fr auto;
+  column-gap: 0.55rem;
+  row-gap: 0.45rem;
+}
+
+.coordinate-frame .macro-board {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.board-axis {
+  color: rgba(255, 245, 224, 0.68);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  user-select: none;
+}
+
+.board-axis-left {
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  grid-template-rows: repeat(9, 1fr);
+  align-items: center;
+  justify-items: center;
+  padding-block: 0.18rem;
+}
+
+.board-axis-bottom {
+  grid-column: 2;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  align-items: center;
+  justify-items: center;
+  padding-inline: 0.12rem;
+}
+
 .macro-board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

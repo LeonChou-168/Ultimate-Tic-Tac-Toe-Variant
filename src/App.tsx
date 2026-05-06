@@ -68,16 +68,44 @@ function actionMessage(message: string): string {
   return message || '第一手可在任意位置落子。';
 }
 
+const POSITION_LABELS = ['左上', '上中', '右上', '左中', '正中', '右中', '左下', '下中', '右下'] as const;
+const AXIS_LETTERS = ['I', 'H', 'G', 'F', 'E', 'D', 'C', 'B', 'A'] as const;
+
+function positionLabel(index: number): string {
+  return POSITION_LABELS[index] ?? `位置${index}`;
+}
+
+function boardCoordinateRange(boardIndex: number): string {
+  const boardRow = Math.floor(boardIndex / 3);
+  const boardColumn = boardIndex % 3;
+  const startColumn = boardColumn * 3 + 1;
+  const endColumn = startColumn + 2;
+  const topLetter = AXIS_LETTERS[boardRow * 3] ?? 'I';
+  const bottomLetter = AXIS_LETTERS[boardRow * 3 + 2] ?? 'A';
+  return `${startColumn}-${endColumn}列，${bottomLetter}-${topLetter}行`;
+}
+
+function absoluteCoordinate(boardIndex: number, cellIndex: number): string {
+  const boardRow = Math.floor(boardIndex / 3);
+  const boardColumn = boardIndex % 3;
+  const cellRow = Math.floor(cellIndex / 3);
+  const cellColumn = cellIndex % 3;
+  const globalRow = boardRow * 3 + cellRow;
+  const globalColumn = boardColumn * 3 + cellColumn;
+  const letter = AXIS_LETTERS[globalRow] ?? 'A';
+  return `${letter}${globalColumn + 1}`;
+}
+
 function boardModeText(state: GameState): string {
   if (state.status !== 'playing') {
     return '对局已结束';
   }
 
   if (state.targetBoard === null) {
-    return '当前为自由落子';
+    return '当前战场：可在任意高亮区域落子';
   }
 
-  return `当前必须落在小棋盘 ${state.targetBoard}`;
+  return `当前战场：请落在${positionLabel(state.targetBoard)}区域（${boardCoordinateRange(state.targetBoard)}）`;
 }
 
 function lastMoveText(state: GameState): string {
@@ -85,7 +113,7 @@ function lastMoveText(state: GameState): string {
     return '暂无上一手记录';
   }
 
-  return `${playerLabel(state.lastMove.player)}刚刚落在小棋盘 ${state.lastMove.boardIndex} 的位置 ${state.lastMove.cellIndex}`;
+  return `${playerLabel(state.lastMove.player)}刚刚落在${positionLabel(state.lastMove.boardIndex)}棋盘的${positionLabel(state.lastMove.cellIndex)}格（${absoluteCoordinate(state.lastMove.boardIndex, state.lastMove.cellIndex)}）`;
 }
 
 function settlementHint(state: GameState): string {
@@ -194,6 +222,7 @@ export default function App() {
   }, [replayIndex, state.history]);
   const displayState = replayMode ? replayState : state;
   const displayLegalBoards = useMemo(() => (replayMode ? [] : getLegalBoards(state)), [replayMode, state]);
+  const replayMove = replayIndex > 0 ? state.history[replayIndex - 1] : null;
 
   const maybePlaySound = (cue: Parameters<typeof playSound>[0]) => {
     if (!soundEnabled) {
@@ -473,7 +502,12 @@ export default function App() {
   return (
     <main className={gameShellClass}>
       <section className="board-stage fullscreen-board" aria-label="游戏棋盘">
-        <div className="board-frame board-frame-large">
+        <div className="board-frame board-frame-large coordinate-frame">
+          <div className="board-axis board-axis-left" aria-hidden="true">
+            {AXIS_LETTERS.map((letter) => (
+              <span key={letter}>{letter}</span>
+            ))}
+          </div>
           <div className="macro-board">
             {displayState.boards.map((board, boardIndex) => {
               const winner = displayState.boardWinners[boardIndex];
@@ -521,6 +555,11 @@ export default function App() {
                 </div>
               );
             })}
+          </div>
+          <div className="board-axis board-axis-bottom" aria-hidden="true">
+            {Array.from({ length: 9 }, (_, index) => (
+              <span key={index + 1}>{index + 1}</span>
+            ))}
           </div>
         </div>
       </section>
@@ -687,15 +726,17 @@ export default function App() {
 
           {sidebarSection === 'replay' ? (
             <section className="replay-panel">
-            <div className="panel-heading">
-              <span className="insight-label">落子回溯演示</span>
-              <strong>{replayMode ? `正在回看第 ${replayIndex} 手` : '落子回溯'}</strong>
-            </div>
-            <p className="history-empty">
-              {state.history.length > 0
-                ? '可拖动进度回看当前棋局的形成过程。'
-                : '等对局开始后，这里会根据实际落子生成回放。'}
-            </p>
+              <div className="panel-heading">
+                <span className="insight-label">落子回溯演示</span>
+                <strong>{replayMode ? `正在回看第 ${replayIndex} 手` : '落子回溯'}</strong>
+              </div>
+              <p className="history-empty">
+                {replayMove
+                  ? `${playerLabel(replayMove.player)}当时落在${positionLabel(replayMove.boardIndex)}棋盘的${positionLabel(replayMove.cellIndex)}格（${absoluteCoordinate(replayMove.boardIndex, replayMove.cellIndex)}）。`
+                  : state.history.length > 0
+                    ? '可拖动进度回看当前棋局的形成过程。'
+                    : '等对局开始后，这里会根据实际落子生成回放。'}
+              </p>
             <div className="replay-controls">
               <button type="button" className="ghost-button" onClick={() => setReplayIndex((index) => Math.max(index - 1, 0))} disabled={!replayMode || replayIndex === 0}>
                 上一手

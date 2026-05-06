@@ -79,3 +79,5 @@
 - Re-verified after the cleanup: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Simplified the top back-to-list control in the sidebar header by shortening the label and giving it a lighter chip-style treatment.
 - Re-verified after the control polish: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Added the requested 围棋式坐标系: lower-left origin, numbers on the bottom edge, letters on the left edge, and updated battle/last-move/replay microcopy to use natural-language positions plus coordinate supplements.
+- Re-verified after the coordinate-system pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
