@@ -91,3 +91,5 @@
 - Re-verified after the status-area interpretation fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Refined motion choreography across the welcome/menu panels and sidebar internal views: slower surface reveal, softer drawer expansion, and left-to-right staggered content reveal for a calmer layered feel.
 - Re-verified after the motion polish pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Continued the finer motion pass: strengthened text left-to-right reveal, separated title/body/action delays more clearly, and made the welcome/menu card content stagger more deliberately.
+- Re-verified after the finer motion pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

@@ -41,6 +41,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 32. Tighten status-strip sizing | complete | Make the three horizontal status cards compact enough to read as one row inside the sidebar. |
 | 33. Correct status-card interpretation | complete | Change the three 对局状态 modules into horizontal-style cards stacked vertically. |
 | 34. Motion choreography polish | complete | Make page/sidebar transitions calmer with layered reveals and left-to-right content entrances. |
+| 35. Finer motion staggering | complete | Separate title/body/actions more clearly and strengthen left-to-right reveal timing. |
 
 ## Decisions
 
