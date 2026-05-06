@@ -584,15 +584,10 @@ export default function App() {
 
           {sidebarSection === 'menu' ? (
             <section className="sidebar-menu-panel" aria-label="侧边栏词条列表">
-              <div className="panel-heading">
-                <span className="insight-label">词条</span>
-                <strong>选择你要查看或操作的模块</strong>
-              </div>
               <div className="sidebar-entry-list">
                 {sidebarEntries.map((entry) => (
                   <button key={entry.key} type="button" className="sidebar-entry" onClick={() => setSidebarSection(entry.key)}>
                     <div className="sidebar-entry-badge">{entry.label.slice(0, 2)}</div>
-                    <strong>{entry.label}</strong>
                     <small>{entry.summary}</small>
                   </button>
                 ))}

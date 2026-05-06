@@ -75,3 +75,5 @@
 - Re-verified after the sidebar information-architecture pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Continued the sidebar polish pass: made the first-layer entries more HUD-like with compact badges and denser card layout, and added smoother reveal animation for detail views.
 - Re-verified after the HUD-style polish: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Applied a final first-layer text cleanup by removing the visible “词条” heading and hiding the visible entry titles, leaving only the compact badges and summaries.
+- Re-verified after the cleanup: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

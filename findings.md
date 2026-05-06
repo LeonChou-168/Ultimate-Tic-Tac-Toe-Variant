@@ -68,3 +68,4 @@
 - The fade-mode “乱弹” bug was caused by `updateFeedback()` unconditionally calling `setSidebarVisible(true)`. Limiting sidebar reveal to deliberate/important events fixes the issue cleanly.
 - The sidebar can be converted to a multi-level structure without a full architectural rewrite by gating the existing blocks behind a selected `sidebarSection` and adding a first-layer entry menu.
 - A good next step after the 5-section IA refactor is to make the first layer read like a HUD index: compact badges plus short summaries work better than plain stacked buttons.
+- The user prefers an even cleaner first layer: the badge + summary pattern is enough, so the explicit list heading and visible entry titles can be removed without breaking discoverability.
