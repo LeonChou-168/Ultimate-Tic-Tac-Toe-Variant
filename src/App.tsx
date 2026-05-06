@@ -591,6 +591,7 @@ export default function App() {
               <div className="sidebar-entry-list">
                 {sidebarEntries.map((entry) => (
                   <button key={entry.key} type="button" className="sidebar-entry" onClick={() => setSidebarSection(entry.key)}>
+                    <div className="sidebar-entry-badge">{entry.label.slice(0, 2)}</div>
                     <strong>{entry.label}</strong>
                     <small>{entry.summary}</small>
                   </button>

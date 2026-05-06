@@ -73,3 +73,5 @@
 - Refactored the sidebar into the confirmed five-category multi-level structure: 对局状态 / 操作 / 回放 / 设置 / 教程. The first layer now lists entries, and each entry fills the sidebar with that section’s content.
 - Fixed the fade-mode UX bug by stopping normal move feedback from auto-opening the sidebar every turn; deliberate interactions and important events still reveal it when needed.
 - Re-verified after the sidebar information-architecture pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Continued the sidebar polish pass: made the first-layer entries more HUD-like with compact badges and denser card layout, and added smoother reveal animation for detail views.
+- Re-verified after the HUD-style polish: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
