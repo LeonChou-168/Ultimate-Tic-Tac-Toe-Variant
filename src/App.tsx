@@ -707,7 +707,7 @@ export default function App() {
           ) : null}
 
           {sidebarSection === 'status' ? (
-            <div className="insight-grid sidebar-grid" aria-label="对局信息面板">
+            <div className="status-strip" aria-label="对局信息面板">
             <article className={`insight-card emphasis ${tutorialHighlight('battlefield')}`}>
               <span className="insight-label">当前战场</span>
               <strong>{boardModeText(displayState)}</strong>

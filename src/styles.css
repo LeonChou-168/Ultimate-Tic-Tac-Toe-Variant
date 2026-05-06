@@ -344,6 +344,12 @@ button {
   gap: 0.7rem;
 }
 
+.status-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
 .sidebar-controls {
   justify-content: stretch;
 }
@@ -1230,6 +1236,10 @@ p {
   }
 
   .sidebar-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .status-strip {
     grid-template-columns: 1fr;
   }
 

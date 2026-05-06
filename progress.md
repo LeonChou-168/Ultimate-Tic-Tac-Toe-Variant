@@ -83,3 +83,5 @@
 - Re-verified after the coordinate-system pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Unified coordinate notation further to A1/C7-style range formatting, added a stronger coordinate pill inside the battlefield card, made replay feel more棋谱-like with origin→destination notation, and converted the three status modules into a horizontal strip.
 - Re-verified after the coordinate/layout refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User clarified that the three 对局状态 modules specifically needed their own horizontal layout. Added a dedicated `status-strip` wrapper so 当前战场 / 主动结算 / 求和次数 now render horizontally on wide screens.
+- Re-verified after the status-strip fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
