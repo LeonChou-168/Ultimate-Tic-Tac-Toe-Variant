@@ -78,3 +78,4 @@
 - Motion polish benefits from separating three phases: surface reveal, container reveal, then content reveal. A softer staggered left-to-right text entrance reads more deliberate and less abrupt than a single fade.
 - For the landing/menu flow, the biggest improvement comes from stronger separation between headline, supporting text, and action group delays; otherwise the transition still feels like a single block appears at once.
 - The remaining abruptness was caused by architecture, not timing: welcome and menu were separate early-return branches, so the outgoing screen unmounted immediately. A persistent landing-stage is required for a true handoff.
+- Once the structural handoff is fixed, the next biggest quality gain comes from secondary motion layers: background breathing between landing states, a small button press beat before navigation, and a dedicated first-entry sidebar animation when entering the game.

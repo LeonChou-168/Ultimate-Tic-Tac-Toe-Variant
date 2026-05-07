@@ -189,6 +189,8 @@ export default function App() {
   const [landingView, setLandingView] = useState<LandingScreen>('welcome');
   const [landingTransition, setLandingTransition] = useState<'idle' | 'switching'>('idle');
   const [landingIncoming, setLandingIncoming] = useState<LandingScreen>('welcome');
+  const [landingPressed, setLandingPressed] = useState<string | null>(null);
+  const [gameEntryMotion, setGameEntryMotion] = useState(false);
   const [gameMode, setGameMode] = useState<GameMode>('human-vs-human');
   const [state, setState] = useState<GameState>(() => createInitialState());
   const [message, setMessage] = useState('欢迎来到终极井字棋变体。');
@@ -279,6 +281,15 @@ export default function App() {
       setLandingTransition('idle');
     }
   }, [screen]);
+
+  useEffect(() => {
+    if (!gameEntryMotion) {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => setGameEntryMotion(false), 820);
+    return () => window.clearTimeout(timeoutId);
+  }, [gameEntryMotion]);
 
   useEffect(() => {
     if (screen !== 'game' || replayMode || gameMode !== 'human-vs-ai' || aiPending) {
@@ -426,16 +437,24 @@ export default function App() {
     window.setTimeout(() => {
       setLandingView(nextScreen);
       setScreen(nextScreen);
+      setLandingPressed(null);
       window.setTimeout(() => {
         setLandingTransition('idle');
       }, 620);
     }, 220);
   };
 
+  const triggerLandingSwitch = (nextScreen: LandingScreen, source: string) => {
+    setLandingPressed(source);
+    window.setTimeout(() => switchLandingScreen(nextScreen), 170);
+  };
+
   const beginGame = (mode: GameMode) => {
     setGameMode(mode);
     setState(createInitialState());
     setScreen('game');
+    setGameEntryMotion(true);
+    setLandingPressed(null);
     setReplayMode(false);
     setReplayIndex(0);
     setAiPending(false);
@@ -495,10 +514,10 @@ export default function App() {
           <div className="eyebrow">Ultimate Tic-Tac-Toe Variant</div>
           <h1>欢迎来到终极井字棋变体</h1>
           <div className="welcome-actions">
-            <button type="button" className="hero-button primary" onClick={() => switchLandingScreen('menu')}>
+            <button type="button" className={`hero-button primary ${landingPressed === 'welcome-menu' ? 'is-pressing' : ''}`} onClick={() => triggerLandingSwitch('menu', 'welcome-menu')}>
               进入主菜单
             </button>
-            <button type="button" className="hero-button" onClick={() => beginGame('human-vs-human')}>
+            <button type="button" className={`hero-button ${landingPressed === 'welcome-direct' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('welcome-direct'); window.setTimeout(() => beginGame('human-vs-human'), 170); }}>
               直接开始双人对战
             </button>
           </div>
@@ -511,17 +530,17 @@ export default function App() {
         <div className="eyebrow">开始一局</div>
         <h1>选择你的对战方式</h1>
         <div className="menu-grid">
-          <button type="button" className="mode-card" onClick={() => beginGame('human-vs-human')}>
+          <button type="button" className={`mode-card ${landingPressed === 'menu-human' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-human'); window.setTimeout(() => beginGame('human-vs-human'), 170); }}>
             <strong>本地双人</strong>
             <span>两位玩家轮流在同一棋盘上对弈。</span>
           </button>
-          <button type="button" className="mode-card" onClick={() => beginGame('human-vs-ai')}>
+          <button type="button" className={`mode-card ${landingPressed === 'menu-ai' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-ai'); window.setTimeout(() => beginGame('human-vs-ai'), 170); }}>
             <strong>人机对战</strong>
             <span>你执黑先手，电脑执白应对，先体验一版轻量策略 AI。</span>
           </button>
         </div>
         <div className="welcome-actions">
-          <button type="button" className="hero-button" onClick={() => switchLandingScreen('welcome')}>
+          <button type="button" className={`hero-button ${landingPressed === 'menu-back' ? 'is-pressing' : ''}`} onClick={() => triggerLandingSwitch('welcome', 'menu-back')}>
             返回欢迎页
           </button>
         </div>
@@ -531,7 +550,7 @@ export default function App() {
 
   if (screen === 'welcome' || screen === 'menu') {
     return (
-      <main className={`landing-screen ${landingView === 'menu' ? 'menu-screen' : ''} ${landingTransition === 'switching' ? 'landing-transitioning' : ''}`}>
+      <main className={`landing-screen ${landingView === 'menu' ? 'menu-screen' : 'welcome-screen'} ${landingTransition === 'switching' ? 'landing-transitioning' : ''}`}>
         <div className="landing-stage">
           {renderLandingCard(landingView, landingTransition === 'switching' ? 'outgoing' : 'active')}
           {landingTransition === 'switching' && landingIncoming !== landingView ? renderLandingCard(landingIncoming, 'incoming') : null}
@@ -541,7 +560,7 @@ export default function App() {
   }
 
   return (
-    <main className={gameShellClass}>
+    <main className={`${gameShellClass} ${gameEntryMotion ? 'game-entering' : ''}`}>
       <section className="board-stage fullscreen-board" aria-label="游戏棋盘">
         <div className="board-frame board-frame-large coordinate-frame">
           <div className="board-axis board-axis-left" aria-hidden="true">

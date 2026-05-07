@@ -96,3 +96,6 @@
 - Reworked the welcome/main-menu handoff structurally: replaced the hard branch jump with a persistent landing stage that can animate outgoing and incoming cards through the transition.
 - Tuned the landing-card tier delays again so eyebrow, title, body/options, and actions reveal in clearer layers after the new structural handoff.
 - Re-verified after the landing-transition fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Added background-layer breathing and state-sensitive welcome/menu backdrop transitions, plus a press/release beat before landing-screen buttons trigger navigation.
+- Added a one-shot game-entry motion phase so the sidebar fades/slides in from right to left when a game begins.
+- Re-verified after the latest motion pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

@@ -60,6 +60,27 @@ button {
     radial-gradient(circle at top, rgba(255, 191, 71, 0.14), transparent 30%),
     radial-gradient(circle at 80% 80%, rgba(118, 204, 255, 0.12), transparent 28%);
   pointer-events: none;
+  transition: opacity 900ms cubic-bezier(0.18, 0.82, 0.16, 1), transform 1200ms cubic-bezier(0.18, 0.82, 0.16, 1), filter 1200ms ease;
+  animation: backgroundBreath 5.6s ease-in-out infinite alternate;
+}
+
+.welcome-screen::before {
+  opacity: 0.96;
+  transform: scale(1) translateX(0);
+  filter: saturate(1);
+}
+
+.menu-screen::before {
+  opacity: 0.84;
+  transform: scale(1.04) translateX(1.5%);
+  filter: saturate(1.08);
+}
+
+.landing-transitioning.welcome-screen::before,
+.landing-transitioning.menu-screen::before {
+  opacity: 0.72;
+  transform: scale(1.06);
+  filter: blur(2px) saturate(1.04);
 }
 
 .welcome-card {
@@ -161,6 +182,12 @@ button {
   transition: transform 180ms ease, background 180ms ease, border-color 180ms ease, opacity 180ms ease;
 }
 
+.hero-button.is-pressing,
+.mode-card.is-pressing {
+  transform: translateY(1px) scale(0.985);
+  filter: saturate(0.96);
+}
+
 .hero-button:hover,
 .mode-card:hover {
   transform: translateY(-2px);
@@ -244,6 +271,10 @@ button {
 .game-shell.sidebar-visible .control-sidebar {
   opacity: 1;
   transform: translateX(0);
+}
+
+.game-entering .control-sidebar {
+  animation: sidebarEnterFromRight 760ms cubic-bezier(0.18, 0.82, 0.16, 1) both;
 }
 
 .game-shell.sidebar-floating .control-sidebar:not(:hover):not(:focus-within) {
@@ -1345,6 +1376,35 @@ p {
     opacity: 1;
     transform: translateX(0);
     filter: blur(0);
+  }
+}
+
+@keyframes sidebarEnterFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(2.1rem);
+    filter: blur(5px);
+  }
+  55% {
+    opacity: 1;
+    transform: translateX(-0.18rem);
+    filter: blur(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes backgroundBreath {
+  from {
+    transform: scale(1) translateX(0);
+    filter: saturate(1);
+  }
+  to {
+    transform: scale(1.03) translateX(0.8%);
+    filter: saturate(1.06);
   }
 }
 
