@@ -42,6 +42,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 33. Correct status-card interpretation | complete | Change the three 对局状态 modules into horizontal-style cards stacked vertically. |
 | 34. Motion choreography polish | complete | Make page/sidebar transitions calmer with layered reveals and left-to-right content entrances. |
 | 35. Finer motion staggering | complete | Separate title/body/actions more clearly and strengthen left-to-right reveal timing. |
+| 36. Landing-stage transition handoff | complete | Replace the hard welcome/menu screen swap with a persistent landing stage and outgoing/incoming transition choreography. |
 
 ## Decisions
 

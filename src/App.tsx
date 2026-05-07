@@ -16,6 +16,7 @@ import { playSound, setSoundVolume } from './sound';
 
 type MessageTone = 'info' | 'success' | 'warning';
 type Screen = 'welcome' | 'menu' | 'game';
+type LandingScreen = Extract<Screen, 'welcome' | 'menu'>;
 
 type TutorialStep = {
   key: 'status' | 'battlefield' | 'board' | 'controls';
@@ -185,6 +186,9 @@ function statusHeadline(state: GameState): string {
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>('welcome');
+  const [landingView, setLandingView] = useState<LandingScreen>('welcome');
+  const [landingTransition, setLandingTransition] = useState<'idle' | 'switching'>('idle');
+  const [landingIncoming, setLandingIncoming] = useState<LandingScreen>('welcome');
   const [gameMode, setGameMode] = useState<GameMode>('human-vs-human');
   const [state, setState] = useState<GameState>(() => createInitialState());
   const [message, setMessage] = useState('欢迎来到终极井字棋变体。');
@@ -267,6 +271,14 @@ export default function App() {
       setTutorialStepIndex((index) => Math.max(index, 1));
     }
   }, [manualSettleAvailable, replayMode, showTutorial, state.history.length, state.pendingDrawOffer, state.status]);
+
+  useEffect(() => {
+    if (screen === 'welcome' || screen === 'menu') {
+      setLandingView(screen);
+      setLandingIncoming(screen);
+      setLandingTransition('idle');
+    }
+  }, [screen]);
 
   useEffect(() => {
     if (screen !== 'game' || replayMode || gameMode !== 'human-vs-ai' || aiPending) {
@@ -402,6 +414,24 @@ export default function App() {
     }
   };
 
+  const switchLandingScreen = (nextScreen: LandingScreen) => {
+    if (screen === 'game' || (landingView === nextScreen && landingTransition === 'idle')) {
+      setScreen(nextScreen);
+      return;
+    }
+
+    setLandingIncoming(nextScreen);
+    setLandingTransition('switching');
+
+    window.setTimeout(() => {
+      setLandingView(nextScreen);
+      setScreen(nextScreen);
+      window.setTimeout(() => {
+        setLandingTransition('idle');
+      }, 620);
+    }, 220);
+  };
+
   const beginGame = (mode: GameMode) => {
     setGameMode(mode);
     setState(createInitialState());
@@ -458,14 +488,14 @@ export default function App() {
     { key: 'tutorial', label: '教程', summary: '查看分步教程与新手引导' },
   ];
 
-  if (screen === 'welcome') {
-    return (
-      <main className="landing-screen">
-        <section className="welcome-card">
+  const renderLandingCard = (view: LandingScreen, phase: 'active' | 'incoming' | 'outgoing') => {
+    if (view === 'welcome') {
+      return (
+        <section className={`welcome-card landing-card-stage landing-${phase}`}>
           <div className="eyebrow">Ultimate Tic-Tac-Toe Variant</div>
           <h1>欢迎来到终极井字棋变体</h1>
           <div className="welcome-actions">
-            <button type="button" className="hero-button primary" onClick={() => setScreen('menu')}>
+            <button type="button" className="hero-button primary" onClick={() => switchLandingScreen('menu')}>
               进入主菜单
             </button>
             <button type="button" className="hero-button" onClick={() => beginGame('human-vs-human')}>
@@ -473,32 +503,39 @@ export default function App() {
             </button>
           </div>
         </section>
-      </main>
-    );
-  }
+      );
+    }
 
-  if (screen === 'menu') {
     return (
-      <main className="landing-screen menu-screen">
-        <section className="welcome-card menu-card">
-          <div className="eyebrow">开始一局</div>
-          <h1>选择你的对战方式</h1>
-          <div className="menu-grid">
-            <button type="button" className="mode-card" onClick={() => beginGame('human-vs-human')}>
-              <strong>本地双人</strong>
-              <span>两位玩家轮流在同一棋盘上对弈。</span>
-            </button>
-            <button type="button" className="mode-card" onClick={() => beginGame('human-vs-ai')}>
-              <strong>人机对战</strong>
-              <span>你执黑先手，电脑执白应对，先体验一版轻量策略 AI。</span>
-            </button>
-          </div>
-          <div className="welcome-actions">
-            <button type="button" className="hero-button" onClick={() => setScreen('welcome')}>
-              返回欢迎页
-            </button>
-          </div>
-        </section>
+      <section className={`welcome-card menu-card landing-card-stage landing-${phase}`}>
+        <div className="eyebrow">开始一局</div>
+        <h1>选择你的对战方式</h1>
+        <div className="menu-grid">
+          <button type="button" className="mode-card" onClick={() => beginGame('human-vs-human')}>
+            <strong>本地双人</strong>
+            <span>两位玩家轮流在同一棋盘上对弈。</span>
+          </button>
+          <button type="button" className="mode-card" onClick={() => beginGame('human-vs-ai')}>
+            <strong>人机对战</strong>
+            <span>你执黑先手，电脑执白应对，先体验一版轻量策略 AI。</span>
+          </button>
+        </div>
+        <div className="welcome-actions">
+          <button type="button" className="hero-button" onClick={() => switchLandingScreen('welcome')}>
+            返回欢迎页
+          </button>
+        </div>
+      </section>
+    );
+  };
+
+  if (screen === 'welcome' || screen === 'menu') {
+    return (
+      <main className={`landing-screen ${landingView === 'menu' ? 'menu-screen' : ''} ${landingTransition === 'switching' ? 'landing-transitioning' : ''}`}>
+        <div className="landing-stage">
+          {renderLandingCard(landingView, landingTransition === 'switching' ? 'outgoing' : 'active')}
+          {landingTransition === 'switching' && landingIncoming !== landingView ? renderLandingCard(landingIncoming, 'incoming') : null}
+        </div>
       </main>
     );
   }

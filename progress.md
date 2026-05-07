@@ -93,3 +93,6 @@
 - Re-verified after the motion polish pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Continued the finer motion pass: strengthened text left-to-right reveal, separated title/body/action delays more clearly, and made the welcome/menu card content stagger more deliberately.
 - Re-verified after the finer motion pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Reworked the welcome/main-menu handoff structurally: replaced the hard branch jump with a persistent landing stage that can animate outgoing and incoming cards through the transition.
+- Tuned the landing-card tier delays again so eyebrow, title, body/options, and actions reveal in clearer layers after the new structural handoff.
+- Re-verified after the landing-transition fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
