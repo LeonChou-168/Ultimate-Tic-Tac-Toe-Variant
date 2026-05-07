@@ -46,8 +46,8 @@ button {
 
 .landing-stage {
   position: relative;
-  width: min(100%, 70rem);
-  min-height: min(32rem, 78vh);
+  width: min(100%, 66rem);
+  min-height: min(31rem, 74vh);
   display: grid;
   place-items: center;
 }
@@ -57,12 +57,12 @@ button {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 22% 16%, rgba(255, 191, 71, 0.18), transparent 26%),
-    radial-gradient(circle at 80% 78%, rgba(118, 204, 255, 0.12), transparent 30%),
-    linear-gradient(135deg, rgba(255, 244, 224, 0.02), rgba(0, 0, 0, 0));
+    radial-gradient(54rem 36rem at 18% 18%, rgba(255, 191, 71, 0.14), transparent 52%),
+    radial-gradient(42rem 28rem at 82% 82%, rgba(118, 204, 255, 0.08), transparent 48%),
+    linear-gradient(135deg, rgba(255, 244, 224, 0.016), rgba(0, 0, 0, 0));
   pointer-events: none;
-  transition: opacity 900ms cubic-bezier(0.18, 0.82, 0.16, 1), transform 1200ms cubic-bezier(0.18, 0.82, 0.16, 1), filter 1200ms ease;
-  animation: backgroundBreath 5.6s ease-in-out infinite alternate;
+  transition: opacity 1100ms cubic-bezier(0.18, 0.82, 0.16, 1), transform 1400ms cubic-bezier(0.18, 0.82, 0.16, 1), filter 1400ms ease;
+  animation: backgroundBreath 7.4s ease-in-out infinite alternate;
 }
 
 .landing-screen::after {
@@ -70,56 +70,60 @@ button {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.48;
-  transition: opacity 900ms cubic-bezier(0.18, 0.82, 0.16, 1), transform 1200ms cubic-bezier(0.18, 0.82, 0.16, 1), filter 1200ms ease;
+  opacity: 0.4;
+  transition: opacity 1100ms cubic-bezier(0.18, 0.82, 0.16, 1), transform 1400ms cubic-bezier(0.18, 0.82, 0.16, 1), filter 1400ms ease;
 }
 
 .welcome-screen::before {
-  opacity: 0.98;
-  transform: scale(1.01) translateX(-0.8%);
-  filter: saturate(1.02);
+  opacity: 0.92;
+  transform: scale(1.015) translateX(-1.4%);
+  filter: saturate(1.01);
 }
 
 .welcome-screen::after {
   background:
-    radial-gradient(circle at 16% 30%, rgba(255, 220, 160, 0.18), transparent 24%),
-    radial-gradient(circle at 76% 18%, rgba(168, 110, 58, 0.1), transparent 30%);
-  transform: scale(1.02) translateX(-1.2%);
+    radial-gradient(34rem 24rem at 14% 34%, rgba(255, 221, 172, 0.16), transparent 54%),
+    linear-gradient(115deg, rgba(161, 103, 51, 0.08), transparent 46%);
+  transform: scale(1.03) translateX(-1.6%);
 }
 
 .menu-screen::before {
-  opacity: 0.86;
-  transform: scale(1.05) translateX(1.8%);
-  filter: saturate(1.12);
+  opacity: 0.84;
+  transform: scale(1.04) translateX(2.2%);
+  filter: saturate(1.06);
 }
 
 .menu-screen::after {
   background:
-    radial-gradient(circle at 82% 24%, rgba(118, 204, 255, 0.16), transparent 24%),
-    radial-gradient(circle at 28% 82%, rgba(72, 112, 176, 0.08), transparent 30%);
-  transform: scale(1.04) translateX(1.5%);
+    radial-gradient(34rem 24rem at 84% 22%, rgba(118, 204, 255, 0.14), transparent 52%),
+    linear-gradient(245deg, rgba(76, 109, 167, 0.08), transparent 46%);
+  transform: scale(1.04) translateX(2%);
 }
 
 .landing-transitioning.welcome-screen::before,
 .landing-transitioning.menu-screen::before,
 .landing-transitioning.welcome-screen::after,
 .landing-transitioning.menu-screen::after {
-  opacity: 0.72;
-  transform: scale(1.06);
-  filter: blur(2px) saturate(1.04);
+  opacity: 0.76;
+  transform: scale(1.04);
+  filter: blur(1.2px) saturate(1.01);
 }
 
 .welcome-card {
-  width: min(100%, 60rem);
+  width: min(100%, 56rem);
   display: grid;
-  gap: 1.2rem;
-  padding: clamp(1.4rem, 3vw, 2.4rem);
+  gap: 1rem;
+  padding: clamp(1.35rem, 2.8vw, 2.15rem) clamp(1.45rem, 3.2vw, 2.6rem);
   border-radius: 2rem;
   border: 1px solid rgba(214, 167, 86, 0.2);
-  background: linear-gradient(145deg, rgba(255, 244, 224, 0.08), rgba(17, 11, 7, 0.82));
-  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.36);
-  backdrop-filter: blur(20px);
+  background: linear-gradient(148deg, rgba(255, 244, 224, 0.068), rgba(17, 11, 7, 0.8));
+  box-shadow: 0 1.6rem 4.2rem rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(18px);
   animation: panelReveal 980ms cubic-bezier(0.18, 0.82, 0.16, 1);
+}
+
+.welcome-card .eyebrow {
+  margin-bottom: 0.1rem;
 }
 
 .landing-card-stage {
@@ -201,10 +205,19 @@ button {
 }
 
 .animated-eyebrow .text-reveal-char { animation-duration: 420ms; }
-.animated-title .text-reveal-char { animation-duration: 560ms; }
-.animated-body .text-reveal-char,
-.animated-button-text .text-reveal-char,
-.animated-card-title .text-reveal-char { animation-duration: 500ms; }
+.animated-title .text-reveal-char { animation-duration: 680ms; }
+.animated-body .text-reveal-char { animation-duration: 560ms; }
+.animated-button-text .text-reveal-char { animation-duration: 360ms; }
+.animated-card-title .text-reveal-char { animation-duration: 460ms; }
+
+.welcome-card h1 .text-reveal-char {
+  animation-timing-function: cubic-bezier(0.16, 0.84, 0.14, 1);
+}
+
+.hero-button .text-reveal-char,
+.mode-card strong .text-reveal-char {
+  animation-timing-function: cubic-bezier(0.2, 0.9, 0.18, 1);
+}
 
 .welcome-card h1,
 .menu-card h1 {
@@ -215,6 +228,7 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
+  padding-top: 0.25rem;
 }
 
 .hero-button,
@@ -247,13 +261,13 @@ button {
 }
 
 .menu-card {
-  width: min(100%, 70rem);
+  width: min(100%, 58rem);
 }
 
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 0.9rem;
 }
 
 .mode-card {
@@ -1367,8 +1381,8 @@ p {
 @keyframes panelReveal {
   from {
     opacity: 0;
-    transform: translateY(1.15rem) scale(0.988);
-    filter: blur(5px);
+    transform: translateY(0.9rem) scale(0.992);
+    filter: blur(3px);
   }
   to {
     opacity: 1;
@@ -1393,8 +1407,8 @@ p {
 @keyframes contentReveal {
   from {
     opacity: 0;
-    transform: translateX(-1rem);
-    filter: blur(4px);
+    transform: translateX(-0.75rem);
+    filter: blur(2.6px);
   }
   to {
     opacity: 1;
@@ -1453,8 +1467,8 @@ p {
     filter: saturate(1);
   }
   to {
-    transform: scale(1.03) translateX(0.8%);
-    filter: saturate(1.06);
+    transform: scale(1.018) translateX(0.45%);
+    filter: saturate(1.03);
   }
 }
 
@@ -1479,8 +1493,8 @@ p {
 @keyframes charReveal {
   from {
     opacity: 0;
-    transform: translateX(-0.45rem);
-    filter: blur(3px);
+    transform: translateX(-0.3rem);
+    filter: blur(2.2px);
   }
   to {
     opacity: 1;

@@ -101,3 +101,5 @@
 - Re-verified after the latest motion pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Upgraded non-game text to per-character reveal, made welcome/menu backgrounds more directionally distinct with separate light fields, and added a subtle board settle-in that pairs with the sidebar’s game-entry motion.
 - Re-verified after the high-fidelity motion pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Rebalanced the non-game landing composition to feel less heavy and less centered, softened transition intensity to reduce eye strain, and split per-character timing more deliberately by content role.
+- Re-verified after the landing composition refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

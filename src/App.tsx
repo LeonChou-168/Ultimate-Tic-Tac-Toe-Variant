@@ -73,7 +73,7 @@ function renderAnimatedText(text: string, className: string) {
   return (
     <span className={className} aria-label={text}>
       {Array.from(text).map((char, index) => (
-        <span className="text-reveal-char" style={{ animationDelay: `${index * 28}ms` }} key={`${text}-${index}`} aria-hidden="true">
+        <span className="text-reveal-char" style={{ animationDelay: `${index * (className.includes('animated-title') ? 34 : className.includes('animated-button-text') ? 18 : className.includes('animated-body') ? 24 : 22)}ms` }} key={`${text}-${index}`} aria-hidden="true">
           {char === ' ' ? '\u00A0' : char}
         </span>
       ))}
