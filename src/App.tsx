@@ -69,6 +69,18 @@ function actionMessage(message: string): string {
   return message || '第一手可在任意位置落子。';
 }
 
+function renderAnimatedText(text: string, className: string) {
+  return (
+    <span className={className} aria-label={text}>
+      {Array.from(text).map((char, index) => (
+        <span className="text-reveal-char" style={{ animationDelay: `${index * 28}ms` }} key={`${text}-${index}`} aria-hidden="true">
+          {char === ' ' ? '\u00A0' : char}
+        </span>
+      ))}
+    </span>
+  );
+}
+
 const POSITION_LABELS = ['左上', '上中', '右上', '左中', '正中', '右中', '左下', '下中', '右下'] as const;
 const AXIS_LETTERS = ['I', 'H', 'G', 'F', 'E', 'D', 'C', 'B', 'A'] as const;
 
@@ -511,14 +523,14 @@ export default function App() {
     if (view === 'welcome') {
       return (
         <section className={`welcome-card landing-card-stage landing-${phase}`}>
-          <div className="eyebrow">Ultimate Tic-Tac-Toe Variant</div>
-          <h1>欢迎来到终极井字棋变体</h1>
+          <div className="eyebrow">{renderAnimatedText('Ultimate Tic-Tac-Toe Variant', 'animated-text-line animated-eyebrow')}</div>
+          <h1>{renderAnimatedText('欢迎来到终极井字棋变体', 'animated-text-line animated-title')}</h1>
           <div className="welcome-actions">
             <button type="button" className={`hero-button primary ${landingPressed === 'welcome-menu' ? 'is-pressing' : ''}`} onClick={() => triggerLandingSwitch('menu', 'welcome-menu')}>
-              进入主菜单
+              {renderAnimatedText('进入主菜单', 'animated-text-line animated-button-text')}
             </button>
             <button type="button" className={`hero-button ${landingPressed === 'welcome-direct' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('welcome-direct'); window.setTimeout(() => beginGame('human-vs-human'), 170); }}>
-              直接开始双人对战
+              {renderAnimatedText('直接开始双人对战', 'animated-text-line animated-button-text')}
             </button>
           </div>
         </section>
@@ -527,21 +539,21 @@ export default function App() {
 
     return (
       <section className={`welcome-card menu-card landing-card-stage landing-${phase}`}>
-        <div className="eyebrow">开始一局</div>
-        <h1>选择你的对战方式</h1>
+        <div className="eyebrow">{renderAnimatedText('开始一局', 'animated-text-line animated-eyebrow')}</div>
+        <h1>{renderAnimatedText('选择你的对战方式', 'animated-text-line animated-title')}</h1>
         <div className="menu-grid">
           <button type="button" className={`mode-card ${landingPressed === 'menu-human' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-human'); window.setTimeout(() => beginGame('human-vs-human'), 170); }}>
-            <strong>本地双人</strong>
-            <span>两位玩家轮流在同一棋盘上对弈。</span>
+            <strong>{renderAnimatedText('本地双人', 'animated-text-line animated-card-title')}</strong>
+            <span>{renderAnimatedText('两位玩家轮流在同一棋盘上对弈。', 'animated-text-line animated-body')}</span>
           </button>
           <button type="button" className={`mode-card ${landingPressed === 'menu-ai' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-ai'); window.setTimeout(() => beginGame('human-vs-ai'), 170); }}>
-            <strong>人机对战</strong>
-            <span>你执黑先手，电脑执白应对，先体验一版轻量策略 AI。</span>
+            <strong>{renderAnimatedText('人机对战', 'animated-text-line animated-card-title')}</strong>
+            <span>{renderAnimatedText('你执黑先手，电脑执白应对，先体验一版轻量策略 AI。', 'animated-text-line animated-body')}</span>
           </button>
         </div>
         <div className="welcome-actions">
           <button type="button" className={`hero-button ${landingPressed === 'menu-back' ? 'is-pressing' : ''}`} onClick={() => triggerLandingSwitch('welcome', 'menu-back')}>
-            返回欢迎页
+            {renderAnimatedText('返回欢迎页', 'animated-text-line animated-button-text')}
           </button>
         </div>
       </section>

@@ -57,27 +57,53 @@ button {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at top, rgba(255, 191, 71, 0.14), transparent 30%),
-    radial-gradient(circle at 80% 80%, rgba(118, 204, 255, 0.12), transparent 28%);
+    radial-gradient(circle at 22% 16%, rgba(255, 191, 71, 0.18), transparent 26%),
+    radial-gradient(circle at 80% 78%, rgba(118, 204, 255, 0.12), transparent 30%),
+    linear-gradient(135deg, rgba(255, 244, 224, 0.02), rgba(0, 0, 0, 0));
   pointer-events: none;
   transition: opacity 900ms cubic-bezier(0.18, 0.82, 0.16, 1), transform 1200ms cubic-bezier(0.18, 0.82, 0.16, 1), filter 1200ms ease;
   animation: backgroundBreath 5.6s ease-in-out infinite alternate;
 }
 
+.landing-screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.48;
+  transition: opacity 900ms cubic-bezier(0.18, 0.82, 0.16, 1), transform 1200ms cubic-bezier(0.18, 0.82, 0.16, 1), filter 1200ms ease;
+}
+
 .welcome-screen::before {
-  opacity: 0.96;
-  transform: scale(1) translateX(0);
-  filter: saturate(1);
+  opacity: 0.98;
+  transform: scale(1.01) translateX(-0.8%);
+  filter: saturate(1.02);
+}
+
+.welcome-screen::after {
+  background:
+    radial-gradient(circle at 16% 30%, rgba(255, 220, 160, 0.18), transparent 24%),
+    radial-gradient(circle at 76% 18%, rgba(168, 110, 58, 0.1), transparent 30%);
+  transform: scale(1.02) translateX(-1.2%);
 }
 
 .menu-screen::before {
-  opacity: 0.84;
+  opacity: 0.86;
+  transform: scale(1.05) translateX(1.8%);
+  filter: saturate(1.12);
+}
+
+.menu-screen::after {
+  background:
+    radial-gradient(circle at 82% 24%, rgba(118, 204, 255, 0.16), transparent 24%),
+    radial-gradient(circle at 28% 82%, rgba(72, 112, 176, 0.08), transparent 30%);
   transform: scale(1.04) translateX(1.5%);
-  filter: saturate(1.08);
 }
 
 .landing-transitioning.welcome-screen::before,
-.landing-transitioning.menu-screen::before {
+.landing-transitioning.menu-screen::before,
+.landing-transitioning.welcome-screen::after,
+.landing-transitioning.menu-screen::after {
   opacity: 0.72;
   transform: scale(1.06);
   filter: blur(2px) saturate(1.04);
@@ -159,6 +185,26 @@ button {
 .menu-card > .welcome-actions {
   animation-delay: 640ms;
 }
+
+.animated-text-line {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+.text-reveal-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(-0.45rem);
+  filter: blur(3px);
+  animation: charReveal 520ms cubic-bezier(0.18, 0.82, 0.16, 1) forwards;
+}
+
+.animated-eyebrow .text-reveal-char { animation-duration: 420ms; }
+.animated-title .text-reveal-char { animation-duration: 560ms; }
+.animated-body .text-reveal-char,
+.animated-button-text .text-reveal-char,
+.animated-card-title .text-reveal-char { animation-duration: 500ms; }
 
 .welcome-card h1,
 .menu-card h1 {
@@ -275,6 +321,10 @@ button {
 
 .game-entering .control-sidebar {
   animation: sidebarEnterFromRight 760ms cubic-bezier(0.18, 0.82, 0.16, 1) both;
+}
+
+.game-entering .board-frame-large {
+  animation: boardSettleIn 820ms cubic-bezier(0.18, 0.82, 0.16, 1) both;
 }
 
 .game-shell.sidebar-floating .control-sidebar:not(:hover):not(:focus-within) {
@@ -1405,6 +1455,37 @@ p {
   to {
     transform: scale(1.03) translateX(0.8%);
     filter: saturate(1.06);
+  }
+}
+
+@keyframes boardSettleIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.85rem) scale(0.988);
+    filter: blur(4px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-0.08rem) scale(1.002);
+    filter: blur(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes charReveal {
+  from {
+    opacity: 0;
+    transform: translateX(-0.45rem);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
   }
 }
 

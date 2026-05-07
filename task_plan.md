@@ -44,6 +44,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 35. Finer motion staggering | complete | Separate title/body/actions more clearly and strengthen left-to-right reveal timing. |
 | 36. Landing-stage transition handoff | complete | Replace the hard welcome/menu screen swap with a persistent landing stage and outgoing/incoming transition choreography. |
 | 37. Background + press-beat + sidebar entry motion | complete | Add landing background breathing, button press/release before navigation, and right-to-left sidebar entrance on game start. |
+| 38. High-fidelity landing/game entry motion | complete | Add per-character landing text reveal, stronger directional light-field split, and a subtle board settle-in on game start. |
 
 ## Decisions
 

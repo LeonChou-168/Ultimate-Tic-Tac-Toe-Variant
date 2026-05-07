@@ -99,3 +99,5 @@
 - Added background-layer breathing and state-sensitive welcome/menu backdrop transitions, plus a press/release beat before landing-screen buttons trigger navigation.
 - Added a one-shot game-entry motion phase so the sidebar fades/slides in from right to left when a game begins.
 - Re-verified after the latest motion pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Upgraded non-game text to per-character reveal, made welcome/menu backgrounds more directionally distinct with separate light fields, and added a subtle board settle-in that pairs with the sidebar’s game-entry motion.
+- Re-verified after the high-fidelity motion pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
