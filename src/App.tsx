@@ -525,7 +525,7 @@ export default function App() {
         <section className={`welcome-card landing-card-stage landing-${phase}`}>
           <div className="eyebrow">{renderAnimatedText('Ultimate Tic-Tac-Toe Variant', 'animated-text-line animated-eyebrow')}</div>
           <h1>{renderAnimatedText('欢迎来到终极井字棋变体', 'animated-text-line animated-title')}</h1>
-          <div className="welcome-actions">
+          <div className="welcome-actions welcome-cta-row">
             <button type="button" className={`hero-button primary ${landingPressed === 'welcome-menu' ? 'is-pressing' : ''}`} onClick={() => triggerLandingSwitch('menu', 'welcome-menu')}>
               {renderAnimatedText('进入主菜单', 'animated-text-line animated-button-text')}
             </button>

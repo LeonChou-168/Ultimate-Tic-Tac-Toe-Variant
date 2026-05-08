@@ -46,6 +46,8 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 37. Background + press-beat + sidebar entry motion | complete | Add landing background breathing, button press/release before navigation, and right-to-left sidebar entrance on game start. |
 | 38. High-fidelity landing/game entry motion | complete | Add per-character landing text reveal, stronger directional light-field split, and a subtle board settle-in on game start. |
 | 39. Landing composition rebalance | complete | Make non-game pages more harmonious, reduce eye strain, and split character cadence by content role. |
+| 40. UX + typography cleanup | complete | Remove the duplicate board entry animation, tighten welcome CTA proportions, and widen module font differentiation. |
+| 40. CTA proportion + font-role system | complete | Narrow the welcome CTAs and introduce a cohesive multi-font system across major modules. |
 
 ## Decisions
 

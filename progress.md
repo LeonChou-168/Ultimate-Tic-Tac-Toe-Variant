@@ -103,3 +103,7 @@
 - Re-verified after the high-fidelity motion pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Rebalanced the non-game landing composition to feel less heavy and less centered, softened transition intensity to reduce eye strain, and split per-character timing more deliberately by content role.
 - Re-verified after the landing composition refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Fixed the double board-pop on game entry by removing the board frame’s overlapping baseline reveal path, tightened the welcome CTA proportions, and introduced a more varied multi-font system across landing, controls, content, and coordinate-like annotations.
+- Re-verified after the UX/typography pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Narrowed the two welcome-page CTAs with a dedicated row rule instead of relying on the broader shared button proportions, and introduced a restrained font-role system across landing, controls, status modules, and sidebar surfaces.
+- Re-verified after the CTA/typography pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

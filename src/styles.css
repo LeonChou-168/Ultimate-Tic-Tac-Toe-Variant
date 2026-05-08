@@ -2,6 +2,10 @@
   color: #f8efe1;
   background: #120d0a;
   font-family: Georgia, 'Songti SC', 'Noto Serif SC', serif;
+  --font-display: 'Didot', 'Bodoni MT', 'Iowan Old Style', 'Songti SC', serif;
+  --font-body: 'Baskerville', 'Garamond', 'Times New Roman', 'Songti SC', serif;
+  --font-ui: 'Avenir Next', 'Helvetica Neue', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+  --font-annotation: 'Courier Prime', 'SFMono-Regular', 'Menlo', monospace;
   --walnut: #5a351f;
   --walnut-dark: #241209;
   --gold: #d6a756;
@@ -231,6 +235,32 @@ button {
   padding-top: 0.25rem;
 }
 
+.welcome-card > .welcome-actions {
+  gap: 0.7rem;
+}
+
+.welcome-card > .welcome-actions .hero-button {
+  flex: 0 0 auto;
+  min-width: 10.2rem;
+  max-width: 11rem;
+  min-height: 3.85rem;
+  padding: 0.85rem 1rem;
+  justify-content: center;
+  text-align: center;
+}
+
+.welcome-cta-row {
+  gap: 0.65rem;
+}
+
+.welcome-cta-row .hero-button {
+  flex: 0 0 auto;
+  min-width: 10.4rem;
+  max-width: 12.8rem;
+  padding-inline: 0.95rem;
+  justify-content: center;
+}
+
 .hero-button,
 .mode-card {
   border: 1px solid rgba(214, 167, 86, 0.24);
@@ -240,6 +270,7 @@ button {
   padding: 0.95rem 1.2rem;
   cursor: pointer;
   transition: transform 180ms ease, background 180ms ease, border-color 180ms ease, opacity 180ms ease;
+  font-family: var(--font-ui);
 }
 
 .hero-button.is-pressing,
@@ -258,6 +289,12 @@ button {
   background: linear-gradient(135deg, #d8ab5d, #7a5427);
   color: #120d0a;
   font-weight: 700;
+}
+
+.hero-button {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
 .menu-card {
@@ -288,11 +325,59 @@ button {
 
 .mode-card strong {
   font-size: 1.15rem;
+  font-family: var(--font-display);
+  font-weight: 600;
 }
 
 .mode-card span {
   color: rgba(255, 245, 224, 0.72);
   line-height: 1.6;
+  font-family: var(--font-body);
+}
+
+.eyebrow,
+.insight-label,
+.tutorial-step-label,
+.rail-chip span,
+.rail-score span,
+.coord-pill,
+.board-axis span {
+  font-family: var(--font-ui);
+  letter-spacing: 0.08em;
+}
+
+.status-card strong,
+.feedback-card strong,
+.sidebar-entry-badge,
+.endgame-summary strong,
+.guide-panel strong,
+.settings-panel strong,
+.tutorial-panel strong {
+  font-family: var(--font-display);
+}
+
+.status-card small,
+.feedback-card p,
+.sidebar-entry small,
+.guide-list span,
+.setting-row small,
+.tutorial-copy p,
+.replay-copy,
+.endgame-summary p,
+.endgame-stat small,
+.action-card small,
+.insight-card small,
+.insight-card strong + small {
+  font-family: var(--font-body);
+}
+
+.rail-score strong,
+.compact-rail strong,
+.coord-pill,
+.replay-controls button,
+.sidebar-top-buttons button,
+.board-axis span {
+  font-family: var(--font-annotation);
 }
 
 .app-shell {
@@ -362,7 +447,6 @@ button {
   margin-left: auto;
   margin-right: 0;
   transition: transform 360ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 360ms ease, opacity 360ms ease;
-  animation: panelReveal 760ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .control-sidebar {
@@ -438,6 +522,7 @@ button {
   writing-mode: vertical-rl;
   text-orientation: mixed;
   letter-spacing: 0.05em;
+  font-family: var(--font-ui);
 }
 
 .mode-chip {
@@ -518,6 +603,8 @@ button {
 .sidebar-header h2 {
   margin: 0;
   font-size: 1.38rem;
+  font-family: var(--font-display);
+  font-weight: 600;
 }
 
 .sidebar-top-buttons {
@@ -545,11 +632,13 @@ button {
 .horizontal-status-card strong {
   font-size: 0.96rem;
   line-height: 1.4;
+  font-family: var(--font-ui);
 }
 
 .horizontal-status-card small {
   font-size: 0.78rem;
   line-height: 1.5;
+  font-family: var(--font-body);
 }
 
 .horizontal-status-card .battlefield-coord {
@@ -604,6 +693,7 @@ button {
   letter-spacing: 0.24em;
   text-transform: uppercase;
   font-size: 0.72rem;
+  font-family: var(--font-ui);
 }
 
 h1 {
@@ -612,12 +702,15 @@ h1 {
   line-height: 0.98;
   letter-spacing: -0.07em;
   text-shadow: 0 1.2rem 2rem rgba(0, 0, 0, 0.45);
+  font-family: var(--font-display);
+  font-weight: 600;
 }
 
 p {
   color: var(--mist);
   line-height: 1.7;
   margin: 0;
+  font-family: var(--font-body);
 }
 
 .score-card,
@@ -703,6 +796,21 @@ p {
 .status-card strong,
 .status-card small {
   display: block;
+}
+
+.status-card strong,
+.message-card strong,
+.insight-card strong,
+.score-card strong {
+  font-family: var(--font-ui);
+}
+
+.status-card small,
+.message-card small,
+.insight-card small,
+.sidebar-header p,
+.score-card span:last-child {
+  font-family: var(--font-body);
 }
 
 .top-actions {
