@@ -130,6 +130,11 @@ button {
   margin-bottom: 0.1rem;
 }
 
+.welcome-screen .welcome-card .eyebrow {
+  font-size: 0.94rem;
+  letter-spacing: 0.18em;
+}
+
 .landing-card-stage {
   position: absolute;
   inset: 0;
