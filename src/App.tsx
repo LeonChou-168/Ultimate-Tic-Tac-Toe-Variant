@@ -70,10 +70,20 @@ function actionMessage(message: string): string {
 }
 
 function renderAnimatedText(text: string, className: string) {
+  const delayStep = className.includes('landing-family')
+    ? 22
+    : className.includes('animated-title')
+      ? 34
+      : className.includes('animated-button-text')
+        ? 18
+        : className.includes('animated-body')
+          ? 24
+          : 22;
+
   return (
     <span className={className} aria-label={text}>
       {Array.from(text).map((char, index) => (
-        <span className="text-reveal-char" style={{ animationDelay: `${index * (className.includes('animated-title') ? 34 : className.includes('animated-button-text') ? 18 : className.includes('animated-body') ? 24 : 22)}ms` }} key={`${text}-${index}`} aria-hidden="true">
+        <span className="text-reveal-char" style={{ animationDelay: `${index * delayStep}ms` }} key={`${text}-${index}`} aria-hidden="true">
           {char === ' ' ? '\u00A0' : char}
         </span>
       ))}
@@ -523,8 +533,8 @@ export default function App() {
     if (view === 'welcome') {
       return (
         <section className={`welcome-card landing-card-stage landing-${phase}`}>
-          <div className="eyebrow">{renderAnimatedText('Ultimate Tic-Tac-Toe Variant', 'animated-text-line animated-eyebrow')}</div>
-          <h1>{renderAnimatedText('欢迎来到终极井字棋变体', 'animated-text-line animated-title animated-eyebrow')}</h1>
+          <div className="eyebrow">{renderAnimatedText('Ultimate Tic-Tac-Toe Variant', 'animated-text-line animated-eyebrow landing-family')}</div>
+          <h1>{renderAnimatedText('欢迎来到终极井字棋变体', 'animated-text-line animated-title animated-eyebrow landing-family')}</h1>
           <div className="welcome-actions welcome-cta-row">
             <button type="button" className={`hero-button primary ${landingPressed === 'welcome-menu' ? 'is-pressing' : ''}`} onClick={() => triggerLandingSwitch('menu', 'welcome-menu')}>
               {renderAnimatedText('进入主菜单', 'animated-text-line animated-button-text')}
@@ -539,8 +549,8 @@ export default function App() {
 
     return (
       <section className={`welcome-card menu-card landing-card-stage landing-${phase}`}>
-        <div className="eyebrow">{renderAnimatedText('开始一局', 'animated-text-line animated-eyebrow')}</div>
-        <h1>{renderAnimatedText('选择你的对战方式', 'animated-text-line animated-title animated-eyebrow')}</h1>
+        <div className="eyebrow">{renderAnimatedText('开始一局', 'animated-text-line animated-eyebrow landing-family')}</div>
+        <h1>{renderAnimatedText('选择你的对战方式', 'animated-text-line animated-title animated-eyebrow landing-family')}</h1>
         <div className="menu-grid">
           <button type="button" className={`mode-card ${landingPressed === 'menu-human' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-human'); window.setTimeout(() => beginGame('human-vs-human'), 170); }}>
             <strong>{renderAnimatedText('本地双人', 'animated-text-line animated-card-title')}</strong>

@@ -132,7 +132,7 @@ button {
 
 .welcome-screen .welcome-card .eyebrow {
   font-size: 0.94rem;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
 }
 
 .landing-card-stage {
@@ -218,6 +218,15 @@ button {
 .animated-body .text-reveal-char { animation-duration: 560ms; }
 .animated-button-text .text-reveal-char { animation-duration: 360ms; }
 .animated-card-title .text-reveal-char { animation-duration: 460ms; }
+
+.landing-family {
+  letter-spacing: 0.12em;
+}
+
+.landing-family .text-reveal-char {
+  animation-duration: 460ms;
+  animation-timing-function: cubic-bezier(0.16, 0.84, 0.14, 1);
+}
 
 .welcome-card h1 .text-reveal-char {
   animation-timing-function: cubic-bezier(0.16, 0.84, 0.14, 1);
