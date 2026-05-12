@@ -107,3 +107,5 @@
 - Re-verified after the UX/typography pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Narrowed the two welcome-page CTAs with a dedicated row rule instead of relying on the broader shared button proportions, and introduced a restrained font-role system across landing, controls, status modules, and sidebar surfaces.
 - Re-verified after the CTA/typography pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Performed a non-destructive repository normalization pass: moved root spec/product markdown files into `docs/specs/`, moved the debug screenshot into `docs/images/`, and updated README/planning references to the new structure.
+- Re-verified after the repository cleanup: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

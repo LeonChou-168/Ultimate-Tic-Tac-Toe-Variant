@@ -7,7 +7,7 @@
 
 ## Specification Notes
 
-- Spec source: `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-Toe Variant 规格说明书.md`.
+- Spec source: `docs/specs/Ultimate Tic-Tac-Toe Variant 规格说明书.md`.
 - P0/P1 game-core rules include: first move anywhere, subsequent projection to previous cell index, free play when projected board is occupied, occupied small boards forbid further moves, automatic settlement when no unoccupied board has empty cells, manual settlement when every unoccupied board can no longer produce a winner, occupied-board count decides winner, resignation, and up to three draw offers per side.
 - Visual/online/backend requirements are broader than this first milestone; current implementation covers a frontend-first local-play app and reusable core game logic.
 
@@ -83,3 +83,4 @@
 - Eye strain on these landing screens came less from animation count and more from proportion/energy balance: oversized centered cards, overly similar character timing across roles, and transition blur/saturation peaks that were slightly too hot.
 - The “board pops twice” bug was caused by two entrance animations hitting the same element: `.board-frame-large` still had a baseline `panelReveal` while game entry also applied `boardSettleIn`.
 - The welcome CTAs needed their own sizing rule instead of inheriting the general button rhythm, and typography diversity works best as a small role-based system (display/body/UI) rather than ad hoc font changes per element.
+- The repository was already close to a standard app layout; the real cleanup value came from reducing top-level clutter by moving product/spec docs under `docs/specs/` and debug imagery under `docs/images/` while leaving generated/workflow files intact.

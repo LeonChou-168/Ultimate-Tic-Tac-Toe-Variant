@@ -1,7 +1,7 @@
 # Ultimate Tic-Tac-Toe Variant Task Plan
 
 ## Goal
-Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-Toe Variant 规格说明书.md` into the project and verify the result.
+Implement the requirements from `docs/specs/Ultimate Tic-Tac-Toe Variant 规格说明书.md` into the project and verify the result.
 
 ## Phases
 
@@ -48,6 +48,7 @@ Implement the requirements from `/Users/zhouchenlong/Desktop/Ultimate Tic-Tac-To
 | 39. Landing composition rebalance | complete | Make non-game pages more harmonious, reduce eye strain, and split character cadence by content role. |
 | 40. UX + typography cleanup | complete | Remove the duplicate board entry animation, tighten welcome CTA proportions, and widen module font differentiation. |
 | 40. CTA proportion + font-role system | complete | Narrow the welcome CTAs and introduce a cohesive multi-font system across major modules. |
+| 41. Non-destructive repo normalization | complete | Move docs/media into a cleaner GitHub-style structure without deleting files and update references. |
 
 ## Decisions
 

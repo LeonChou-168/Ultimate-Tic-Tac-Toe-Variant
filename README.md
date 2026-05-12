@@ -1,6 +1,6 @@
 # Ultimate Tic-Tac-Toe Variant
 
-根据 `Ultimate Tic-Tac-Toe Variant 规格说明书.md` 实现的 Web 版终极井字棋变体首个可运行里程碑。
+根据 `docs/specs/Ultimate Tic-Tac-Toe Variant 规格说明书.md` 实现的 Web 版终极井字棋变体首个可运行里程碑。
 
 ## 已实现
 
@@ -136,6 +136,15 @@ npm run build
 ## 项目结构
 
 ```text
+bin/
+├── uttv.js              # 全局 CLI 入口
+docs/
+├── images/
+│   └── sidebar-bug.png  # 调试截图保留归档
+├── specs/
+│   ├── Ultimate Tic-Tac-Toe Variant 规格说明书.md
+│   └── Ultimate Tic-Tac-Toe Variant.md
+└── 联机服务器教程.md
 src/
 ├── App.tsx              # 游戏 UI 与交互
 ├── game/
