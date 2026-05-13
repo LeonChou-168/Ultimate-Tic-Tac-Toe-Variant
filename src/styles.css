@@ -254,6 +254,8 @@ button {
 
 .landing-split-heading .split-char {
   display: inline-block;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 .welcome-actions {

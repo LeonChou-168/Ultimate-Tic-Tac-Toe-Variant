@@ -113,3 +113,5 @@
 - Re-verified after the GitHub-standardization pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Integrated a local GSAP-based `SplitText` component under `src/components/` and replaced the two landing-page Chinese headings with the new animation path while preserving the existing headline styling.
 - Installed `gsap` and `@gsap/react`, then re-verified with clean diagnostics, passing tests, and a successful production build.
+- Retuned the landing SplitText headings to feel slower, lighter, and more layered, and updated the component/usage so the same entrance effect replays cleanly when returning to the landing interfaces.
+- Re-verified after the SplitText motion refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

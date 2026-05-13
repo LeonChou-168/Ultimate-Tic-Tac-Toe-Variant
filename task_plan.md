@@ -51,6 +51,7 @@ Implement the requirements from `docs/specs/Ultimate Tic-Tac-Toe Variant 规格�
 | 41. Non-destructive repo normalization | complete | Move docs/media into a cleaner GitHub-style structure without deleting files and update references. |
 | 42. GitHub-standard metadata pass | complete | Add community files, issue/PR templates, docs index, and repo-local ignore hygiene without deleting files. |
 | 43. GSAP SplitText heading integration | complete | Integrate a local SplitText component and replace the two landing-page Chinese headings with the requested GSAP-based animation. |
+| 44. SplitText motion refinement | complete | Make the landing SplitText headings slower/lighter/more layered and ensure the effect replays when returning to landing screens. |
 
 ## Decisions
 

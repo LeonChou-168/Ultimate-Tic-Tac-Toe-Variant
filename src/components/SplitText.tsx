@@ -41,6 +41,7 @@ interface SplitTextProps {
   rootMargin?: string;
   textAlign?: 'left' | 'center' | 'right' | 'start' | 'end';
   tag?: SplitTag;
+  replay?: boolean;
   onLetterAnimationComplete?: () => void;
 }
 
@@ -71,6 +72,7 @@ function SplitText({
   rootMargin = '-100px',
   textAlign = 'center',
   tag = 'p',
+  replay = false,
   onLetterAnimationComplete,
 }: SplitTextProps) {
   const ref = useRef<SplitElement | null>(null);
@@ -81,6 +83,12 @@ function SplitText({
   useEffect(() => {
     onCompleteRef.current = onLetterAnimationComplete;
   }, [onLetterAnimationComplete]);
+
+  useEffect(() => {
+    if (replay) {
+      animationCompletedRef.current = false;
+    }
+  }, [replay, text, splitType, delay, duration, ease, threshold, rootMargin]);
 
   useEffect(() => {
     if (document.fonts.status === 'loaded') {
@@ -99,7 +107,7 @@ function SplitText({
         return;
       }
 
-      if (animationCompletedRef.current) {
+      if (animationCompletedRef.current && !replay) {
         return;
       }
 

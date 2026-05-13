@@ -536,18 +536,20 @@ export default function App() {
         <section className={`welcome-card landing-card-stage landing-${phase}`}>
           <div className="eyebrow">{renderAnimatedText('Ultimate Tic-Tac-Toe Variant', 'animated-text-line animated-eyebrow landing-family')}</div>
           <SplitText
+            key={`welcome-heading-${phase}-${landingTransition}`}
             text="欢迎来到终极井字棋变体"
             tag="h1"
             className="landing-split-heading"
-            delay={38}
-            duration={0.8}
-            ease="power3.out"
+            delay={54}
+            duration={1.02}
+            ease="power2.out"
             splitType="chars"
-            from={{ opacity: 0, y: 28 }}
+            from={{ opacity: 0, y: 20 }}
             to={{ opacity: 1, y: 0 }}
             threshold={0}
             rootMargin="0px"
             textAlign="left"
+            replay
           />
           <div className="welcome-actions welcome-cta-row">
             <button type="button" className={`hero-button primary ${landingPressed === 'welcome-menu' ? 'is-pressing' : ''}`} onClick={() => triggerLandingSwitch('menu', 'welcome-menu')}>
@@ -565,18 +567,20 @@ export default function App() {
       <section className={`welcome-card menu-card landing-card-stage landing-${phase}`}>
         <div className="eyebrow">{renderAnimatedText('开始一局', 'animated-text-line animated-eyebrow landing-family')}</div>
         <SplitText
+          key={`menu-heading-${phase}-${landingTransition}`}
           text="选择你的对战方式"
           tag="h1"
           className="landing-split-heading"
-          delay={38}
-          duration={0.8}
-          ease="power3.out"
+          delay={54}
+          duration={1.02}
+          ease="power2.out"
           splitType="chars"
-          from={{ opacity: 0, y: 28 }}
+          from={{ opacity: 0, y: 20 }}
           to={{ opacity: 1, y: 0 }}
           threshold={0}
           rootMargin="0px"
           textAlign="left"
+          replay
         />
         <div className="menu-grid">
           <button type="button" className={`mode-card ${landingPressed === 'menu-human' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-human'); window.setTimeout(() => beginGame('human-vs-human'), 170); }}>
