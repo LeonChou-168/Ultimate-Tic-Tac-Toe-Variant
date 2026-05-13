@@ -109,3 +109,5 @@
 - Re-verified after the CTA/typography pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Performed a non-destructive repository normalization pass: moved root spec/product markdown files into `docs/specs/`, moved the debug screenshot into `docs/images/`, and updated README/planning references to the new structure.
 - Re-verified after the repository cleanup: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Continued the GitHub-standard cleanup by adding `.github` issue/PR templates, `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, `docs/README.md`, and a small `.gitignore` expansion for repo-local noise.
+- Re-verified after the GitHub-standardization pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

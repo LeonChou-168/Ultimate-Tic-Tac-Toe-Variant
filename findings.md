@@ -84,3 +84,4 @@
 - The “board pops twice” bug was caused by two entrance animations hitting the same element: `.board-frame-large` still had a baseline `panelReveal` while game entry also applied `boardSettleIn`.
 - The welcome CTAs needed their own sizing rule instead of inheriting the general button rhythm, and typography diversity works best as a small role-based system (display/body/UI) rather than ad hoc font changes per element.
 - The repository was already close to a standard app layout; the real cleanup value came from reducing top-level clutter by moving product/spec docs under `docs/specs/` and debug imagery under `docs/images/` while leaving generated/workflow files intact.
+- The next highest-value GitHub-standard additions for this repo were lightweight community/meta files and docs discoverability, not deeper structural churn. A LICENSE file should not be invented without the maintainer’s explicit choice.

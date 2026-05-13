@@ -123,6 +123,7 @@ npm run build
 当前仓库是**前端 + 纯规则引擎**里程碑，联机服务器还没有落地。如果你要继续做双人在线对战，建议按照下面这份教程推进：
 
 - 详细教程：[`docs/联机服务器教程.md`](docs/联机服务器教程.md)
+- 文档索引：[`docs/README.md`](docs/README.md)
 
 这份教程包含：
 
@@ -154,6 +155,14 @@ src/
 ├── main.tsx             # React 入口
 └── styles.css           # 视觉与响应式样式
 ```
+
+## 社区与协作
+
+- 贡献说明：[`CONTRIBUTING.md`](CONTRIBUTING.md)
+- 安全策略：[`SECURITY.md`](SECURITY.md)
+- 行为准则：[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
+
+> 说明：本仓库当前**没有新增许可证文件**，因为许可证选择应由仓库维护者明确决定。
 
 ## 后续里程碑建议
 

@@ -3,3 +3,5 @@ dist/
 .DS_Store
 *.tsbuildinfo
 node_modules/.tmp/
+.playwright-mcp/
+.ruff_cache/

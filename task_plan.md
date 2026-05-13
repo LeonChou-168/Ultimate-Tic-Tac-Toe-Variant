@@ -49,6 +49,7 @@ Implement the requirements from `docs/specs/Ultimate Tic-Tac-Toe Variant 规格�
 | 40. UX + typography cleanup | complete | Remove the duplicate board entry animation, tighten welcome CTA proportions, and widen module font differentiation. |
 | 40. CTA proportion + font-role system | complete | Narrow the welcome CTAs and introduce a cohesive multi-font system across major modules. |
 | 41. Non-destructive repo normalization | complete | Move docs/media into a cleaner GitHub-style structure without deleting files and update references. |
+| 42. GitHub-standard metadata pass | complete | Add community files, issue/PR templates, docs index, and repo-local ignore hygiene without deleting files. |
 
 ## Decisions
 
