@@ -50,6 +50,7 @@ Implement the requirements from `docs/specs/Ultimate Tic-Tac-Toe Variant 规格�
 | 40. CTA proportion + font-role system | complete | Narrow the welcome CTAs and introduce a cohesive multi-font system across major modules. |
 | 41. Non-destructive repo normalization | complete | Move docs/media into a cleaner GitHub-style structure without deleting files and update references. |
 | 42. GitHub-standard metadata pass | complete | Add community files, issue/PR templates, docs index, and repo-local ignore hygiene without deleting files. |
+| 43. GSAP SplitText heading integration | complete | Integrate a local SplitText component and replace the two landing-page Chinese headings with the requested GSAP-based animation. |
 
 ## Decisions
 

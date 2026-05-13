@@ -111,3 +111,5 @@
 - Re-verified after the repository cleanup: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Continued the GitHub-standard cleanup by adding `.github` issue/PR templates, `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, `docs/README.md`, and a small `.gitignore` expansion for repo-local noise.
 - Re-verified after the GitHub-standardization pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Integrated a local GSAP-based `SplitText` component under `src/components/` and replaced the two landing-page Chinese headings with the new animation path while preserving the existing headline styling.
+- Installed `gsap` and `@gsap/react`, then re-verified with clean diagnostics, passing tests, and a successful production build.

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import SplitText from './components/SplitText';
 import { chooseAIMove } from './game/ai';
 import {
   canManualSettle,
@@ -534,7 +535,20 @@ export default function App() {
       return (
         <section className={`welcome-card landing-card-stage landing-${phase}`}>
           <div className="eyebrow">{renderAnimatedText('Ultimate Tic-Tac-Toe Variant', 'animated-text-line animated-eyebrow landing-family')}</div>
-          <h1>{renderAnimatedText('欢迎来到终极井字棋变体', 'animated-text-line animated-title animated-eyebrow landing-family')}</h1>
+          <SplitText
+            text="欢迎来到终极井字棋变体"
+            tag="h1"
+            className="landing-split-heading"
+            delay={38}
+            duration={0.8}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 28 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0}
+            rootMargin="0px"
+            textAlign="left"
+          />
           <div className="welcome-actions welcome-cta-row">
             <button type="button" className={`hero-button primary ${landingPressed === 'welcome-menu' ? 'is-pressing' : ''}`} onClick={() => triggerLandingSwitch('menu', 'welcome-menu')}>
               {renderAnimatedText('进入主菜单', 'animated-text-line animated-button-text')}
@@ -550,7 +564,20 @@ export default function App() {
     return (
       <section className={`welcome-card menu-card landing-card-stage landing-${phase}`}>
         <div className="eyebrow">{renderAnimatedText('开始一局', 'animated-text-line animated-eyebrow landing-family')}</div>
-        <h1>{renderAnimatedText('选择你的对战方式', 'animated-text-line animated-title animated-eyebrow landing-family')}</h1>
+        <SplitText
+          text="选择你的对战方式"
+          tag="h1"
+          className="landing-split-heading"
+          delay={38}
+          duration={0.8}
+          ease="power3.out"
+          splitType="chars"
+          from={{ opacity: 0, y: 28 }}
+          to={{ opacity: 1, y: 0 }}
+          threshold={0}
+          rootMargin="0px"
+          textAlign="left"
+        />
         <div className="menu-grid">
           <button type="button" className={`mode-card ${landingPressed === 'menu-human' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-human'); window.setTimeout(() => beginGame('human-vs-human'), 170); }}>
             <strong>{renderAnimatedText('本地双人', 'animated-text-line animated-card-title')}</strong>
