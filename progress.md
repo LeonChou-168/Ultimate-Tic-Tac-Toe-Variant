@@ -141,3 +141,25 @@
 - Re-verified after the targeted glass refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - User then rejected further coordinate-plane stylization and asked only for a stronger board-shell porthole/canopy feel. Refined the outer board frame with rounder geometry, a brighter upper-rim glass edge, and a deeper inner lip while leaving the coordinate plane itself unchanged.
 - Re-verified after the board-shell porthole refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User then asked to simplify the board shell so only the outer frame remains dominant, with coordinates embedded directly on that frame. Removed the intermediate subframe styling from `coordinate-frame` / axis surfaces and tightened spacing so the coordinate system reads as markings on the outer shell.
+- Re-verified after the board-shell simplification: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User then pointed out the outer frame no longer visibly wrapped the board. Restored more shell thickness by increasing `board-frame` padding and modestly reopening the coordinate/frame spacing, while keeping `coordinate-frame` layout-only.
+- Re-verified after the board-shell wrapping fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User then observed that the board still appeared larger than the shell. Reduced the inner board footprint by shrinking `board-frame-large` and slightly tightening the coordinate layout spacing so the shell again clearly encloses the board content.
+- Re-verified after the board/shell sizing fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User then asked to flatten the bottom numeric coordinate bar to the same plane as the left letter axis and to make the board outer frame plus the three named sidebar controls read more clearly as liquid-glass surfaces. Reduced the bottom axis’s wrapped-strip feel and strengthened the glass identity of the shell and those controls.
+- Re-verified after the glass/axis refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User then pointed out that the outer frame still looked smaller than the board and requested the replay surfaces to match the porthole base style. Increased the outer shell padding again and upgraded the replay panel to the same wrapped-window material language.
+- Re-verified after the board/replay shell refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User clarified that “底页” meant all sidebar content panels below `返回菜单`, not just replay. Also tightened the board-shell size relationship again so the outer frame clearly exceeds the board. Applied the porthole base surface treatment across replay + guide/settings/tutorial/endgame/menu panels.
+- Re-verified after the board/sidebar surface correction: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User then asked to remove the overall outer shell and extend the board frame slightly toward the upper-right. Removed the game-page outer shell treatment (`app-shell::before`) and applied a subtle upper-right bias to the board frame with asymmetric padding plus a small visual offset.
+- Re-verified after the shell removal and board-frame adjustment: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User then explicitly asked again to fix the “outer frame smaller than board” bug. Corrected the underlying sizing conflict by widening the shell cap and reducing the inner board cap across desktop and mobile breakpoints, so the outer shell consistently encloses the board.
+- Re-verified after the explicit board-shell bugfix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User then reported two follow-up board bugs: the top-right grid corner was overflowing and the board visibly shifted on game entry. Removed the manual board-frame translate and restored symmetric padding, which resolves both the overflow path and the entry-time nudge.
+- Re-verified after the board overflow / movement fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User then chose the structural refactor path instead of more patching. Split the board region into distinct shell/layout/content responsibilities (`board-shell`, `board-layout`, `macro-board`) and recalibrated the inner board caps across breakpoints so the outer shell relationship is structurally stable.
+- Re-verified after the board-shell refactor: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Performed the first post-refactor board-shell polish pass: reduced shell thickness, tightened coordinate spacing, and increased the macro-board’s embedded depth so the board reads more intentionally seated inside the shell.
+- Re-verified after the board-shell polish pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

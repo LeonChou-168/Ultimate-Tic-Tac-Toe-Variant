@@ -615,64 +615,66 @@ export default function App() {
   return (
     <main className={`${gameShellClass} ${gameEntryMotion ? 'game-entering' : ''}`}>
       <section className="board-stage fullscreen-board" aria-label="游戏棋盘">
-        <div className="board-frame board-frame-large coordinate-frame">
-          <div className="board-axis board-axis-left" aria-hidden="true">
-            {AXIS_LETTERS.map((letter) => (
-              <span key={letter}>{letter}</span>
-            ))}
-          </div>
-          <div className="macro-board">
-            {displayState.boards.map((board, boardIndex) => {
-              const winner = displayState.boardWinners[boardIndex];
-              const legalBoard = displayLegalBoards.includes(boardIndex);
-              const boardRow = Math.floor(boardIndex / 3);
-              const boardColumn = boardIndex % 3;
-              const boundaryClass = [boardColumn < 2 ? 'with-right-divider' : '', boardRow < 2 ? 'with-bottom-divider' : '']
-                .filter(Boolean)
-                .join(' ');
+        <div className="board-shell board-frame board-frame-large">
+          <div className="board-layout coordinate-frame">
+            <div className="board-axis board-axis-left" aria-hidden="true">
+              {AXIS_LETTERS.map((letter) => (
+                <span key={letter}>{letter}</span>
+              ))}
+            </div>
+            <div className="macro-board">
+              {displayState.boards.map((board, boardIndex) => {
+                const winner = displayState.boardWinners[boardIndex];
+                const legalBoard = displayLegalBoards.includes(boardIndex);
+                const boardRow = Math.floor(boardIndex / 3);
+                const boardColumn = boardIndex % 3;
+                const boundaryClass = [boardColumn < 2 ? 'with-right-divider' : '', boardRow < 2 ? 'with-bottom-divider' : '']
+                  .filter(Boolean)
+                  .join(' ');
 
-              return (
-                <div
-                  className={`small-board ${boundaryClass} ${legalBoard ? 'legal' : 'locked'} ${winner ? `won ${winner}` : ''} ${celebratingBoards.includes(boardIndex) ? 'claim-burst' : ''}`}
-                  key={boardIndex}
-                  aria-label={`小棋盘 ${boardIndex}${winner ? `，${playerLabel(winner)}已占领` : ''}`}
-                >
-                  {board.map((cell, cellIndex) => {
-                    const isLastMove = displayState.lastMove?.boardIndex === boardIndex && displayState.lastMove.cellIndex === cellIndex;
-                    const cellRow = Math.floor(cellIndex / 3);
-                    const cellColumn = cellIndex % 3;
-                    const globalRow = boardRow * 3 + cellRow;
-                    const globalColumn = boardColumn * 3 + cellColumn;
-                    const squareTone = (globalRow + globalColumn) % 2 === 0 ? 'light-square' : 'dark-square';
-                    const disabled =
-                      replayMode ||
-                      displayState.status !== 'playing' ||
-                      Boolean(cell) ||
-                      Boolean(winner) ||
-                      !legalBoard ||
-                      aiPending;
+                return (
+                  <div
+                    className={`small-board ${boundaryClass} ${legalBoard ? 'legal' : 'locked'} ${winner ? `won ${winner}` : ''} ${celebratingBoards.includes(boardIndex) ? 'claim-burst' : ''}`}
+                    key={boardIndex}
+                    aria-label={`小棋盘 ${boardIndex}${winner ? `，${playerLabel(winner)}已占领` : ''}`}
+                  >
+                    {board.map((cell, cellIndex) => {
+                      const isLastMove = displayState.lastMove?.boardIndex === boardIndex && displayState.lastMove.cellIndex === cellIndex;
+                      const cellRow = Math.floor(cellIndex / 3);
+                      const cellColumn = cellIndex % 3;
+                      const globalRow = boardRow * 3 + cellRow;
+                      const globalColumn = boardColumn * 3 + cellColumn;
+                      const squareTone = (globalRow + globalColumn) % 2 === 0 ? 'light-square' : 'dark-square';
+                      const disabled =
+                        replayMode ||
+                        displayState.status !== 'playing' ||
+                        Boolean(cell) ||
+                        Boolean(winner) ||
+                        !legalBoard ||
+                        aiPending;
 
-                    return (
-                      <button
-                        type="button"
-                        className={`cell ${squareTone} ${cell ? `occupied ${cell}` : ''} ${isLastMove ? 'last-move' : ''} ${disabled ? 'is-disabled' : ''} ${enableStoneAnimation ? 'animated-stone' : 'static-stone'}`}
-                        key={`${boardIndex}-${cellIndex}`}
-                        onClick={() => handleMove(boardIndex, cellIndex)}
-                        aria-disabled={disabled}
-                        aria-label={`小棋盘 ${boardIndex}，位置 ${cellIndex}${cell ? `，${playerLabel(cell)}棋子` : ''}`}
-                      >
-                        {cell ? <span className={`stone ${cell}`} /> : null}
-                      </button>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
-          <div className="board-axis board-axis-bottom" aria-hidden="true">
-            {Array.from({ length: 9 }, (_, index) => (
-              <span key={index + 1}>{index + 1}</span>
-            ))}
+                      return (
+                        <button
+                          type="button"
+                          className={`cell ${squareTone} ${cell ? `occupied ${cell}` : ''} ${isLastMove ? 'last-move' : ''} ${disabled ? 'is-disabled' : ''} ${enableStoneAnimation ? 'animated-stone' : 'static-stone'}`}
+                          key={`${boardIndex}-${cellIndex}`}
+                          onClick={() => handleMove(boardIndex, cellIndex)}
+                          aria-disabled={disabled}
+                          aria-label={`小棋盘 ${boardIndex}，位置 ${cellIndex}${cell ? `，${playerLabel(cell)}棋子` : ''}`}
+                        >
+                          {cell ? <span className={`stone ${cell}`} /> : null}
+                        </button>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </div>
+            <div className="board-axis board-axis-bottom" aria-hidden="true">
+              {Array.from({ length: 9 }, (_, index) => (
+                <span key={index + 1}>{index + 1}</span>
+              ))}
+            </div>
           </div>
         </div>
       </section>

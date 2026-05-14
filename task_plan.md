@@ -65,6 +65,17 @@ Implement the requirements from `docs/specs/Ultimate Tic-Tac-Toe Variant 规格�
 | 55. Liquid-glass redesign pass | complete | Apply the referenced prompt’s liquid-glass material system across the existing UI without changing core interaction structure. |
 | 56. Glass cockpit + control refinement | complete | Fuse board frame and coordinate plane into one glass shell and convert key sidebar controls into liquid-glass buttons. |
 | 57. Board shell porthole refinement | complete | Strengthen the board outer frame’s canopy/porthole character without further stylizing coordinate tick surfaces. |
+| 58. Board shell simplification | complete | Keep only the outer board shell visually dominant and embed coordinates directly on that frame. |
+| 59. Board shell wrapping restoration | complete | Restore enough outer-frame thickness to visibly wrap the board without bringing back an intermediate shell. |
+| 60. Board/shell sizing correction | complete | Reduce the inner board footprint so the outer shell clearly encloses it again. |
+| 61. Axis flattening + glass control refinement | complete | Put the bottom numeric axis on the same plane as the left axis and strengthen the shell/control liquid-glass read. |
+| 62. Replay porthole + shell scale refinement | complete | Reassert the outer shell around the board and move replay surfaces into the same porthole-style base family. |
+| 63. Sidebar base-surface unification | complete | Apply the porthole-style base surface to all sidebar content panels below the header controls and further strengthen board-shell enclosure. |
+| 64. Remove overall shell + bias board frame | complete | Delete the game-page outer shell treatment and give the board shell a subtle upper-right extension bias. |
+| 65. Explicit board-shell bugfix | complete | Resolve the recurring shell-smaller-than-board bug by separating shell and inner board width caps across breakpoints. |
+| 66. Board shell structural refactor | complete | Split shell/layout/content responsibilities and stabilize shell-vs-board sizing at the DOM/CSS architecture level. |
+| 67. Board shell first polish pass | complete | Recalibrate shell thickness, coordinate spacing, and embedded-board depth after the structural split. |
+| 66. Board overflow + entry shift fix | complete | Remove the shell bias transform that caused the top-right overflow and the board movement on game entry. |
 
 ## Decisions
 
