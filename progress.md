@@ -127,3 +127,5 @@
 - Re-verified after the edge-strip legal-highlight fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - User then asked to remove the yellow line treatment entirely. Replaced the legal-board indicator with a non-line-based warm tonal wash so target boards stay readable without any gold stroke geometry.
 - Re-verified after removing the yellow line treatment: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Investigated the responsiveness complaint and found the game shell still depended on a fixed-width sidebar column plus a `100vw - 18rem` board formula, unlike the more fluid landing layout. Reworked the non-landing shell to use a fluid sidebar track, container-bounded board width, and better breakpoint scaling.
+- Re-verified after the responsiveness pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

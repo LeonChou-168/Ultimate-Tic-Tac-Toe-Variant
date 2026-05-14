@@ -58,6 +58,7 @@ Implement the requirements from `docs/specs/Ultimate Tic-Tac-Toe Variant 规格�
 | 48. Perimeter-only legal-highlight redesign | complete | Remove the remaining inner glow so legal highlighting cannot contaminate interior coordinates. |
 | 49. Edge-strip legal-highlight redesign | complete | Render legal highlighting as explicit edge strips so no gold can cross cell interiors. |
 | 50. Remove yellow line legal highlight | complete | Replace yellow line-based legal highlighting with a softer non-line tonal cue. |
+| 51. Non-landing responsiveness pass | complete | Make the game shell, board sizing, and sidebar sizing adapt to viewport changes more like the landing page. |
 
 ## Decisions
 
