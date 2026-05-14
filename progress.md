@@ -129,3 +129,5 @@
 - Re-verified after removing the yellow line treatment: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Investigated the responsiveness complaint and found the game shell still depended on a fixed-width sidebar column plus a `100vw - 18rem` board formula, unlike the more fluid landing layout. Reworked the non-landing shell to use a fluid sidebar track, container-bounded board width, and better breakpoint scaling.
 - Re-verified after the responsiveness pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User clarified they meant game-page visual layering, not layout layering. Rebalanced the depth cues so the board reads as the primary plane, the sidebar as a softer secondary glass/control layer, and the outer shell frame/background recede.
+- Re-verified after the game-page layering pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
