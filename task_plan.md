@@ -52,6 +52,8 @@ Implement the requirements from `docs/specs/Ultimate Tic-Tac-Toe Variant 规格�
 | 42. GitHub-standard metadata pass | complete | Add community files, issue/PR templates, docs index, and repo-local ignore hygiene without deleting files. |
 | 43. GSAP SplitText heading integration | complete | Integrate a local SplitText component and replace the two landing-page Chinese headings with the requested GSAP-based animation. |
 | 44. SplitText motion refinement | complete | Make the landing SplitText headings slower/lighter/more layered and ensure the effect replays when returning to landing screens. |
+| 45. Board legal-highlight seam fix | complete | Remove the unintended yellow seam artifact between adjacent lower-row small boards without weakening the legal target highlight. |
+| 46. Board legal-highlight seam re-fix | complete | Move the legal highlight to an inset pseudo-element so gold cannot bleed into inter-board seams. |
 
 ## Decisions
 

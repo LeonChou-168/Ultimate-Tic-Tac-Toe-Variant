@@ -115,3 +115,7 @@
 - Installed `gsap` and `@gsap/react`, then re-verified with clean diagnostics, passing tests, and a successful production build.
 - Retuned the landing SplitText headings to feel slower, lighter, and more layered, and updated the component/usage so the same entrance effect replays cleanly when returning to the landing interfaces.
 - Re-verified after the SplitText motion refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Fixed the reported yellow seam between lower-row small boards by removing the outward glow from the legal-board highlight and keeping the gold emphasis internal to the legal board itself.
+- Re-verified after the board seam fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User reported the seam still remained. Applied a stronger second-pass fix by moving the legal-board gold highlight from the board element itself into an inset `::before` layer, ensuring the highlight cannot paint inter-board seams.
+- Re-verified after the second-pass seam fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
