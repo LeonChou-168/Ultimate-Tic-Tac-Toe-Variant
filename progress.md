@@ -137,3 +137,5 @@
 - Re-verified after the shell/sidebar embedding pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Applied a liquid-glass redesign pass based on the referenced cinematic landing prompt: introduced reusable glass primitives, switched the UI base toward a blacker backdrop, and re-skinned landing cards, board frame, sidebar, buttons, cards, and menu entries with a shared liquid-glass material and highlight-border treatment.
 - Re-verified after the liquid-glass pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Continued the glass refinement by merging the board frame and coordinate plane into a more cockpit-like unified shell, and restyled the three top sidebar controls (`改为自动淡出` / `收起侧栏` / `返回菜单`) as true liquid-glass controls.
+- Re-verified after the targeted glass refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

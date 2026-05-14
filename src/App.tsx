@@ -717,10 +717,10 @@ export default function App() {
               <p>{replayMode ? '当前处于落子回溯演示模式。' : '状态、回放、设置与操作都集中在这里。'}</p>
             </div>
             <div className="sidebar-top-buttons">
-              <button type="button" className="ghost-button" onClick={() => setSidebarPinned((value) => !value)}>
+              <button type="button" className="ghost-button shell-glass-button" onClick={() => setSidebarPinned((value) => !value)}>
                 {sidebarPinned ? '改为自动淡出' : '固定侧边栏'}
               </button>
-              <button type="button" className="ghost-button" onClick={() => setSidebarVisible(false)}>
+              <button type="button" className="ghost-button shell-glass-button" onClick={() => setSidebarVisible(false)}>
                 收起侧栏
               </button>
               {sidebarSection !== 'menu' ? (
@@ -728,7 +728,7 @@ export default function App() {
                   ← 词条
                 </button>
               ) : null}
-              <button type="button" className="ghost-button" onClick={() => setScreen('menu')}>
+              <button type="button" className="ghost-button shell-glass-button" onClick={() => setScreen('menu')}>
                 返回菜单
               </button>
             </div>
