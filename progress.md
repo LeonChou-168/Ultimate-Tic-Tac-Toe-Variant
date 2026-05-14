@@ -137,5 +137,3 @@
 - Re-verified after the shell/sidebar embedding pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Applied a liquid-glass redesign pass based on the referenced cinematic landing prompt: introduced reusable glass primitives, switched the UI base toward a blacker backdrop, and re-skinned landing cards, board frame, sidebar, buttons, cards, and menu entries with a shared liquid-glass material and highlight-border treatment.
 - Re-verified after the liquid-glass pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
-- Pushed the visual direction further toward a purer black-glass / cinematic space-instrument look: cooled the palette, reduced warm wood residue, converted amber cues into blue-white instrument highlights, and added restrained shell/board/sidebar viewport-like light fields.
-- Re-verified after the cinematic black-glass pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

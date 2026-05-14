@@ -6,19 +6,19 @@
   --font-body: 'Baskerville', 'Garamond', 'Times New Roman', 'Songti SC', serif;
   --font-ui: 'Avenir Next', 'Helvetica Neue', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
   --font-annotation: 'Courier Prime', 'SFMono-Regular', 'Menlo', monospace;
-  --walnut: #1a1d26;
-  --walnut-dark: #090b10;
-  --gold: #a8d7ff;
+  --walnut: #5a351f;
+  --walnut-dark: #241209;
+  --gold: #d6a756;
   --jade: #d8ceb7;
   --ink: #0b0908;
   --mist: rgba(255, 245, 224, 0.76);
-  --board-light: #d8dde6;
-  --board-dark: #59667a;
-  --board-line: #283446;
-  --board-heavy-line: #111722;
-  --legal-ring: #8fd6ff;
-  --black-claim: rgba(12, 15, 22, 0.34);
-  --white-claim: rgba(222, 231, 242, 0.22);
+  --board-light: #eee4d2;
+  --board-dark: #a47753;
+  --board-line: #5f4028;
+  --board-heavy-line: #2f1c10;
+  --legal-ring: #ffbf47;
+  --black-claim: rgba(8, 8, 8, 0.3);
+  --white-claim: rgba(255, 247, 233, 0.28);
   --glass-fill: rgba(255, 255, 255, 0.028);
   --glass-fill-strong: rgba(255, 255, 255, 0.05);
   --glass-stroke: rgba(255, 255, 255, 0.1);
@@ -36,9 +36,9 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 18% 12%, rgba(160, 216, 255, 0.12), transparent 28rem),
-    radial-gradient(circle at 78% 70%, rgba(96, 160, 255, 0.12), transparent 34rem),
-    linear-gradient(135deg, #010204, #05070c 46%, #000);
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.08), transparent 30rem),
+    radial-gradient(circle at 78% 70%, rgba(118, 204, 255, 0.1), transparent 34rem),
+    linear-gradient(135deg, #050505, #090909 46%, #000);
 }
 
 .liquid-glass,
@@ -152,9 +152,9 @@ button {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(56rem 36rem at 16% 16%, rgba(160, 216, 255, 0.16), transparent 54%),
-    radial-gradient(44rem 28rem at 84% 82%, rgba(92, 151, 255, 0.08), transparent 50%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.018), rgba(0, 0, 0, 0));
+    radial-gradient(54rem 36rem at 18% 18%, rgba(255, 191, 71, 0.14), transparent 52%),
+    radial-gradient(42rem 28rem at 82% 82%, rgba(118, 204, 255, 0.08), transparent 48%),
+    linear-gradient(135deg, rgba(255, 244, 224, 0.016), rgba(0, 0, 0, 0));
   pointer-events: none;
   transition: opacity 1100ms cubic-bezier(0.18, 0.82, 0.16, 1), transform 1400ms cubic-bezier(0.18, 0.82, 0.16, 1), filter 1400ms ease;
   animation: backgroundBreath 7.4s ease-in-out infinite alternate;
@@ -177,8 +177,8 @@ button {
 
 .welcome-screen::after {
   background:
-    radial-gradient(34rem 24rem at 14% 34%, rgba(186, 232, 255, 0.18), transparent 54%),
-    linear-gradient(115deg, rgba(77, 126, 196, 0.08), transparent 46%);
+    radial-gradient(34rem 24rem at 14% 34%, rgba(255, 221, 172, 0.16), transparent 54%),
+    linear-gradient(115deg, rgba(161, 103, 51, 0.08), transparent 46%);
   transform: scale(1.03) translateX(-1.6%);
 }
 
@@ -190,8 +190,8 @@ button {
 
 .menu-screen::after {
   background:
-    radial-gradient(38rem 24rem at 84% 22%, rgba(132, 214, 255, 0.16), transparent 52%),
-    linear-gradient(245deg, rgba(88, 118, 220, 0.08), transparent 46%);
+    radial-gradient(34rem 24rem at 84% 22%, rgba(118, 204, 255, 0.14), transparent 52%),
+    linear-gradient(245deg, rgba(76, 109, 167, 0.08), transparent 46%);
   transform: scale(1.04) translateX(2%);
 }
 
@@ -519,19 +519,7 @@ button {
   pointer-events: none;
   border: 1px solid rgba(214, 167, 86, 0.08);
   border-radius: 2rem;
-  box-shadow: inset 0 0 3rem rgba(124, 192, 255, 0.035);
-}
-
-.app-shell::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(52rem 18rem at 20% 4%, rgba(170, 226, 255, 0.08), transparent 60%),
-    radial-gradient(44rem 20rem at 88% 10%, rgba(119, 170, 255, 0.06), transparent 62%);
-  mix-blend-mode: screen;
-  opacity: 0.7;
+  box-shadow: inset 0 0 3rem rgba(214, 167, 86, 0.025);
 }
 
 .hero-panel,
@@ -600,18 +588,6 @@ button {
   transform-origin: right center;
   transition: width 380ms cubic-bezier(0.2, 0.82, 0.18, 1), min-width 380ms cubic-bezier(0.2, 0.82, 0.18, 1), box-shadow 320ms ease, background 320ms ease, border-color 320ms ease;
   overflow: hidden;
-}
-
-.control-sidebar::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background:
-    radial-gradient(120% 70% at 22% 0%, rgba(190, 232, 255, 0.08), transparent 42%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(255, 255, 255, 0));
-  mix-blend-mode: screen;
 }
 
 .control-sidebar.collapsed {
@@ -1353,9 +1329,9 @@ p {
 
 .controls button,
 .draw-banner button {
-  border: 1px solid rgba(168, 215, 255, 0.24);
+  border: 1px solid rgba(214, 167, 86, 0.32);
   color: #f8efe1;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 244, 224, 0.08);
   border-radius: 999px;
   padding: 0.7rem 1rem;
   cursor: pointer;
@@ -1365,7 +1341,7 @@ p {
 .controls button:hover:not(:disabled),
 .draw-banner button:hover {
   transform: translateY(-2px);
-  background: rgba(168, 215, 255, 0.12);
+  background: rgba(214, 167, 86, 0.2);
 }
 
 .controls button:disabled {
@@ -1374,8 +1350,8 @@ p {
 }
 
 .controls .primary {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  background: linear-gradient(135deg, #c99944, #745124);
+  color: #160e08;
   font-weight: 700;
 }
 
@@ -1395,18 +1371,6 @@ p {
     inset 0 1px 1px rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-}
-
-.board-frame::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background:
-    radial-gradient(120% 70% at 18% 0%, rgba(196, 236, 255, 0.1), transparent 44%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
-  mix-blend-mode: screen;
 }
 
 .coordinate-frame {
@@ -1454,10 +1418,10 @@ p {
   grid-template-columns: repeat(3, 1fr);
   gap: 0;
   padding: 0;
-  border: 3px solid rgba(17, 23, 34, 0.96);
+  border: 3px solid var(--board-heavy-line);
   border-radius: 0.4rem;
   overflow: hidden;
-  background: rgba(40, 52, 70, 0.95);
+  background: var(--board-line);
   box-shadow:
     0 0.9rem 1.8rem rgba(0, 0, 0, 0.22),
     0 0.12rem 0.25rem rgba(0, 0, 0, 0.14);
@@ -1505,12 +1469,12 @@ p {
 
 .small-board.legal::before {
   inset: 0;
-  background: rgba(143, 214, 255, 0.08);
+  background: rgba(255, 191, 71, 0.08);
 }
 
 .small-board.legal::after {
   inset: 8px;
-  box-shadow: inset 0 0 0.7rem rgba(143, 214, 255, 0.05);
+  box-shadow: inset 0 0 0.7rem rgba(255, 191, 71, 0.05);
 }
 
 .small-board.locked {
