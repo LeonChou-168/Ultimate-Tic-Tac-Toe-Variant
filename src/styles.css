@@ -415,7 +415,7 @@ button {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) clamp(14rem, 24vw, 18.75rem);
-  gap: clamp(0.35rem, 1.1vw, 0.85rem);
+  gap: clamp(0.12rem, 0.45vw, 0.35rem);
   align-items: start;
   padding: clamp(0.75rem, 1.6vw, 1.15rem);
   overflow: hidden;
@@ -424,7 +424,7 @@ button {
 .app-shell::before {
   content: '';
   position: absolute;
-  inset: 1.5rem;
+  inset: 1.05rem;
   pointer-events: none;
   border: 1px solid rgba(214, 167, 86, 0.08);
   border-radius: 2rem;
@@ -482,13 +482,13 @@ button {
 
 .control-sidebar {
   position: sticky;
-  top: clamp(0.75rem, 1.4vw, 1rem);
+  top: 1.05rem;
   width: 100%;
   min-width: 0;
-  height: calc(100vh - 2rem);
-  max-height: calc(100vh - 2rem);
+  height: calc(100vh - 2.1rem);
+  max-height: calc(100vh - 2.1rem);
   border: 1px solid rgba(214, 167, 86, 0.14);
-  border-radius: 1.6rem;
+  border-radius: 1rem 1.45rem 1.45rem 1rem;
   background: linear-gradient(145deg, rgba(25, 16, 10, 0.78), rgba(20, 13, 8, 0.68));
   box-shadow:
     0 1.85rem 3.7rem rgba(0, 0, 0, 0.32),
@@ -507,6 +507,7 @@ button {
   border-color: rgba(214, 167, 86, 0.14);
   background: linear-gradient(180deg, rgba(20, 14, 10, 0.74), rgba(16, 10, 7, 0.6));
   box-shadow: 0 1rem 1.7rem rgba(0, 0, 0, 0.22);
+  border-radius: 0.9rem 1.2rem 1.2rem 0.9rem;
 }
 
 .compact-rail {
@@ -1673,6 +1674,12 @@ p {
     grid-template-columns: 1fr;
     align-items: start;
     gap: 0.9rem;
+  }
+
+  .control-sidebar,
+  .control-sidebar.collapsed {
+    top: auto;
+    border-radius: 1.2rem;
   }
 
   .fullscreen-board,
