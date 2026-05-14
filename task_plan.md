@@ -54,6 +54,10 @@ Implement the requirements from `docs/specs/Ultimate Tic-Tac-Toe Variant 规格�
 | 44. SplitText motion refinement | complete | Make the landing SplitText headings slower/lighter/more layered and ensure the effect replays when returning to landing screens. |
 | 45. Board legal-highlight seam fix | complete | Remove the unintended yellow seam artifact between adjacent lower-row small boards without weakening the legal target highlight. |
 | 46. Board legal-highlight seam re-fix | complete | Move the legal highlight to an inset pseudo-element so gold cannot bleed into inter-board seams. |
+| 47. Board bottom-edge yellow artifact fix | complete | Pull the legal highlight farther inward so no gold appears under the macro board. |
+| 48. Perimeter-only legal-highlight redesign | complete | Remove the remaining inner glow so legal highlighting cannot contaminate interior coordinates. |
+| 49. Edge-strip legal-highlight redesign | complete | Render legal highlighting as explicit edge strips so no gold can cross cell interiors. |
+| 50. Remove yellow line legal highlight | complete | Replace yellow line-based legal highlighting with a softer non-line tonal cue. |
 
 ## Decisions
 

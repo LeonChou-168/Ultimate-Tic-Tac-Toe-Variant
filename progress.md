@@ -119,3 +119,11 @@
 - Re-verified after the board seam fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - User reported the seam still remained. Applied a stronger second-pass fix by moving the legal-board gold highlight from the board element itself into an inset `::before` layer, ensuring the highlight cannot paint inter-board seams.
 - Re-verified after the second-pass seam fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User then clarified a remaining yellow artifact existed below the board. Tightened the legal highlight inset again so the gold ring/glow sits farther inside the small board and cannot visually read as a bottom-edge line under the macro board.
+- Re-verified after the bottom-edge adjustment: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User later pinpointed remaining yellow contamination at interior coordinates like B1/B3/B4/B6. Reworked the legal highlight into a strict perimeter-only marker by removing the remaining inner glow entirely.
+- Re-verified after the perimeter-only legal-highlight redesign: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User still reported yellow artifacts. Reworked the legal highlight again from a border-like inset treatment into explicit edge strips, so only the outer perimeter of the legal small board is painted and no yellow stroke can cut through interior cell coordinates.
+- Re-verified after the edge-strip legal-highlight fix: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User then asked to remove the yellow line treatment entirely. Replaced the legal-board indicator with a non-line-based warm tonal wash so target boards stay readable without any gold stroke geometry.
+- Re-verified after removing the yellow line treatment: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
