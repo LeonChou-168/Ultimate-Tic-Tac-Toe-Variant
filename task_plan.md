@@ -64,6 +64,7 @@ Implement the requirements from `docs/specs/Ultimate Tic-Tac-Toe Variant 规格�
 | 54. Shell/sidebar embedding pass | complete | Dock the sidebar visually into the outer shell border instead of letting it float as a separate card. |
 | 55. Liquid-glass redesign pass | complete | Apply the referenced prompt’s liquid-glass material system across the existing UI without changing core interaction structure. |
 | 56. Glass cockpit + control refinement | complete | Fuse board frame and coordinate plane into one glass shell and convert key sidebar controls into liquid-glass buttons. |
+| 57. Board shell porthole refinement | complete | Strengthen the board outer frame’s canopy/porthole character without further stylizing coordinate tick surfaces. |
 
 ## Decisions
 

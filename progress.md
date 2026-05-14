@@ -139,3 +139,5 @@
 - Re-verified after the liquid-glass pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Continued the glass refinement by merging the board frame and coordinate plane into a more cockpit-like unified shell, and restyled the three top sidebar controls (`改为自动淡出` / `收起侧栏` / `返回菜单`) as true liquid-glass controls.
 - Re-verified after the targeted glass refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User then rejected further coordinate-plane stylization and asked only for a stronger board-shell porthole/canopy feel. Refined the outer board frame with rounder geometry, a brighter upper-rim glass edge, and a deeper inner lip while leaving the coordinate plane itself unchanged.
+- Re-verified after the board-shell porthole refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
