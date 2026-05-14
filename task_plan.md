@@ -60,6 +60,7 @@ Implement the requirements from `docs/specs/Ultimate Tic-Tac-Toe Variant 规格�
 | 50. Remove yellow line legal highlight | complete | Replace yellow line-based legal highlighting with a softer non-line tonal cue. |
 | 51. Non-landing responsiveness pass | complete | Make the game shell, board sizing, and sidebar sizing adapt to viewport changes more like the landing page. |
 | 52. Game-page visual layering pass | complete | Rebalance board/sidebar/shell depth so the board is visually primary and the shell recedes. |
+| 53. Board/sidebar same-layer harmonization | complete | Bring board and sidebar into the same visual layer by harmonizing material and shadow treatment. |
 
 ## Decisions
 

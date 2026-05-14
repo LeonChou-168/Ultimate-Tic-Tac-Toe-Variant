@@ -131,3 +131,5 @@
 - Re-verified after the responsiveness pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - User clarified they meant game-page visual layering, not layout layering. Rebalanced the depth cues so the board reads as the primary plane, the sidebar as a softer secondary glass/control layer, and the outer shell frame/background recede.
 - Re-verified after the game-page layering pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User then requested the board and sidebar be treated as the same layer. Harmonized their material language by reducing the board-vs-sidebar depth split, quieting the shell frame further, and bringing board/sidebar shadows and surfaces into the same family.
+- Re-verified after the same-layer harmonization pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
