@@ -163,3 +163,9 @@
 - Re-verified after the board-shell refactor: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - Performed the first post-refactor board-shell polish pass: reduced shell thickness, tightened coordinate spacing, and increased the macro-board’s embedded depth so the board reads more intentionally seated inside the shell.
 - Re-verified after the board-shell polish pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Integrated the physical interaction ideas from the local 3D glassmorphic/parallax example into the current liquid-glass system: shared cursor-tracked hotspot state in React, plus perspective/translateZ-style hover behavior for the board shell and the three top glass controls.
+- Re-verified after the liquid-glass motion upgrade: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User then requested that the physical motion apply across all liquid-glass components independently rather than collectively. Replaced the shared parallax state with per-element CSS-variable updates and expanded the `.liquid-glass-physical` behavior across landing cards, sidebar panels, entries, status/insight/message surfaces, replay, and the main shell/control surfaces.
+- Re-verified after the independent glass-motion pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User then clarified that the outer board frame itself should not move when the pointer is over internal board components. Removed the physical-motion binding from the board shell while leaving the independently responding inner/sidebar glass surfaces intact.
+- Re-verified after the board-shell interaction refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.

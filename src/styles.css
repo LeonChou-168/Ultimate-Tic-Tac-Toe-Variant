@@ -96,6 +96,26 @@ body {
   overflow: hidden;
 }
 
+.welcome-card,
+.hero-button,
+.mode-card,
+.control-sidebar,
+.score-card,
+.status-card,
+.draw-banner,
+.insight-card,
+.message-card,
+.sidebar-entry,
+.replay-panel,
+.guide-panel,
+.settings-panel,
+.tutorial-panel,
+.endgame-panel,
+.sidebar-menu-panel {
+  --glass-x: 50%;
+  --glass-y: 50%;
+}
+
 .welcome-card::before,
 .hero-button::before,
 .mode-card::before,
@@ -994,6 +1014,8 @@ p {
   -webkit-backdrop-filter: blur(22px);
   position: relative;
   overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.28s ease, box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .shell-glass-button::before {
@@ -1017,8 +1039,43 @@ p {
   pointer-events: none;
 }
 
-.shell-glass-button:hover {
+.shell-glass-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.liquid-glass-physical {
+  transform-style: preserve-3d;
+  transition:
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.28s ease,
+    box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.liquid-glass-physical:hover {
+  transform: perspective(1000px) rotateX(-6deg) rotateY(5deg) translateZ(10px);
+  filter: saturate(1.04);
+}
+
+.liquid-glass-physical::after {
+  background: radial-gradient(circle at var(--glass-x, 50%) var(--glass-y, 50%), rgba(255, 255, 255, 0.2), transparent 38%);
+}
+
+.shell-glass-button.liquid-glass-physical:hover {
+  transform: perspective(1000px) rotateX(-8deg) rotateY(6deg) translateZ(12px);
   background: rgba(255, 255, 255, 0.078);
+  box-shadow:
+    0 1rem 2.2rem rgba(0, 0, 0, 0.18),
+    inset 0 2px 4px rgba(255, 255, 255, 0.18),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.16);
+}
+
+.shell-glass-button.liquid-glass-physical::after {
+  background: radial-gradient(circle at var(--glass-x, 50%) var(--glass-y, 50%), rgba(255, 255, 255, 0.24), transparent 36%);
 }
 
 .toggle-button.active {
@@ -1454,6 +1511,8 @@ p {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .board-shell::before {

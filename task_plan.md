@@ -75,6 +75,9 @@ Implement the requirements from `docs/specs/Ultimate Tic-Tac-Toe Variant 规格�
 | 65. Explicit board-shell bugfix | complete | Resolve the recurring shell-smaller-than-board bug by separating shell and inner board width caps across breakpoints. |
 | 66. Board shell structural refactor | complete | Split shell/layout/content responsibilities and stabilize shell-vs-board sizing at the DOM/CSS architecture level. |
 | 67. Board shell first polish pass | complete | Recalibrate shell thickness, coordinate spacing, and embedded-board depth after the structural split. |
+| 68. Physical liquid-glass motion upgrade | complete | Add cursor-tracked hotspot and perspective/parallax-style physical motion to the board shell and key glass controls. |
+| 69. Independent liquid-glass motion pass | complete | Expand physical glass motion across the UI with per-element response instead of a shared global reaction. |
+| 70. Static outer-frame interaction refinement | complete | Keep the board shell fixed while preserving independent physical motion on inner/sidebar glass components. |
 | 66. Board overflow + entry shift fix | complete | Remove the shell bias transform that caused the top-right overflow and the board movement on game entry. |
 
 ## Decisions
