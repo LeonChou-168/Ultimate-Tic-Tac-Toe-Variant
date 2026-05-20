@@ -78,6 +78,9 @@ Implement the requirements from `docs/specs/Ultimate Tic-Tac-Toe Variant 规格�
 | 68. Physical liquid-glass motion upgrade | complete | Add cursor-tracked hotspot and perspective/parallax-style physical motion to the board shell and key glass controls. |
 | 69. Independent liquid-glass motion pass | complete | Expand physical glass motion across the UI with per-element response instead of a shared global reaction. |
 | 70. Static outer-frame interaction refinement | complete | Keep the board shell fixed while preserving independent physical motion on inner/sidebar glass components. |
+| 71. GlassSurface migration pass | complete | Migrate key liquid-glass surfaces onto a TypeScript-adapted `GlassSurface` component and neutralize conflicting legacy glass panel chrome. |
+| 72. Full GlassSurface-style consolidation | complete | Migrate the major remaining legacy surfaces and remove obsolete hand-rolled glass motion glue so the UI is no longer hybrid. |
+| 73. Pure GlassSurface cleanup | complete | Remove the last wrapper-level legacy glass ownership so `GlassSurface` is the sole material system. |
 | 66. Board overflow + entry shift fix | complete | Remove the shell bias transform that caused the top-right overflow and the board movement on game entry. |
 
 ## Decisions

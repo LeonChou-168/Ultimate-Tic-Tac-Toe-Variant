@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import SplitText from './components/SplitText';
+import GlassSurface from './components/GlassSurface';
 import { chooseAIMove } from './game/ai';
 import {
   canManualSettle,
@@ -262,19 +263,6 @@ export default function App() {
       return;
     }
     playSound(cue);
-  };
-
-  const updateGlassParallax = (event: React.MouseEvent<HTMLElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width) * 100;
-    const y = ((event.clientY - rect.top) / rect.height) * 100;
-    event.currentTarget.style.setProperty('--glass-x', `${x}%`);
-    event.currentTarget.style.setProperty('--glass-y', `${y}%`);
-  };
-
-  const resetGlassParallax = (event: React.MouseEvent<HTMLElement>) => {
-    event.currentTarget.style.setProperty('--glass-x', '50%');
-    event.currentTarget.style.setProperty('--glass-y', '50%');
   };
 
   useEffect(() => {
@@ -546,7 +534,7 @@ export default function App() {
   const renderLandingCard = (view: LandingScreen, phase: 'active' | 'incoming' | 'outgoing') => {
     if (view === 'welcome') {
       return (
-        <section className={`welcome-card liquid-glass-physical landing-card-stage landing-${phase}`} onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax}>
+        <GlassSurface tag="section" borderRadius={32} className={`welcome-card landing-card-stage landing-${phase}`}>
           <div className="eyebrow">{renderAnimatedText('Ultimate Tic-Tac-Toe Variant', 'animated-text-line animated-eyebrow landing-family')}</div>
           <SplitText
             key={`welcome-heading-${phase}-${landingTransition}`}
@@ -565,19 +553,19 @@ export default function App() {
             replay
           />
           <div className="welcome-actions welcome-cta-row">
-            <button type="button" className={`hero-button liquid-glass-physical primary ${landingPressed === 'welcome-menu' ? 'is-pressing' : ''}`} onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax} onClick={() => triggerLandingSwitch('menu', 'welcome-menu')}>
+            <GlassSurface tag="button" borderRadius={999} className={`hero-button primary ${landingPressed === 'welcome-menu' ? 'is-pressing' : ''}`} onClick={() => triggerLandingSwitch('menu', 'welcome-menu')}>
               {renderAnimatedText('进入主菜单', 'animated-text-line animated-button-text')}
-            </button>
-            <button type="button" className={`hero-button liquid-glass-physical ${landingPressed === 'welcome-direct' ? 'is-pressing' : ''}`} onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax} onClick={() => { setLandingPressed('welcome-direct'); window.setTimeout(() => beginGame('human-vs-human'), 170); }}>
+            </GlassSurface>
+            <GlassSurface tag="button" borderRadius={999} className={`hero-button ${landingPressed === 'welcome-direct' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('welcome-direct'); window.setTimeout(() => beginGame('human-vs-human'), 170); }}>
               {renderAnimatedText('直接开始双人对战', 'animated-text-line animated-button-text')}
-            </button>
+            </GlassSurface>
           </div>
-        </section>
+        </GlassSurface>
       );
     }
 
     return (
-      <section className={`welcome-card liquid-glass-physical menu-card landing-card-stage landing-${phase}`} onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax}>
+      <GlassSurface tag="section" borderRadius={32} className={`welcome-card menu-card landing-card-stage landing-${phase}`}>
         <div className="eyebrow">{renderAnimatedText('开始一局', 'animated-text-line animated-eyebrow landing-family')}</div>
         <SplitText
           key={`menu-heading-${phase}-${landingTransition}`}
@@ -596,21 +584,21 @@ export default function App() {
           replay
         />
         <div className="menu-grid">
-          <button type="button" className={`mode-card liquid-glass-physical ${landingPressed === 'menu-human' ? 'is-pressing' : ''}`} onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax} onClick={() => { setLandingPressed('menu-human'); window.setTimeout(() => beginGame('human-vs-human'), 170); }}>
+          <GlassSurface tag="button" borderRadius={24} className={`mode-card ${landingPressed === 'menu-human' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-human'); window.setTimeout(() => beginGame('human-vs-human'), 170); }}>
             <strong>{renderAnimatedText('本地双人', 'animated-text-line animated-card-title')}</strong>
             <span>{renderAnimatedText('两位玩家轮流在同一棋盘上对弈。', 'animated-text-line animated-body')}</span>
-          </button>
-          <button type="button" className={`mode-card liquid-glass-physical ${landingPressed === 'menu-ai' ? 'is-pressing' : ''}`} onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax} onClick={() => { setLandingPressed('menu-ai'); window.setTimeout(() => beginGame('human-vs-ai'), 170); }}>
+          </GlassSurface>
+          <GlassSurface tag="button" borderRadius={24} className={`mode-card ${landingPressed === 'menu-ai' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-ai'); window.setTimeout(() => beginGame('human-vs-ai'), 170); }}>
             <strong>{renderAnimatedText('人机对战', 'animated-text-line animated-card-title')}</strong>
             <span>{renderAnimatedText('你执黑先手，电脑执白应对，先体验一版轻量策略 AI。', 'animated-text-line animated-body')}</span>
-          </button>
+          </GlassSurface>
         </div>
         <div className="welcome-actions">
-          <button type="button" className={`hero-button liquid-glass-physical ${landingPressed === 'menu-back' ? 'is-pressing' : ''}`} onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax} onClick={() => triggerLandingSwitch('welcome', 'menu-back')}>
+          <GlassSurface tag="button" borderRadius={999} className={`hero-button ${landingPressed === 'menu-back' ? 'is-pressing' : ''}`} onClick={() => triggerLandingSwitch('welcome', 'menu-back')}>
             {renderAnimatedText('返回欢迎页', 'animated-text-line animated-button-text')}
-          </button>
+          </GlassSurface>
         </div>
-      </section>
+      </GlassSurface>
     );
   };
 
@@ -628,8 +616,8 @@ export default function App() {
   return (
     <main className={`${gameShellClass} ${gameEntryMotion ? 'game-entering' : ''}`}>
       <section className="board-stage fullscreen-board" aria-label="游戏棋盘">
-        <div className="board-shell board-frame board-frame-large">
-          <div className="board-layout coordinate-frame">
+        <GlassSurface width="min(95vmin, 62rem)" height="auto" borderRadius={28} className="board-shell board-frame" style={{ padding: '0.95rem' }}>
+          <div className="board-layout coordinate-frame board-frame-large">
             <div className="board-axis board-axis-left" aria-hidden="true">
               {AXIS_LETTERS.map((letter) => (
                 <span key={letter}>{letter}</span>
@@ -689,7 +677,7 @@ export default function App() {
               ))}
             </div>
           </div>
-        </div>
+        </GlassSurface>
       </section>
 
       <div
@@ -699,12 +687,12 @@ export default function App() {
         aria-hidden="true"
       />
 
-        <aside
-          className={`control-sidebar liquid-glass-physical ${sidebarExpanded ? 'expanded' : 'collapsed'}`}
-          onMouseMove={updateGlassParallax}
+        <GlassSurface
+          tag="aside"
+          borderRadius={24}
+          className={`control-sidebar ${sidebarExpanded ? 'expanded' : 'collapsed'}`}
           onMouseEnter={() => setSidebarVisible(true)}
-          onMouseLeave={(event) => {
-            resetGlassParallax(event);
+          onMouseLeave={() => {
             if (!sidebarPinned) {
               setSidebarVisible(false);
             }
@@ -734,48 +722,54 @@ export default function App() {
               <p>{replayMode ? '当前处于落子回溯演示模式。' : '状态、回放、设置与操作都集中在这里。'}</p>
             </div>
             <div className="sidebar-top-buttons">
-              <button type="button" className="ghost-button shell-glass-button liquid-glass-physical" onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax} onClick={() => setSidebarPinned((value) => !value)}>
-                {sidebarPinned ? '改为自动淡出' : '固定侧边栏'}
-              </button>
-              <button type="button" className="ghost-button shell-glass-button liquid-glass-physical" onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax} onClick={() => setSidebarVisible(false)}>
-                收起侧栏
-              </button>
+              <GlassSurface width="auto" height="auto" borderRadius={999} className="shell-glass-button-wrap">
+                <button type="button" className="ghost-button shell-glass-button" onClick={() => setSidebarPinned((value) => !value)}>
+                  {sidebarPinned ? '改为自动淡出' : '固定侧边栏'}
+                </button>
+              </GlassSurface>
+              <GlassSurface width="auto" height="auto" borderRadius={999} className="shell-glass-button-wrap">
+                <button type="button" className="ghost-button shell-glass-button" onClick={() => setSidebarVisible(false)}>
+                  收起侧栏
+                </button>
+              </GlassSurface>
               {sidebarSection !== 'menu' ? (
                 <button type="button" className="ghost-button back-chip" onClick={() => setSidebarSection('menu')} aria-label="返回词条列表">
                   ← 词条
                 </button>
               ) : null}
-              <button type="button" className="ghost-button shell-glass-button liquid-glass-physical" onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax} onClick={() => setScreen('menu')}>
-                返回菜单
-              </button>
+              <GlassSurface width="auto" height="auto" borderRadius={999} className="shell-glass-button-wrap">
+                <button type="button" className="ghost-button shell-glass-button" onClick={() => setScreen('menu')}>
+                  返回菜单
+                </button>
+              </GlassSurface>
             </div>
           </section>
 
           {sidebarSection === 'menu' ? (
-            <section className="sidebar-menu-panel liquid-glass-physical" aria-label="侧边栏词条列表" onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax}>
+            <GlassSurface borderRadius={24} className="sidebar-menu-panel" aria-label="侧边栏词条列表">
               <div className="sidebar-entry-list">
                 {sidebarEntries.map((entry) => (
-                  <button key={entry.key} type="button" className="sidebar-entry liquid-glass-physical" onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax} onClick={() => setSidebarSection(entry.key)}>
+                  <GlassSurface key={entry.key} tag="button" borderRadius={20} className="sidebar-entry" onClick={() => setSidebarSection(entry.key)}>
                     <div className="sidebar-entry-badge">{entry.label.slice(0, 2)}</div>
                     <small>{entry.summary}</small>
-                  </button>
+                  </GlassSurface>
                 ))}
               </div>
-            </section>
+            </GlassSurface>
           ) : null}
 
           {sidebarSection === 'status' ? (
-            <section className={`status-card liquid-glass-physical ${tutorialHighlight('status')}`} onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax}>
-            <span className={`turn-stone ${displayState.currentPlayer}`} />
-            <div>
-              <strong>{statusHeadline(displayState)}</strong>
-              <small>{aiPending ? '电脑正在思考下一手。' : actionMessage(message)}</small>
-            </div>
-            </section>
+            <GlassSurface tag="section" width="100%" height="auto" borderRadius={22} className={`status-card ${tutorialHighlight('status')}`}>
+              <span className={`turn-stone ${displayState.currentPlayer}`} />
+              <div>
+                <strong>{statusHeadline(displayState)}</strong>
+                <small>{aiPending ? '电脑正在思考下一手。' : actionMessage(message)}</small>
+              </div>
+            </GlassSurface>
           ) : null}
 
           {sidebarSection === 'status' && displayState.settlement ? (
-            <section className={`endgame-panel liquid-glass-physical ${settlementTheme(displayState)}`} aria-label="对局结果总结" onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax}>
+            <GlassSurface tag="section" width="100%" height="auto" borderRadius={24} className={`endgame-panel ${settlementTheme(displayState)}`} aria-label="对局结果总结">
               <div className="panel-heading">
                 <span className="insight-label">终局总结</span>
                 <strong>{settlementTitle(displayState)}</strong>
@@ -791,11 +785,11 @@ export default function App() {
                   <strong>{displayState.settlement.whiteBoards}</strong>
                 </div>
               </div>
-            </section>
+            </GlassSurface>
           ) : null}
 
           {sidebarSection === 'tutorial' && showTutorial ? (
-            <section className="tutorial-panel liquid-glass-physical" aria-label="分步教程" onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax}>
+            <GlassSurface tag="section" width="100%" height="auto" borderRadius={24} className="tutorial-panel" aria-label="分步教程">
               <div className="panel-heading">
                 <span className="insight-label">分步教程</span>
                 <strong>{currentTutorialStep.title}</strong>
@@ -825,7 +819,7 @@ export default function App() {
                   {tutorialStepIndex === tutorialSteps.length - 1 ? '完成教程' : '下一步'}
                 </button>
               </div>
-            </section>
+            </GlassSurface>
           ) : sidebarSection === 'tutorial' ? (
             <button type="button" className="ghost-button" onClick={() => setShowTutorial(true)}>
               重新打开教程
@@ -834,29 +828,29 @@ export default function App() {
 
           {sidebarSection === 'status' ? (
             <div className="status-stack" aria-label="对局信息面板">
-            <article className={`insight-card liquid-glass-physical emphasis horizontal-status-card ${tutorialHighlight('battlefield')}`} onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax}>
+            <GlassSurface tag="article" width="100%" height="auto" borderRadius={22} className={`insight-card emphasis horizontal-status-card ${tutorialHighlight('battlefield')}`}>
               <span className="insight-label">当前战场</span>
               <strong>{boardModeText(displayState)}</strong>
               {displayState.targetBoard !== null ? <span className="battlefield-coord">{boardCenterCoordinate(displayState.targetBoard)} · {boardCoordinateRange(displayState.targetBoard)}</span> : null}
               <small>{showMoveHints ? lastMoveText(displayState) : '你已关闭落子引导提示，可随时在设置中重新开启。'}</small>
-            </article>
+            </GlassSurface>
 
-            <article className="insight-card liquid-glass-physical horizontal-status-card" onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax}>
+            <GlassSurface tag="article" width="100%" height="auto" borderRadius={22} className="insight-card horizontal-status-card">
               <span className="insight-label">主动结算</span>
               <strong>{manualSettleAvailable ? '现在可以结算' : '暂不可结算'}</strong>
               <small>{showMoveHints ? settlementHint(state) : '需要时可重新开启提示查看当前是否满足主动结算条件。'}</small>
-            </article>
+            </GlassSurface>
 
-            <article className="insight-card liquid-glass-physical horizontal-status-card" onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax}>
+            <GlassSurface tag="article" width="100%" height="auto" borderRadius={22} className="insight-card horizontal-status-card">
               <span className="insight-label">求和次数</span>
               <strong>黑方剩余 {3 - state.drawOfferCounts.black} 次 · 白方剩余 {3 - state.drawOfferCounts.white} 次</strong>
               <small>{state.pendingDrawOffer ? `${playerLabel(state.pendingDrawOffer.offeredBy)}已发起求和，等待回应。` : '当前没有待处理的求和请求。'}</small>
-            </article>
+            </GlassSurface>
             </div>
           ) : null}
 
           {sidebarSection === 'replay' ? (
-            <section className="replay-panel liquid-glass-physical" onMouseMove={updateGlassParallax} onMouseLeave={resetGlassParallax}>
+            <GlassSurface tag="section" width="100%" height="auto" borderRadius={24} className="replay-panel">
               <div className="panel-heading">
                 <span className="insight-label">落子回溯演示</span>
                 <strong>{replayMode ? `正在回看第 ${replayIndex} 手` : '落子回溯'}</strong>
@@ -890,19 +884,19 @@ export default function App() {
                 <span>{replayIndex} / {state.history.length} 手</span>
               </label>
             ) : null}
-            </section>
+            </GlassSurface>
           ) : null}
 
           {sidebarSection === 'status' ? (
-            <div className={`message-card ${messageTone}`} role="status" aria-live="polite">
+            <GlassSurface tag="div" width="100%" height="auto" borderRadius={22} className={`message-card ${messageTone}`} role="status" aria-live="polite">
             <span className="message-label">操作反馈</span>
             <strong>{actionMessage(message)}</strong>
             <small>{replayMode ? '回放模式下主棋盘不可落子，只用于观察局面演化。' : '鼠标移到右边缘即可再次唤出侧边栏，固定模式下则不会自动淡出。'}</small>
-            </div>
+            </GlassSurface>
           ) : null}
 
           {sidebarSection === 'actions' && state.pendingDrawOffer && !replayMode ? (
-            <div className="draw-banner">
+            <GlassSurface tag="div" width="100%" height="auto" borderRadius={22} className="draw-banner">
               <span>{playerLabel(state.pendingDrawOffer.offeredBy)}请求和棋</span>
               <button type="button" onClick={() => handleDrawResponse(true)}>
                 接受
@@ -910,7 +904,7 @@ export default function App() {
               <button type="button" onClick={() => handleDrawResponse(false)}>
                 拒绝
               </button>
-            </div>
+            </GlassSurface>
           ) : null}
 
           {sidebarSection === 'actions' ? (
@@ -931,7 +925,7 @@ export default function App() {
           ) : null}
 
           {sidebarSection === 'settings' ? (
-            <section className="settings-panel" aria-label="局内设置">
+            <GlassSurface tag="section" width="100%" height="auto" borderRadius={24} className="settings-panel" aria-label="局内设置">
             <div className="panel-heading">
               <span className="insight-label">局内设置</span>
               <strong>把信息密度调成你舒服的样子</strong>
@@ -977,10 +971,10 @@ export default function App() {
                 <span>{soundVolume}%</span>
               </label>
             </div>
-            </section>
+            </GlassSurface>
           ) : null}
         </div>
-      </aside>
+      </GlassSurface>
     </main>
   );
 }

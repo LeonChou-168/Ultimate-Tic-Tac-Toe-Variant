@@ -169,3 +169,9 @@
 - Re-verified after the independent glass-motion pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
 - User then clarified that the outer board frame itself should not move when the pointer is over internal board components. Removed the physical-motion binding from the board shell while leaving the independently responding inner/sidebar glass surfaces intact.
 - Re-verified after the board-shell interaction refinement: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- User then requested a migration from the current custom liquid-glass treatment to the provided React Bits `GlassSurface` component model. Added a TypeScript-adapted `GlassSurface` + CSS, wrapped the main board/shell/controls/sidebar panels with it, and neutralized conflicting legacy panel-level glass styling so the new component owns the effect.
+- Re-verified after the `GlassSurface` migration: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Continued the migration to cover the remaining major legacy holdouts: landing cards/buttons, mode cards, sidebar shell, sidebar entries, and the main sidebar content panels. Then removed the now-unused old parallax handlers left over from the previous hand-rolled motion system.
+- Re-verified after the full GlassSurface-style pass: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
+- Completed the final cleanup sweep by stripping the remaining wrapper-level legacy glass ownership from migrated classes, leaving layout/spacing/typography responsibilities in place while `GlassSurface` now owns the material effect.
+- Re-verified after the pure GlassSurface cleanup: `lsp_diagnostics` clean, `npm test` passed with 13 tests, and `npm run build` passed.
