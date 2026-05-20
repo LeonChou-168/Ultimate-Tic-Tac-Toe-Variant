@@ -751,7 +751,9 @@ export default function App() {
                 {sidebarEntries.map((entry) => (
                   <GlassSurface key={entry.key} tag="button" borderRadius={20} className="sidebar-entry" onClick={() => setSidebarSection(entry.key)}>
                     <div className="sidebar-entry-badge">{entry.label.slice(0, 2)}</div>
-                    <small>{entry.summary}</small>
+                    <div className="sidebar-entry-copy">
+                      <small>{entry.summary}</small>
+                    </div>
                   </GlassSurface>
                 ))}
               </div>
