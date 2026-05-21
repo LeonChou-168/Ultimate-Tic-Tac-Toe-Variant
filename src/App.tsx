@@ -807,25 +807,26 @@ export default function App() {
                 <small className="tutorial-auto-note">教程会随着你的实际对局进度自动推进，你也可以手动切换步骤。</small>
               </div>
               <div className="tutorial-actions">
-                <button type="button" className="ghost-button" onClick={previousTutorialStep} disabled={tutorialStepIndex === 0}>
+                <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={previousTutorialStep} disabled={tutorialStepIndex === 0}>
                   上一步
-                </button>
-                <button type="button" className="ghost-button" onClick={restartTutorial}>
+                </GlassSurface>
+                <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={restartTutorial}>
                   从头再看
-                </button>
-                <button
-                  type="button"
+                </GlassSurface>
+                <GlassSurface
+                  tag="button"
+                  borderRadius={999}
                   className="ghost-button tutorial-primary"
                   onClick={tutorialStepIndex === tutorialSteps.length - 1 ? () => setShowTutorial(false) : nextTutorialStep}
                 >
                   {tutorialStepIndex === tutorialSteps.length - 1 ? '完成教程' : '下一步'}
-                </button>
+                </GlassSurface>
               </div>
             </GlassSurface>
           ) : sidebarSection === 'tutorial' ? (
-            <button type="button" className="ghost-button" onClick={() => setShowTutorial(true)}>
+            <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={() => setShowTutorial(true)}>
               重新打开教程
-            </button>
+            </GlassSurface>
           ) : null}
 
           {sidebarSection === 'status' ? (
@@ -865,20 +866,21 @@ export default function App() {
                     : '等对局开始后，这里会根据实际落子生成回放。'}
               </p>
             <div className="replay-controls">
-              <button type="button" className="ghost-button" onClick={() => setReplayIndex((index) => Math.max(index - 1, 0))} disabled={!replayMode || replayIndex === 0}>
+              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={() => setReplayIndex((index) => Math.max(index - 1, 0))} disabled={!replayMode || replayIndex === 0}>
                 上一手
-              </button>
-              <button type="button" className="ghost-button" onClick={() => (replayMode ? closeReplay() : openReplay())} disabled={state.history.length === 0}>
+              </GlassSurface>
+              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={() => (replayMode ? closeReplay() : openReplay())} disabled={state.history.length === 0}>
                 {replayMode ? '退出回放' : '进入回放'}
-              </button>
-              <button
-                type="button"
+              </GlassSurface>
+              <GlassSurface
+                tag="button"
+                borderRadius={999}
                 className="ghost-button"
                 onClick={() => setReplayIndex((index) => Math.min(index + 1, state.history.length))}
                 disabled={!replayMode || replayIndex >= state.history.length}
               >
                 下一手
-              </button>
+              </GlassSurface>
             </div>
             {replayMode ? (
               <label className="volume-slider replay-slider" aria-label="回放进度滑杆">
@@ -938,9 +940,9 @@ export default function App() {
                 <strong>显示落子引导</strong>
                 <small>关闭后保留核心规则，但弱化信息面板中的提示依赖。</small>
               </div>
-              <button type="button" className={`toggle-button ${showMoveHints ? 'active' : ''}`} onClick={() => setShowMoveHints((value) => !value)}>
+              <GlassSurface tag="button" borderRadius={999} className={`toggle-button ${showMoveHints ? 'active' : ''}`} onClick={() => setShowMoveHints((value) => !value)}>
                 {showMoveHints ? '已开启' : '已关闭'}
-              </button>
+              </GlassSurface>
             </div>
 
             <div className="setting-row">
@@ -948,9 +950,9 @@ export default function App() {
                 <strong>棋子落下动效</strong>
                 <small>关闭后仍可正常对局，只是不再强调落子瞬间的动态反馈。</small>
               </div>
-              <button type="button" className={`toggle-button ${enableStoneAnimation ? 'active' : ''}`} onClick={() => setEnableStoneAnimation((value) => !value)}>
+              <GlassSurface tag="button" borderRadius={999} className={`toggle-button ${enableStoneAnimation ? 'active' : ''}`} onClick={() => setEnableStoneAnimation((value) => !value)}>
                 {enableStoneAnimation ? '已开启' : '已关闭'}
-              </button>
+              </GlassSurface>
             </div>
 
             <div className="setting-row">
@@ -958,9 +960,9 @@ export default function App() {
                 <strong>音效开关</strong>
                 <small>已接入轻量合成音：落子、占领、和棋、结算、认输和非法操作都会有不同反馈。</small>
               </div>
-              <button type="button" className={`toggle-button ${soundEnabled ? 'active' : ''}`} onClick={() => setSoundEnabled((value) => !value)}>
+              <GlassSurface tag="button" borderRadius={999} className={`toggle-button ${soundEnabled ? 'active' : ''}`} onClick={() => setSoundEnabled((value) => !value)}>
                 {soundEnabled ? '已开启' : '已关闭'}
-              </button>
+              </GlassSurface>
             </div>
 
             <div className="setting-row slider-row">
