@@ -13,6 +13,7 @@ const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
 const commandMap = {
   dev: ['run', 'dev'],
+  server: ['run', 'server:dev'],
   test: ['test'],
   build: ['run', 'build'],
 };
@@ -23,6 +24,7 @@ function printHelp() {
 Usage:
   uttv              Start the Vite dev server
   uttv dev          Start the Vite dev server
+  uttv server       Start the multiplayer socket server
   uttv test         Run Vitest
   uttv build        Run the production build
   uttv help         Show this help message

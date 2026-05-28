@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import SplitText from './components/SplitText';
 import GlassSurface from './components/GlassSurface';
+import OnlineLobbyPanel from './components/online/OnlineLobbyPanel';
+import OnlineStatusCard from './components/online/OnlineStatusCard';
 import { chooseAIMove } from './game/ai';
 import {
   canManualSettle,
@@ -14,10 +16,11 @@ import {
   settleGame,
 } from './game/engine';
 import type { GameMode, GameState, Player } from './game/types';
+import { useOnlineMatch } from './online/useOnlineMatch';
 import { playSound, setSoundVolume } from './sound';
 
 type MessageTone = 'info' | 'success' | 'warning';
-type Screen = 'welcome' | 'menu' | 'game';
+type Screen = 'welcome' | 'menu' | 'online-menu' | 'game';
 type LandingScreen = Extract<Screen, 'welcome' | 'menu'>;
 
 type TutorialStep = {
@@ -219,6 +222,8 @@ export default function App() {
   const [state, setState] = useState<GameState>(() => createInitialState());
   const [message, setMessage] = useState('欢迎来到终极井字棋变体。');
   const [messageTone, setMessageTone] = useState<MessageTone>('info');
+  const [onlineRoomIdInput, setOnlineRoomIdInput] = useState('');
+  const [onlineRoomCopyLabel, setOnlineRoomCopyLabel] = useState('复制房间号');
   const [showMoveHints, setShowMoveHints] = useState(true);
   const [enableStoneAnimation, setEnableStoneAnimation] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(false);
@@ -257,6 +262,7 @@ export default function App() {
   const displayState = replayMode ? replayState : state;
   const displayLegalBoards = useMemo(() => (replayMode ? [] : getLegalBoards(state)), [replayMode, state]);
   const replayMove = replayIndex > 0 ? state.history[replayIndex - 1] : null;
+  const isOnlineMode = gameMode === 'online';
 
   const maybePlaySound = (cue: Parameters<typeof playSound>[0]) => {
     if (!soundEnabled) {
@@ -374,9 +380,120 @@ export default function App() {
       setSidebarVisible(true);
     }
   };
+  const handleInvalidOnlineAction = useCallback(() => {
+    maybePlaySound('invalid');
+  }, []);
+
+  const handleOpenOnlineGameScreen = useCallback(() => {
+    setGameMode('online');
+    setReplayMode(false);
+    setReplayIndex(0);
+    setAiPending(false);
+    setSidebarVisible(true);
+    setSidebarSection('status');
+  }, []);
+
+  const handleOpenOnlineScreen = useCallback((reason: 'created' | 'joined') => {
+    handleOpenOnlineGameScreen();
+    if (reason === 'joined') {
+      setScreen('game');
+      setGameEntryMotion(true);
+      return;
+    }
+
+    setScreen('online-menu');
+  }, [handleOpenOnlineGameScreen]);
+
+  const {
+    connectionState: onlineConnectionState,
+    room: onlineRoom,
+    isPlayerTurn: isOnlinePlayerTurn,
+    playerLabel: onlinePlayerLabel,
+    opponentConnected: onlineOpponentConnected,
+    waitingForOpponent: onlineWaitingForOpponent,
+    createRoom: createOnlineRoom,
+    joinRoom: joinOnlineRoom,
+    sendMove: sendOnlineMove,
+    resign: resignOnlineGame,
+    offerDraw: offerOnlineDraw,
+    respondToDraw: respondToOnlineDraw,
+    settle: settleOnlineGame,
+    resetSession: resetOnlineSession,
+  } = useOnlineMatch({
+    onFeedback: ({ message: feedbackMessage, ok, revealSidebar }) =>
+      updateFeedback(feedbackMessage, ok, { revealSidebar }),
+    onGameState: (nextState) => {
+      previousClaimCountRef.current = nextState.boardWinners.filter(Boolean).length;
+      setState(nextState);
+    },
+    onOpenGameScreen: handleOpenOnlineScreen,
+    onClaimCelebration: triggerClaimCelebration,
+    onInvalidAction: handleInvalidOnlineAction,
+  });
+
+  const beginOnlineGame = () => {
+    setGameMode('online');
+    setState(createInitialState());
+    setReplayMode(false);
+    setReplayIndex(0);
+    setAiPending(false);
+    setSidebarVisible(true);
+    setSidebarSection('status');
+    setScreen('game');
+    setGameEntryMotion(true);
+    setMessage('联机模式已准备就绪。你可以建房，或输入房间号加入。');
+    setMessageTone('info');
+    setOnlineRoomCopyLabel('复制房间号');
+    previousClaimCountRef.current = 0;
+  };
+
+  const handleCreateOnlineRoom = () => {
+    beginOnlineGame();
+    createOnlineRoom();
+  };
+
+  const handleJoinOnlineRoom = () => {
+    const roomId = onlineRoomIdInput.trim().toUpperCase();
+    if (!roomId) {
+      updateFeedback('请输入房间号后再加入。', false, { revealSidebar: true });
+      maybePlaySound('invalid');
+      return;
+    }
+
+    beginOnlineGame();
+    joinOnlineRoom(roomId);
+  };
+
+  const handleCopyOnlineRoomId = async () => {
+    if (!onlineRoom?.roomId) {
+      updateFeedback('当前还没有可复制的房间号。', false, { revealSidebar: true });
+      maybePlaySound('invalid');
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(onlineRoom.roomId);
+      setOnlineRoomCopyLabel('已复制');
+      updateFeedback(`房间号 ${onlineRoom.roomId} 已复制。`, true, { revealSidebar: true });
+    } catch {
+      setOnlineRoomCopyLabel('复制失败');
+      updateFeedback('复制房间号失败，请手动复制。', false, { revealSidebar: true });
+      maybePlaySound('invalid');
+      return;
+    }
+
+    window.setTimeout(() => {
+      setOnlineRoomCopyLabel('复制房间号');
+    }, 1800);
+  };
 
   const handleMove = (boardIndex: number, cellIndex: number, fromAI = false) => {
     if (replayMode) {
+      return;
+    }
+
+    if (isOnlineMode) {
+      sendOnlineMove(boardIndex, cellIndex);
       return;
     }
 
@@ -410,6 +527,11 @@ export default function App() {
   };
 
   const handleSettle = () => {
+    if (isOnlineMode) {
+      settleOnlineGame();
+      return;
+    }
+
     const result = settleGame(state);
     updateFeedback(result.message, result.ok, { revealSidebar: true });
     maybePlaySound(result.ok ? 'settlement' : 'invalid');
@@ -420,6 +542,11 @@ export default function App() {
   };
 
   const handleResign = () => {
+    if (isOnlineMode) {
+      resignOnlineGame();
+      return;
+    }
+
     const nextState = resignGame(state, state.currentPlayer);
     setState(nextState);
     setMessage(`${playerLabel(state.currentPlayer)}认输，${playerLabel(nextState.settlement?.winner === 'white' ? 'white' : 'black')}获胜。`);
@@ -431,6 +558,11 @@ export default function App() {
   };
 
   const handleOfferDraw = () => {
+    if (isOnlineMode) {
+      offerOnlineDraw();
+      return;
+    }
+
     const result = offerDraw(state, state.currentPlayer);
     updateFeedback(result.message, result.ok, { revealSidebar: true });
     maybePlaySound(result.ok ? 'draw-offer' : 'invalid');
@@ -440,6 +572,11 @@ export default function App() {
   };
 
   const handleDrawResponse = (accept: boolean) => {
+    if (isOnlineMode) {
+      respondToOnlineDraw(accept);
+      return;
+    }
+
     const result = respondToDraw(state, accept);
     updateFeedback(result.message, result.ok, { revealSidebar: true });
     maybePlaySound(!result.ok ? 'invalid' : accept ? 'draw-accepted' : 'draw-declined');
@@ -474,6 +611,7 @@ export default function App() {
   };
 
   const beginGame = (mode: GameMode) => {
+    resetOnlineSession();
     setGameMode(mode);
     setState(createInitialState());
     setScreen('game');
@@ -482,7 +620,13 @@ export default function App() {
     setReplayMode(false);
     setReplayIndex(0);
     setAiPending(false);
-    setMessage(mode === 'human-vs-ai' ? '人机对战开始。你执黑先手，电脑执白后手。' : '双人对战开始。第一手可在任意位置落子。');
+    setMessage(
+      mode === 'human-vs-ai'
+        ? '人机对战开始。你执黑先手，电脑执白后手。'
+        : mode === 'online'
+          ? '联机模式已准备就绪。'
+          : '双人对战开始。第一手可在任意位置落子。',
+    );
     setMessageTone('info');
     setSidebarVisible(true);
     setSidebarSection('menu');
@@ -490,6 +634,15 @@ export default function App() {
   };
 
   const reset = () => {
+    if (isOnlineMode) {
+      setState(createInitialState());
+      setReplayMode(false);
+      setReplayIndex(0);
+      setMessage('联机对局不会本地重开，请返回菜单重新建房或加入。');
+      setMessageTone('info');
+      return;
+    }
+
     beginGame(gameMode);
   };
 
@@ -564,50 +717,127 @@ export default function App() {
       );
     }
 
-    return (
-      <GlassSurface tag="section" borderRadius={32} className={`welcome-card menu-card landing-card-stage landing-${phase}`}>
-        <div className="eyebrow">{renderAnimatedText('开始一局', 'animated-text-line animated-eyebrow landing-family')}</div>
-        <SplitText
-          key={`menu-heading-${phase}-${landingTransition}`}
-          text="选择你的对战方式"
-          tag="h1"
-          className="landing-split-heading"
-          delay={54}
-          duration={1.02}
-          ease="power2.out"
-          splitType="chars"
-          from={{ opacity: 0, y: 20 }}
-          to={{ opacity: 1, y: 0 }}
-          threshold={0}
-          rootMargin="0px"
-          textAlign="left"
-          replay
-        />
-        <div className="menu-grid">
-          <GlassSurface tag="button" borderRadius={24} className={`mode-card ${landingPressed === 'menu-human' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-human'); window.setTimeout(() => beginGame('human-vs-human'), 170); }}>
-            <strong>{renderAnimatedText('本地双人', 'animated-text-line animated-card-title')}</strong>
-            <span>{renderAnimatedText('两位玩家轮流在同一棋盘上对弈。', 'animated-text-line animated-body')}</span>
-          </GlassSurface>
-          <GlassSurface tag="button" borderRadius={24} className={`mode-card ${landingPressed === 'menu-ai' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-ai'); window.setTimeout(() => beginGame('human-vs-ai'), 170); }}>
-            <strong>{renderAnimatedText('人机对战', 'animated-text-line animated-card-title')}</strong>
-            <span>{renderAnimatedText('你执黑先手，电脑执白应对，先体验一版轻量策略 AI。', 'animated-text-line animated-body')}</span>
-          </GlassSurface>
-        </div>
-        <div className="welcome-actions">
-          <GlassSurface tag="button" borderRadius={999} className={`hero-button ${landingPressed === 'menu-back' ? 'is-pressing' : ''}`} onClick={() => triggerLandingSwitch('welcome', 'menu-back')}>
-            {renderAnimatedText('返回欢迎页', 'animated-text-line animated-button-text')}
-          </GlassSurface>
-        </div>
-      </GlassSurface>
-    );
+    if (view === 'menu') {
+      return (
+        <GlassSurface tag="section" borderRadius={32} className={`welcome-card menu-card landing-card-stage landing-${phase}`}>
+          <div className="eyebrow">{renderAnimatedText('开始一局', 'animated-text-line animated-eyebrow landing-family')}</div>
+          <SplitText
+            key={`menu-heading-${phase}-${landingTransition}`}
+            text="选择你的对战方式"
+            tag="h1"
+            className="landing-split-heading"
+            delay={54}
+            duration={1.02}
+            ease="power2.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 20 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0}
+            rootMargin="0px"
+            textAlign="left"
+            replay
+          />
+          <div className="menu-grid menu-grid--three">
+            <GlassSurface tag="button" borderRadius={24} className={`mode-card ${landingPressed === 'menu-human' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-human'); window.setTimeout(() => beginGame('human-vs-human'), 170); }}>
+              <strong>{renderAnimatedText('本地双人', 'animated-text-line animated-card-title')}</strong>
+              <span>{renderAnimatedText('两位玩家轮流在同一棋盘上对弈。', 'animated-text-line animated-body')}</span>
+            </GlassSurface>
+            <GlassSurface tag="button" borderRadius={24} className={`mode-card ${landingPressed === 'menu-ai' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-ai'); window.setTimeout(() => beginGame('human-vs-ai'), 170); }}>
+              <strong>{renderAnimatedText('人机对战', 'animated-text-line animated-card-title')}</strong>
+              <span>{renderAnimatedText('你执黑先手，电脑执白应对，先体验一版轻量策略 AI。', 'animated-text-line animated-body')}</span>
+            </GlassSurface>
+            <GlassSurface
+              tag="button"
+              borderRadius={24}
+              className={`mode-card ${landingPressed === 'menu-online' ? 'is-pressing' : ''}`}
+              onClick={() => {
+                setLandingPressed('menu-online');
+                window.setTimeout(() => {
+                  setLandingPressed(null);
+                  setScreen('online-menu');
+                }, 170);
+              }}
+            >
+              <strong>{renderAnimatedText('联机模式', 'animated-text-line animated-card-title')}</strong>
+              <span>{renderAnimatedText('先进入联机大厅，再建房或输入房间号加入。', 'animated-text-line animated-body')}</span>
+            </GlassSurface>
+          </div>
+          <div className="welcome-actions">
+            <GlassSurface tag="button" borderRadius={999} className={`hero-button ${landingPressed === 'menu-back' ? 'is-pressing' : ''}`} onClick={() => triggerLandingSwitch('welcome', 'menu-back')}>
+              {renderAnimatedText('返回欢迎页', 'animated-text-line animated-button-text')}
+            </GlassSurface>
+          </div>
+        </GlassSurface>
+      );
+    }
+
+    return null;
   };
 
   if (screen === 'welcome' || screen === 'menu') {
     return (
-      <main className={`landing-screen ${landingView === 'menu' ? 'menu-screen' : 'welcome-screen'} ${landingTransition === 'switching' ? 'landing-transitioning' : ''}`}>
+      <main
+        className={`landing-screen ${
+          landingView === 'menu' ? 'menu-screen' : 'welcome-screen'
+        } ${landingTransition === 'switching' ? 'landing-transitioning' : ''}`}
+      >
         <div className="landing-stage">
           {renderLandingCard(landingView, landingTransition === 'switching' ? 'outgoing' : 'active')}
           {landingTransition === 'switching' && landingIncoming !== landingView ? renderLandingCard(landingIncoming, 'incoming') : null}
+        </div>
+      </main>
+    );
+  }
+
+  if (screen === 'online-menu') {
+    return (
+      <main className="landing-screen menu-screen online-detail-screen">
+        <div className="landing-stage">
+          <GlassSurface tag="section" borderRadius={32} className="welcome-card menu-card online-menu-card">
+            <div className="eyebrow">{renderAnimatedText('在线对战', 'animated-text-line animated-eyebrow landing-family')}</div>
+            <SplitText
+              key={`online-menu-heading-${onlineRoom?.roomId ?? 'idle'}`}
+              text="进入联机大厅"
+              tag="h1"
+              className="landing-split-heading"
+              delay={54}
+              duration={1.02}
+              ease="power2.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 20 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0}
+              rootMargin="0px"
+              textAlign="left"
+              replay
+            />
+            <p className="online-menu-intro">你先建房，把房间号发给对方；或者直接输入对方给你的房间号加入。</p>
+            <OnlineLobbyPanel
+              activeRoomId={onlineRoom?.roomId ?? null}
+              copyLabel={onlineRoomCopyLabel}
+              roomIdInput={onlineRoomIdInput}
+              onRoomIdChange={setOnlineRoomIdInput}
+              onCopyRoomId={handleCopyOnlineRoomId}
+              onCreateRoom={handleCreateOnlineRoom}
+              onJoinRoom={handleJoinOnlineRoom}
+            />
+            <div className="welcome-actions">
+              <GlassSurface
+                tag="button"
+                borderRadius={999}
+                className={`hero-button ${landingPressed === 'online-back' ? 'is-pressing' : ''}`}
+                onClick={() => {
+                  setLandingPressed('online-back');
+                  window.setTimeout(() => {
+                    setLandingPressed(null);
+                    setScreen('menu');
+                  }, 170);
+                }}
+              >
+                {renderAnimatedText('返回模式选择', 'animated-text-line animated-button-text')}
+              </GlassSurface>
+            </div>
+          </GlassSurface>
         </div>
       </main>
     );
@@ -700,7 +930,7 @@ export default function App() {
       >
         <div className="compact-rail" aria-hidden={sidebarExpanded}>
           <button type="button" className="rail-chip mode-chip" onClick={() => setSidebarVisible(true)} aria-label="展开侧边栏">
-            <span>{gameMode === 'human-vs-ai' ? 'AI' : 'VS'}</span>
+            <span>{gameMode === 'human-vs-ai' ? 'AI' : gameMode === 'online' ? 'NET' : 'VS'}</span>
           </button>
           <span className={`rail-stone ${displayState.currentPlayer}`} />
           <div className="rail-score">
@@ -717,7 +947,7 @@ export default function App() {
         <div className="sidebar-scroll full-sidebar-content">
           <section className="sidebar-header">
             <div>
-              <div className="eyebrow">{gameMode === 'human-vs-ai' ? 'Human vs AI' : 'Local Versus'}</div>
+              <div className="eyebrow">{gameMode === 'human-vs-ai' ? 'Human vs AI' : gameMode === 'online' ? 'Online Match' : 'Local Versus'}</div>
               <h2>侧边指挥台</h2>
               <p>{replayMode ? '当前处于落子回溯演示模式。' : '状态、回放、设置与操作都集中在这里。'}</p>
             </div>
@@ -770,6 +1000,16 @@ export default function App() {
                 <small>{aiPending ? '电脑正在思考下一手。' : actionMessage(message)}</small>
               </div>
             </GlassSurface>
+          ) : null}
+
+          {sidebarSection === 'status' && isOnlineMode ? (
+            <OnlineStatusCard
+              connectionState={onlineConnectionState}
+              room={onlineRoom}
+              playerLabel={onlinePlayerLabel}
+              opponentConnected={onlineOpponentConnected}
+              waitingForOpponent={onlineWaitingForOpponent}
+            />
           ) : null}
 
           {sidebarSection === 'status' && displayState.settlement ? (
@@ -925,10 +1165,10 @@ export default function App() {
               <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={handleSettle} disabled={replayMode || state.status !== 'playing' || !manualSettleAvailable || aiPending}>
                 主动结算
               </GlassSurface>
-              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={handleOfferDraw} disabled={replayMode || state.status !== 'playing' || gameMode === 'human-vs-ai' || aiPending}>
+              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={handleOfferDraw} disabled={replayMode || state.status !== 'playing' || gameMode === 'human-vs-ai' || aiPending || (isOnlineMode && !isOnlinePlayerTurn)}>
                 求和 ({3 - state.drawOfferCounts[state.currentPlayer]} 次)
               </GlassSurface>
-              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={handleResign} disabled={replayMode || state.status !== 'playing' || aiPending}>
+              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={handleResign} disabled={replayMode || state.status !== 'playing' || aiPending || (isOnlineMode && !isOnlinePlayerTurn)}>
                 认输
               </GlassSurface>
               <GlassSurface tag="button" borderRadius={999} className="ghost-button tutorial-primary" onClick={reset}>

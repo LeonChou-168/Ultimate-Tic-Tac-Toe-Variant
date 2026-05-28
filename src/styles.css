@@ -396,6 +396,10 @@ button {
   gap: 0.9rem;
 }
 
+.menu-grid--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .mode-card {
   display: grid;
   gap: 0.45rem;
@@ -422,6 +426,100 @@ button {
   color: rgba(255, 245, 224, 0.72);
   line-height: 1.6;
   font-family: var(--font-body);
+}
+
+.online-mode-card {
+  align-content: start;
+}
+
+.online-menu-card {
+  width: min(100%, 42rem);
+}
+
+.online-menu-intro {
+  color: rgba(255, 245, 224, 0.76);
+}
+
+.online-entry-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.65rem;
+  margin-top: 0.35rem;
+}
+
+.online-room-ready {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.9rem 1rem;
+  border-radius: 1rem;
+  background: linear-gradient(180deg, rgba(255, 191, 71, 0.12), rgba(255, 244, 224, 0.04));
+  border: 1px solid rgba(255, 191, 71, 0.16);
+}
+
+.online-room-ready-copy {
+  display: grid;
+  gap: 0.22rem;
+}
+
+.online-room-ready-copy small {
+  color: rgba(248, 239, 225, 0.64);
+  font-family: var(--font-ui);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.online-room-ready-copy strong {
+  font-size: 1.35rem;
+  letter-spacing: 0.12em;
+  font-family: var(--font-annotation);
+}
+
+.online-cta {
+  width: 100%;
+  justify-content: center;
+}
+
+.online-room-input {
+  width: 100%;
+}
+
+.online-room-input input {
+  width: 100%;
+  min-height: 2.8rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid rgba(214, 167, 86, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 249, 240, 0.07);
+  color: #f8efe1;
+  outline: none;
+  font-family: var(--font-annotation);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.online-room-input input::placeholder {
+  color: rgba(248, 239, 225, 0.42);
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.online-room-input input:focus {
+  border-color: rgba(255, 191, 71, 0.48);
+  box-shadow: 0 0 0 0.2rem rgba(255, 191, 71, 0.12);
+  background: rgba(255, 249, 240, 0.1);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .eyebrow,
@@ -1853,6 +1951,10 @@ p {
   }
 
   .menu-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-grid--three {
     grid-template-columns: 1fr;
   }
 
