@@ -733,9 +733,11 @@ export default function App() {
                 </button>
               </GlassSurface>
               {sidebarSection !== 'menu' ? (
-                <button type="button" className="ghost-button back-chip" onClick={() => setSidebarSection('menu')} aria-label="返回词条列表">
-                  ← 词条
-                </button>
+                <GlassSurface width="auto" height="auto" borderRadius={999} className="shell-glass-button-wrap">
+                  <button type="button" className="ghost-button shell-glass-button back-chip" onClick={() => setSidebarSection('menu')} aria-label="返回词条列表">
+                    ← 词条
+                  </button>
+                </GlassSurface>
               ) : null}
               <GlassSurface width="auto" height="auto" borderRadius={999} className="shell-glass-button-wrap">
                 <button type="button" className="ghost-button shell-glass-button" onClick={() => setScreen('menu')}>
@@ -778,14 +780,14 @@ export default function App() {
               </div>
               <p className="endgame-reason">{settlementReasonText(displayState)}</p>
               <div className="endgame-stats">
-                <div>
+                <GlassSurface tag="div" borderRadius={16} className="endgame-stat-card">
                   <span>黑方占领</span>
                   <strong>{displayState.settlement.blackBoards}</strong>
-                </div>
-                <div>
+                </GlassSurface>
+                <GlassSurface tag="div" borderRadius={16} className="endgame-stat-card">
                   <span>白方占领</span>
                   <strong>{displayState.settlement.whiteBoards}</strong>
-                </div>
+                </GlassSurface>
               </div>
             </GlassSurface>
           ) : null}
@@ -831,12 +833,12 @@ export default function App() {
 
           {sidebarSection === 'status' ? (
             <div className="status-stack" aria-label="对局信息面板">
-            <GlassSurface tag="article" width="100%" height="auto" borderRadius={22} className={`insight-card emphasis horizontal-status-card ${tutorialHighlight('battlefield')}`}>
-              <span className="insight-label">当前战场</span>
-              <strong>{boardModeText(displayState)}</strong>
-              {displayState.targetBoard !== null ? <span className="battlefield-coord">{boardCenterCoordinate(displayState.targetBoard)} · {boardCoordinateRange(displayState.targetBoard)}</span> : null}
-              <small>{showMoveHints ? lastMoveText(displayState) : '你已关闭落子引导提示，可随时在设置中重新开启。'}</small>
-            </GlassSurface>
+              <GlassSurface tag="article" width="100%" height="auto" borderRadius={22} className={`insight-card emphasis horizontal-status-card ${tutorialHighlight('battlefield')}`}>
+                <span className="insight-label">当前战场</span>
+                <strong>{boardModeText(displayState)}</strong>
+                {displayState.targetBoard !== null ? <GlassSurface tag="span" borderRadius={999} className="battlefield-coord">{boardCenterCoordinate(displayState.targetBoard)} · {boardCoordinateRange(displayState.targetBoard)}</GlassSurface> : null}
+                <small>{showMoveHints ? lastMoveText(displayState) : '你已关闭落子引导提示，可随时在设置中重新开启。'}</small>
+              </GlassSurface>
 
             <GlassSurface tag="article" width="100%" height="auto" borderRadius={22} className="insight-card horizontal-status-card">
               <span className="insight-label">主动结算</span>
@@ -883,10 +885,10 @@ export default function App() {
               </GlassSurface>
             </div>
             {replayMode ? (
-              <label className="volume-slider replay-slider" aria-label="回放进度滑杆">
+              <GlassSurface tag="label" width="100%" height="auto" borderRadius={18} className="volume-slider replay-slider" aria-label="回放进度滑杆">
                 <input type="range" min="0" max={state.history.length} step="1" value={replayIndex} onChange={(event) => setReplayIndex(Number(event.target.value))} />
                 <span>{replayIndex} / {state.history.length} 手</span>
-              </label>
+              </GlassSurface>
             ) : null}
             </GlassSurface>
           ) : null}
@@ -900,31 +902,31 @@ export default function App() {
           ) : null}
 
           {sidebarSection === 'actions' && state.pendingDrawOffer && !replayMode ? (
-            <GlassSurface tag="div" width="100%" height="auto" borderRadius={22} className="draw-banner">
-              <span>{playerLabel(state.pendingDrawOffer.offeredBy)}请求和棋</span>
-              <button type="button" onClick={() => handleDrawResponse(true)}>
-                接受
-              </button>
-              <button type="button" onClick={() => handleDrawResponse(false)}>
-                拒绝
-              </button>
-            </GlassSurface>
+              <GlassSurface tag="div" width="100%" height="auto" borderRadius={22} className="draw-banner">
+                <span>{playerLabel(state.pendingDrawOffer.offeredBy)}请求和棋</span>
+                <GlassSurface tag="button" borderRadius={999} onClick={() => handleDrawResponse(true)}>
+                  接受
+                </GlassSurface>
+                <GlassSurface tag="button" borderRadius={999} onClick={() => handleDrawResponse(false)}>
+                  拒绝
+                </GlassSurface>
+              </GlassSurface>
           ) : null}
 
           {sidebarSection === 'actions' ? (
             <div className={`controls sidebar-controls ${tutorialHighlight('controls')}`} aria-label="游戏操作">
-            <button type="button" onClick={handleSettle} disabled={replayMode || state.status !== 'playing' || !manualSettleAvailable || aiPending}>
+            <GlassSurface tag="button" borderRadius={999} onClick={handleSettle} disabled={replayMode || state.status !== 'playing' || !manualSettleAvailable || aiPending}>
               主动结算
-            </button>
-            <button type="button" onClick={handleOfferDraw} disabled={replayMode || state.status !== 'playing' || gameMode === 'human-vs-ai' || aiPending}>
+            </GlassSurface>
+            <GlassSurface tag="button" borderRadius={999} onClick={handleOfferDraw} disabled={replayMode || state.status !== 'playing' || gameMode === 'human-vs-ai' || aiPending}>
               求和 ({3 - state.drawOfferCounts[state.currentPlayer]} 次)
-            </button>
-            <button type="button" onClick={handleResign} disabled={replayMode || state.status !== 'playing' || aiPending}>
+            </GlassSurface>
+            <GlassSurface tag="button" borderRadius={999} onClick={handleResign} disabled={replayMode || state.status !== 'playing' || aiPending}>
               认输
-            </button>
-            <button type="button" className="primary" onClick={reset}>
+            </GlassSurface>
+            <GlassSurface tag="button" borderRadius={999} className="primary" onClick={reset}>
               重新开始
-            </button>
+            </GlassSurface>
             </div>
           ) : null}
 
@@ -970,10 +972,10 @@ export default function App() {
                 <strong>音量强度</strong>
                 <small>当前音量 {soundVolume}% 。关闭音效后仍可提前调好，下次开启立即生效。</small>
               </div>
-              <label className="volume-slider" aria-label="音量滑杆">
+              <GlassSurface tag="label" width="100%" height="auto" borderRadius={18} className="volume-slider" aria-label="音量滑杆">
                 <input type="range" min="0" max="100" step="1" value={soundVolume} onChange={(event) => setSoundVolumeState(Number(event.target.value))} />
                 <span>{soundVolume}%</span>
-              </label>
+              </GlassSurface>
             </div>
             </GlassSurface>
           ) : null}
