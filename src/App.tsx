@@ -914,20 +914,27 @@ export default function App() {
           ) : null}
 
           {sidebarSection === 'actions' ? (
-            <div className={`controls sidebar-controls ${tutorialHighlight('controls')}`} aria-label="游戏操作">
-            <GlassSurface tag="button" borderRadius={999} onClick={handleSettle} disabled={replayMode || state.status !== 'playing' || !manualSettleAvailable || aiPending}>
-              主动结算
+            <GlassSurface
+              tag="section"
+              width="100%"
+              height="auto"
+              borderRadius={24}
+              className={`controls sidebar-controls action-panel ${tutorialHighlight('controls')}`}
+              aria-label="游戏操作"
+            >
+              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={handleSettle} disabled={replayMode || state.status !== 'playing' || !manualSettleAvailable || aiPending}>
+                主动结算
+              </GlassSurface>
+              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={handleOfferDraw} disabled={replayMode || state.status !== 'playing' || gameMode === 'human-vs-ai' || aiPending}>
+                求和 ({3 - state.drawOfferCounts[state.currentPlayer]} 次)
+              </GlassSurface>
+              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={handleResign} disabled={replayMode || state.status !== 'playing' || aiPending}>
+                认输
+              </GlassSurface>
+              <GlassSurface tag="button" borderRadius={999} className="ghost-button tutorial-primary" onClick={reset}>
+                重新开始
+              </GlassSurface>
             </GlassSurface>
-            <GlassSurface tag="button" borderRadius={999} onClick={handleOfferDraw} disabled={replayMode || state.status !== 'playing' || gameMode === 'human-vs-ai' || aiPending}>
-              求和 ({3 - state.drawOfferCounts[state.currentPlayer]} 次)
-            </GlassSurface>
-            <GlassSurface tag="button" borderRadius={999} onClick={handleResign} disabled={replayMode || state.status !== 'playing' || aiPending}>
-              认输
-            </GlassSurface>
-            <GlassSurface tag="button" borderRadius={999} className="primary" onClick={reset}>
-              重新开始
-            </GlassSurface>
-            </div>
           ) : null}
 
           {sidebarSection === 'settings' ? (
