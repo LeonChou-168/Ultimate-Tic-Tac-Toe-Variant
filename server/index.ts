@@ -14,6 +14,7 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEve
   cors: {
     origin: config.clientOrigin,
     methods: ['GET', 'POST'],
+    credentials: true,
   },
 });
 

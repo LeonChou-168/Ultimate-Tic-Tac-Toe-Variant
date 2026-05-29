@@ -24,6 +24,7 @@ interface UseOnlineMatchOptions {
   onOpenGameScreen: (reason: 'created' | 'joined') => void;
   onClaimCelebration: (previousWinners: Array<Player | null>, nextWinners: Array<Player | null>) => void;
   onInvalidAction?: () => void;
+  socketFactory?: typeof createGameSocket;
 }
 
 export interface UseOnlineMatchResult {
@@ -63,6 +64,7 @@ export function useOnlineMatch({
   onOpenGameScreen,
   onClaimCelebration,
   onInvalidAction,
+  socketFactory = createGameSocket,
 }: UseOnlineMatchOptions): UseOnlineMatchResult {
   const [connectionState, setConnectionState] = useState<OnlineConnectionState>('offline');
   const [room, setRoom] = useState<RoomSnapshot | null>(null);
@@ -70,7 +72,24 @@ export function useOnlineMatch({
   const [reconnectToken, setReconnectToken] = useState<string | null>(null);
   const [gameState, setGameState] = useState<GameState>(createInitialState);
   const previousBoardWinnersRef = useRef<Array<Player | null>>(createInitialState().boardWinners);
-  const socketRef = useRef(createGameSocket());
+  const socketRef = useRef(socketFactory());
+  const optionsRef = useRef({
+    onFeedback,
+    onGameState,
+    onOpenGameScreen,
+    onClaimCelebration,
+    onInvalidAction,
+  });
+
+  useEffect(() => {
+    optionsRef.current = {
+      onFeedback,
+      onGameState,
+      onOpenGameScreen,
+      onClaimCelebration,
+      onInvalidAction,
+    };
+  }, [onClaimCelebration, onFeedback, onGameState, onInvalidAction, onOpenGameScreen]);
 
   const playerLabel = useMemo(() => toPlayerLabel(player), [player]);
   const isPlayerTurn = player !== null && gameState.currentPlayer === player;
@@ -78,10 +97,10 @@ export function useOnlineMatch({
   const waitingForOpponent = room?.players.length === 1;
 
   const applyGameState = (nextState: GameState) => {
-    onClaimCelebration(previousBoardWinnersRef.current, nextState.boardWinners);
+    optionsRef.current.onClaimCelebration(previousBoardWinnersRef.current, nextState.boardWinners);
     previousBoardWinnersRef.current = nextState.boardWinners;
     setGameState(nextState);
-    onGameState(nextState);
+    optionsRef.current.onGameState(nextState);
   };
 
   useEffect(() => {
@@ -100,8 +119,8 @@ export function useOnlineMatch({
       setPlayer(payload.player);
       setReconnectToken(payload.reconnectToken);
       applyGameState(payload.room.gameState);
-      onOpenGameScreen('created');
-      onFeedback({ message: payload.message, ok: true, revealSidebar: true });
+      optionsRef.current.onOpenGameScreen('created');
+      optionsRef.current.onFeedback({ message: payload.message, ok: true, revealSidebar: true });
     };
 
     const handleRoomJoined = (payload: { room: RoomSnapshot; player: Player; reconnectToken: string; message: string }) => {
@@ -109,19 +128,22 @@ export function useOnlineMatch({
       setPlayer(payload.player);
       setReconnectToken(payload.reconnectToken);
       applyGameState(payload.room.gameState);
-      onOpenGameScreen('joined');
-      onFeedback({ message: payload.message, ok: true, revealSidebar: true });
+      optionsRef.current.onOpenGameScreen('joined');
+      optionsRef.current.onFeedback({ message: payload.message, ok: true, revealSidebar: true });
     };
 
     const handleRoomUpdate = (payload: RoomUpdatePayload) => {
       setRoom(payload.room);
-      onFeedback({ message: payload.message, ok: true });
+      if (payload.room.players.length === 2) {
+        optionsRef.current.onOpenGameScreen('joined');
+      }
+      optionsRef.current.onFeedback({ message: payload.message, ok: true });
     };
 
     const handleGameUpdate = (payload: GameUpdatePayload) => {
       setRoom((currentRoom) => (currentRoom ? { ...currentRoom, gameState: payload.state, updatedAt: Date.now() } : currentRoom));
       applyGameState(payload.state);
-      onFeedback({
+      optionsRef.current.onFeedback({
         message: payload.message,
         ok: true,
         revealSidebar: payload.state.pendingDrawOffer !== null,
@@ -131,12 +153,12 @@ export function useOnlineMatch({
     const handleGameEnded = (payload: GameEndedPayload) => {
       setRoom((currentRoom) => (currentRoom ? { ...currentRoom, gameState: payload.state, status: 'finished', updatedAt: Date.now() } : currentRoom));
       applyGameState(payload.state);
-      onFeedback({ message: payload.message, ok: true, revealSidebar: true });
+      optionsRef.current.onFeedback({ message: payload.message, ok: true, revealSidebar: true });
     };
 
     const handleGameError = (payload: GameErrorPayload) => {
-      onFeedback({ message: payload.message, ok: false, revealSidebar: true });
-      onInvalidAction?.();
+      optionsRef.current.onFeedback({ message: payload.message, ok: false, revealSidebar: true });
+      optionsRef.current.onInvalidAction?.();
     };
 
     socket.on('connect', handleConnect);
@@ -159,7 +181,7 @@ export function useOnlineMatch({
       socket.off('game:error', handleGameError);
       socket.disconnect();
     };
-  }, [onClaimCelebration, onFeedback, onGameState, onInvalidAction, onOpenGameScreen]);
+  }, []);
 
   const ensureConnected = () => {
     const socket = socketRef.current;
@@ -173,8 +195,8 @@ export function useOnlineMatch({
 
   const withRoom = <T,>(fallbackMessage: string, callback: (roomId: string) => T): T | false => {
     if (!room) {
-      onFeedback({ message: fallbackMessage, ok: false, revealSidebar: true });
-      onInvalidAction?.();
+      optionsRef.current.onFeedback({ message: fallbackMessage, ok: false, revealSidebar: true });
+      optionsRef.current.onInvalidAction?.();
       return false;
     }
 
@@ -184,21 +206,21 @@ export function useOnlineMatch({
   const createRoom = () => {
     previousBoardWinnersRef.current = createInitialState().boardWinners;
     applyGameState(createInitialState());
-    onFeedback({ message: '联机模式已准备就绪。正在为你创建房间...', ok: true, revealSidebar: true });
+    optionsRef.current.onFeedback({ message: '联机模式已准备就绪。正在为你创建房间...', ok: true, revealSidebar: true });
     ensureConnected().emit('room:create');
   };
 
   const joinRoom = (roomId: string) => {
     const normalizedRoomId = roomId.trim().toUpperCase();
     if (!normalizedRoomId) {
-      onFeedback({ message: '请输入房间号后再加入。', ok: false, revealSidebar: true });
-      onInvalidAction?.();
+      optionsRef.current.onFeedback({ message: '请输入房间号后再加入。', ok: false, revealSidebar: true });
+      optionsRef.current.onInvalidAction?.();
       return;
     }
 
     previousBoardWinnersRef.current = createInitialState().boardWinners;
     applyGameState(createInitialState());
-    onFeedback({ message: `正在加入房间 ${normalizedRoomId}...`, ok: true, revealSidebar: true });
+    optionsRef.current.onFeedback({ message: `正在加入房间 ${normalizedRoomId}...`, ok: true, revealSidebar: true });
     ensureConnected().emit('room:join', {
       roomId: normalizedRoomId,
       reconnectToken: reconnectToken ?? undefined,
@@ -208,8 +230,8 @@ export function useOnlineMatch({
   const sendMove = (boardIndex: number, cellIndex: number) =>
     withRoom('当前还没有联机房间，请先建房或加入。', (roomId) => {
       if (!isPlayerTurn) {
-        onFeedback({ message: '联机模式下当前不是你的回合。', ok: false, revealSidebar: true });
-        onInvalidAction?.();
+        optionsRef.current.onFeedback({ message: '联机模式下当前不是你的回合。', ok: false, revealSidebar: true });
+        optionsRef.current.onInvalidAction?.();
         return false;
       }
 

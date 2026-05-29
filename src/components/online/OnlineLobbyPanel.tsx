@@ -27,7 +27,10 @@ export default function OnlineLobbyPanel({
         <div className="online-room-ready">
           <div className="online-room-ready-copy">
             <small>当前房间号</small>
-            <strong>{activeRoomId}</strong>
+            <label className="online-room-code-field">
+              <span className="sr-only">当前房间号</span>
+              <input type="text" value={activeRoomId} readOnly aria-label="当前房间号" />
+            </label>
           </div>
           <GlassSurface tag="button" borderRadius={999} className="ghost-button online-cta" onClick={onCopyRoomId}>
             {copyLabel}

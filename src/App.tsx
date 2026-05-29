@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import SplitText from './components/SplitText';
 import GlassSurface from './components/GlassSurface';
+import WaterInAirBackground from './components/WaterInAirBackground';
 import OnlineLobbyPanel from './components/online/OnlineLobbyPanel';
 import OnlineStatusCard from './components/online/OnlineStatusCard';
 import { chooseAIMove } from './game/ai';
@@ -431,7 +432,7 @@ export default function App() {
     onInvalidAction: handleInvalidOnlineAction,
   });
 
-  const beginOnlineGame = () => {
+  const beginOnlineGame = (targetScreen: Extract<Screen, 'online-menu' | 'game'> = 'online-menu') => {
     setGameMode('online');
     setState(createInitialState());
     setReplayMode(false);
@@ -439,8 +440,8 @@ export default function App() {
     setAiPending(false);
     setSidebarVisible(true);
     setSidebarSection('status');
-    setScreen('game');
-    setGameEntryMotion(true);
+    setScreen(targetScreen);
+    setGameEntryMotion(targetScreen === 'game');
     setMessage('联机模式已准备就绪。你可以建房，或输入房间号加入。');
     setMessageTone('info');
     setOnlineRoomCopyLabel('复制房间号');
@@ -448,7 +449,7 @@ export default function App() {
   };
 
   const handleCreateOnlineRoom = () => {
-    beginOnlineGame();
+    beginOnlineGame('online-menu');
     createOnlineRoom();
   };
 
@@ -460,7 +461,7 @@ export default function App() {
       return;
     }
 
-    beginOnlineGame();
+    beginOnlineGame('online-menu');
     joinOnlineRoom(roomId);
   };
 
@@ -485,6 +486,20 @@ export default function App() {
     window.setTimeout(() => {
       setOnlineRoomCopyLabel('复制房间号');
     }, 1800);
+  };
+
+  const leaveOnlineFlow = (nextScreen: Extract<Screen, 'menu' | 'welcome'> = 'menu') => {
+    resetOnlineSession();
+    setGameMode('human-vs-human');
+    setOnlineRoomIdInput('');
+    setOnlineRoomCopyLabel('复制房间号');
+    setReplayMode(false);
+    setReplayIndex(0);
+    setAiPending(false);
+    setSidebarSection('menu');
+    setMessage('欢迎来到终极井字棋变体。');
+    setMessageTone('info');
+    setScreen(nextScreen);
   };
 
   const handleMove = (boardIndex: number, cellIndex: number, fromAI = false) => {
@@ -781,6 +796,7 @@ export default function App() {
           landingView === 'menu' ? 'menu-screen' : 'welcome-screen'
         } ${landingTransition === 'switching' ? 'landing-transitioning' : ''}`}
       >
+        <WaterInAirBackground />
         <div className="landing-stage">
           {renderLandingCard(landingView, landingTransition === 'switching' ? 'outgoing' : 'active')}
           {landingTransition === 'switching' && landingIncoming !== landingView ? renderLandingCard(landingIncoming, 'incoming') : null}
@@ -792,6 +808,7 @@ export default function App() {
   if (screen === 'online-menu') {
     return (
       <main className="landing-screen menu-screen online-detail-screen">
+        <WaterInAirBackground />
         <div className="landing-stage">
           <GlassSurface tag="section" borderRadius={32} className="welcome-card menu-card online-menu-card">
             <div className="eyebrow">{renderAnimatedText('在线对战', 'animated-text-line animated-eyebrow landing-family')}</div>
@@ -830,7 +847,7 @@ export default function App() {
                   setLandingPressed('online-back');
                   window.setTimeout(() => {
                     setLandingPressed(null);
-                    setScreen('menu');
+                    leaveOnlineFlow('menu');
                   }, 170);
                 }}
               >
@@ -845,6 +862,7 @@ export default function App() {
 
   return (
     <main className={`${gameShellClass} ${gameEntryMotion ? 'game-entering' : ''}`}>
+      <WaterInAirBackground />
       <section className="board-stage fullscreen-board" aria-label="游戏棋盘">
         <GlassSurface width="min(95vmin, 62rem)" height="auto" borderRadius={28} className="board-shell board-frame" style={{ padding: '0.95rem' }}>
           <div className="board-layout coordinate-frame board-frame-large">
@@ -970,7 +988,18 @@ export default function App() {
                 </GlassSurface>
               ) : null}
               <GlassSurface width="auto" height="auto" borderRadius={999} className="shell-glass-button-wrap">
-                <button type="button" className="ghost-button shell-glass-button" onClick={() => setScreen('menu')}>
+                <button
+                  type="button"
+                  className="ghost-button shell-glass-button"
+                  onClick={() => {
+                    if (isOnlineMode) {
+                      leaveOnlineFlow('menu');
+                      return;
+                    }
+
+                    setScreen('menu');
+                  }}
+                >
                   返回菜单
                 </button>
               </GlassSurface>
