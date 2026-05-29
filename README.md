@@ -123,6 +123,8 @@ npm run build
 当前仓库是**前端 + 纯规则引擎**里程碑，联机服务器还没有落地。如果你要继续做双人在线对战，建议按照下面这份教程推进：
 
 - 详细教程：[`docs/联机服务器教程.md`](docs/联机服务器教程.md)
+- Railway 公网部署：[`docs/Railway 联机部署指南.md`](docs/Railway%20联机部署指南.md)
+- Vercel 前端部署：[`docs/Vercel 前端部署指南.md`](docs/Vercel%20前端部署指南.md)
 - 文档索引：[`docs/README.md`](docs/README.md)
 
 这份教程包含：
@@ -133,6 +135,19 @@ npm run build
 - 落子、认输、求和、主动结算的事件设计
 - 如何复用 `src/game/engine.ts` 作为服务端权威规则引擎
 - 本地联调与部署建议
+
+如果你已经完成联机功能，并希望把它部署到公网，推荐直接采用：
+
+- 前端：Vercel
+- 联机后端：Railway
+
+当前仓库已经补充了：
+
+- `.env.example`
+- `railway.json`
+- `vercel.json`
+- [`docs/Railway 联机部署指南.md`](docs/Railway%20联机部署指南.md)
+- [`docs/Vercel 前端部署指南.md`](docs/Vercel%20前端部署指南.md)
 
 ## 项目结构
 

@@ -8,7 +8,9 @@ This directory contains product, specification, media, and future-expansion docu
 docs/
 ├── images/                # Archived screenshots and debug media
 ├── specs/                 # Product/specification documents
-└── 联机服务器教程.md        # Multiplayer backend implementation tutorial
+├── 联机服务器教程.md        # Multiplayer backend implementation tutorial
+├── Railway 联机部署指南.md  # Railway deployment guide for multiplayer backend
+└── Vercel 前端部署指南.md   # Vercel deployment guide for frontend
 ```
 
 ## Available Documents
@@ -21,6 +23,8 @@ docs/
 ### Guides
 
 - [`联机服务器教程.md`](联机服务器教程.md)
+- [`Railway 联机部署指南.md`](Railway%20联机部署指南.md)
+- [`Vercel 前端部署指南.md`](Vercel%20前端部署指南.md)
 
 ### Images
 

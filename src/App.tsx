@@ -97,8 +97,14 @@ function renderAnimatedText(text: string, className: string) {
   );
 }
 
+function renderStaticText(text: string, className: string) {
+  return <span className={className}>{text}</span>;
+}
+
 const POSITION_LABELS = ['左上', '上中', '右上', '左中', '正中', '右中', '左下', '下中', '右下'] as const;
 const AXIS_LETTERS = ['I', 'H', 'G', 'F', 'E', 'D', 'C', 'B', 'A'] as const;
+const LANDING_PRESS_RESET_MS = 120;
+const LANDING_TRANSITION_RESET_MS = 320;
 
 function positionLabel(index: number): string {
   return POSITION_LABELS[index] ?? `位置${index}`;
@@ -609,20 +615,17 @@ export default function App() {
 
     setLandingIncoming(nextScreen);
     setLandingTransition('switching');
-
+    setLandingView(nextScreen);
+    setScreen(nextScreen);
     window.setTimeout(() => {
-      setLandingView(nextScreen);
-      setScreen(nextScreen);
-      setLandingPressed(null);
-      window.setTimeout(() => {
-        setLandingTransition('idle');
-      }, 620);
-    }, 220);
+      setLandingTransition('idle');
+    }, LANDING_TRANSITION_RESET_MS);
   };
 
   const triggerLandingSwitch = (nextScreen: LandingScreen, source: string) => {
     setLandingPressed(source);
-    window.setTimeout(() => switchLandingScreen(nextScreen), 170);
+    switchLandingScreen(nextScreen);
+    window.setTimeout(() => setLandingPressed(null), LANDING_PRESS_RESET_MS);
   };
 
   const beginGame = (mode: GameMode) => {
@@ -724,7 +727,7 @@ export default function App() {
             <GlassSurface tag="button" borderRadius={999} className={`hero-button primary ${landingPressed === 'welcome-menu' ? 'is-pressing' : ''}`} onClick={() => triggerLandingSwitch('menu', 'welcome-menu')}>
               {renderAnimatedText('进入主菜单', 'animated-text-line animated-button-text')}
             </GlassSurface>
-            <GlassSurface tag="button" borderRadius={999} className={`hero-button ${landingPressed === 'welcome-direct' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('welcome-direct'); window.setTimeout(() => beginGame('human-vs-human'), 170); }}>
+            <GlassSurface tag="button" borderRadius={999} className={`hero-button ${landingPressed === 'welcome-direct' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('welcome-direct'); beginGame('human-vs-human'); window.setTimeout(() => setLandingPressed(null), LANDING_PRESS_RESET_MS); }}>
               {renderAnimatedText('直接开始双人对战', 'animated-text-line animated-button-text')}
             </GlassSurface>
           </div>
@@ -735,31 +738,16 @@ export default function App() {
     if (view === 'menu') {
       return (
         <GlassSurface tag="section" borderRadius={32} className={`welcome-card menu-card landing-card-stage landing-${phase}`}>
-          <div className="eyebrow">{renderAnimatedText('开始一局', 'animated-text-line animated-eyebrow landing-family')}</div>
-          <SplitText
-            key={`menu-heading-${phase}-${landingTransition}`}
-            text="选择你的对战方式"
-            tag="h1"
-            className="landing-split-heading"
-            delay={54}
-            duration={1.02}
-            ease="power2.out"
-            splitType="chars"
-            from={{ opacity: 0, y: 20 }}
-            to={{ opacity: 1, y: 0 }}
-            threshold={0}
-            rootMargin="0px"
-            textAlign="left"
-            replay
-          />
+          <div className="eyebrow">{renderStaticText('开始一局', 'landing-static-text animated-eyebrow landing-family')}</div>
+          <h1 className="landing-split-heading landing-static-heading">选择你的对战方式</h1>
           <div className="menu-grid menu-grid--three">
-            <GlassSurface tag="button" borderRadius={24} className={`mode-card ${landingPressed === 'menu-human' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-human'); window.setTimeout(() => beginGame('human-vs-human'), 170); }}>
-              <strong>{renderAnimatedText('本地双人', 'animated-text-line animated-card-title')}</strong>
-              <span>{renderAnimatedText('两位玩家轮流在同一棋盘上对弈。', 'animated-text-line animated-body')}</span>
+            <GlassSurface tag="button" borderRadius={24} className={`mode-card ${landingPressed === 'menu-human' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-human'); beginGame('human-vs-human'); window.setTimeout(() => setLandingPressed(null), LANDING_PRESS_RESET_MS); }}>
+              <strong>{renderStaticText('本地双人', 'landing-static-text animated-card-title')}</strong>
+              <span>{renderStaticText('两位玩家轮流在同一棋盘上对弈。', 'landing-static-text animated-body')}</span>
             </GlassSurface>
-            <GlassSurface tag="button" borderRadius={24} className={`mode-card ${landingPressed === 'menu-ai' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-ai'); window.setTimeout(() => beginGame('human-vs-ai'), 170); }}>
-              <strong>{renderAnimatedText('人机对战', 'animated-text-line animated-card-title')}</strong>
-              <span>{renderAnimatedText('你执黑先手，电脑执白应对，先体验一版轻量策略 AI。', 'animated-text-line animated-body')}</span>
+            <GlassSurface tag="button" borderRadius={24} className={`mode-card ${landingPressed === 'menu-ai' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-ai'); beginGame('human-vs-ai'); window.setTimeout(() => setLandingPressed(null), LANDING_PRESS_RESET_MS); }}>
+              <strong>{renderStaticText('人机对战', 'landing-static-text animated-card-title')}</strong>
+              <span>{renderStaticText('你执黑先手，电脑执白应对，先体验一版轻量策略 AI。', 'landing-static-text animated-body')}</span>
             </GlassSurface>
             <GlassSurface
               tag="button"
@@ -767,19 +755,17 @@ export default function App() {
               className={`mode-card ${landingPressed === 'menu-online' ? 'is-pressing' : ''}`}
               onClick={() => {
                 setLandingPressed('menu-online');
-                window.setTimeout(() => {
-                  setLandingPressed(null);
-                  setScreen('online-menu');
-                }, 170);
+                setScreen('online-menu');
+                window.setTimeout(() => setLandingPressed(null), LANDING_PRESS_RESET_MS);
               }}
             >
-              <strong>{renderAnimatedText('联机模式', 'animated-text-line animated-card-title')}</strong>
-              <span>{renderAnimatedText('先进入联机大厅，再建房或输入房间号加入。', 'animated-text-line animated-body')}</span>
+              <strong>{renderStaticText('联机模式', 'landing-static-text animated-card-title')}</strong>
+              <span>{renderStaticText('先进入联机大厅，再建房或输入房间号加入。', 'landing-static-text animated-body')}</span>
             </GlassSurface>
           </div>
           <div className="welcome-actions">
             <GlassSurface tag="button" borderRadius={999} className={`hero-button ${landingPressed === 'menu-back' ? 'is-pressing' : ''}`} onClick={() => triggerLandingSwitch('welcome', 'menu-back')}>
-              {renderAnimatedText('返回欢迎页', 'animated-text-line animated-button-text')}
+              {renderStaticText('返回欢迎页', 'landing-static-text animated-button-text')}
             </GlassSurface>
           </div>
         </GlassSurface>
@@ -811,23 +797,8 @@ export default function App() {
         <WaterInAirBackground />
         <div className="landing-stage">
           <GlassSurface tag="section" borderRadius={32} className="welcome-card menu-card online-menu-card">
-            <div className="eyebrow">{renderAnimatedText('在线对战', 'animated-text-line animated-eyebrow landing-family')}</div>
-            <SplitText
-              key={`online-menu-heading-${onlineRoom?.roomId ?? 'idle'}`}
-              text="进入联机大厅"
-              tag="h1"
-              className="landing-split-heading"
-              delay={54}
-              duration={1.02}
-              ease="power2.out"
-              splitType="chars"
-              from={{ opacity: 0, y: 20 }}
-              to={{ opacity: 1, y: 0 }}
-              threshold={0}
-              rootMargin="0px"
-              textAlign="left"
-              replay
-            />
+            <div className="eyebrow">{renderStaticText('在线对战', 'landing-static-text animated-eyebrow landing-family')}</div>
+            <h1 className="landing-split-heading landing-static-heading">进入联机大厅</h1>
             <p className="online-menu-intro">你先建房，把房间号发给对方；或者直接输入对方给你的房间号加入。</p>
             <OnlineLobbyPanel
               activeRoomId={onlineRoom?.roomId ?? null}
@@ -845,13 +816,11 @@ export default function App() {
                 className={`hero-button ${landingPressed === 'online-back' ? 'is-pressing' : ''}`}
                 onClick={() => {
                   setLandingPressed('online-back');
-                  window.setTimeout(() => {
-                    setLandingPressed(null);
-                    leaveOnlineFlow('menu');
-                  }, 170);
+                  leaveOnlineFlow('menu');
+                  window.setTimeout(() => setLandingPressed(null), LANDING_PRESS_RESET_MS);
                 }}
               >
-                {renderAnimatedText('返回模式选择', 'animated-text-line animated-button-text')}
+                {renderStaticText('返回模式选择', 'landing-static-text animated-button-text')}
               </GlassSurface>
             </div>
           </GlassSurface>
