@@ -278,6 +278,10 @@ export default function App() {
     playSound(cue);
   };
 
+  const playUIClick = () => {
+    maybePlaySound('ui-click');
+  };
+
   useEffect(() => {
     setSoundVolume(soundVolume / 100);
   }, [soundVolume]);
@@ -724,10 +728,10 @@ export default function App() {
             replay
           />
           <div className="welcome-actions welcome-cta-row">
-            <GlassSurface tag="button" borderRadius={999} className={`hero-button primary ${landingPressed === 'welcome-menu' ? 'is-pressing' : ''}`} onClick={() => triggerLandingSwitch('menu', 'welcome-menu')}>
+            <GlassSurface tag="button" borderRadius={999} className={`hero-button primary ${landingPressed === 'welcome-menu' ? 'is-pressing' : ''}`} onClick={() => { playUIClick(); triggerLandingSwitch('menu', 'welcome-menu'); }}>
               {renderAnimatedText('进入主菜单', 'animated-text-line animated-button-text')}
             </GlassSurface>
-            <GlassSurface tag="button" borderRadius={999} className={`hero-button ${landingPressed === 'welcome-direct' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('welcome-direct'); beginGame('human-vs-human'); window.setTimeout(() => setLandingPressed(null), LANDING_PRESS_RESET_MS); }}>
+            <GlassSurface tag="button" borderRadius={999} className={`hero-button ${landingPressed === 'welcome-direct' ? 'is-pressing' : ''}`} onClick={() => { playUIClick(); setLandingPressed('welcome-direct'); beginGame('human-vs-human'); window.setTimeout(() => setLandingPressed(null), LANDING_PRESS_RESET_MS); }}>
               {renderAnimatedText('直接开始双人对战', 'animated-text-line animated-button-text')}
             </GlassSurface>
           </div>
@@ -741,11 +745,11 @@ export default function App() {
           <div className="eyebrow">{renderStaticText('开始一局', 'landing-static-text animated-eyebrow landing-family')}</div>
           <h1 className="landing-split-heading landing-static-heading">选择你的对战方式</h1>
           <div className="menu-grid menu-grid--three">
-            <GlassSurface tag="button" borderRadius={24} className={`mode-card ${landingPressed === 'menu-human' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-human'); beginGame('human-vs-human'); window.setTimeout(() => setLandingPressed(null), LANDING_PRESS_RESET_MS); }}>
+            <GlassSurface tag="button" borderRadius={24} className={`mode-card ${landingPressed === 'menu-human' ? 'is-pressing' : ''}`} onClick={() => { playUIClick(); setLandingPressed('menu-human'); beginGame('human-vs-human'); window.setTimeout(() => setLandingPressed(null), LANDING_PRESS_RESET_MS); }}>
               <strong>{renderStaticText('本地双人', 'landing-static-text animated-card-title')}</strong>
               <span>{renderStaticText('两位玩家轮流在同一棋盘上对弈。', 'landing-static-text animated-body')}</span>
             </GlassSurface>
-            <GlassSurface tag="button" borderRadius={24} className={`mode-card ${landingPressed === 'menu-ai' ? 'is-pressing' : ''}`} onClick={() => { setLandingPressed('menu-ai'); beginGame('human-vs-ai'); window.setTimeout(() => setLandingPressed(null), LANDING_PRESS_RESET_MS); }}>
+            <GlassSurface tag="button" borderRadius={24} className={`mode-card ${landingPressed === 'menu-ai' ? 'is-pressing' : ''}`} onClick={() => { playUIClick(); setLandingPressed('menu-ai'); beginGame('human-vs-ai'); window.setTimeout(() => setLandingPressed(null), LANDING_PRESS_RESET_MS); }}>
               <strong>{renderStaticText('人机对战', 'landing-static-text animated-card-title')}</strong>
               <span>{renderStaticText('你执黑先手，电脑执白应对，先体验一版轻量策略 AI。', 'landing-static-text animated-body')}</span>
             </GlassSurface>
@@ -754,6 +758,7 @@ export default function App() {
               borderRadius={24}
               className={`mode-card ${landingPressed === 'menu-online' ? 'is-pressing' : ''}`}
               onClick={() => {
+                playUIClick();
                 setLandingPressed('menu-online');
                 setScreen('online-menu');
                 window.setTimeout(() => setLandingPressed(null), LANDING_PRESS_RESET_MS);
@@ -764,7 +769,7 @@ export default function App() {
             </GlassSurface>
           </div>
           <div className="welcome-actions">
-            <GlassSurface tag="button" borderRadius={999} className={`hero-button ${landingPressed === 'menu-back' ? 'is-pressing' : ''}`} onClick={() => triggerLandingSwitch('welcome', 'menu-back')}>
+            <GlassSurface tag="button" borderRadius={999} className={`hero-button ${landingPressed === 'menu-back' ? 'is-pressing' : ''}`} onClick={() => { playUIClick(); triggerLandingSwitch('welcome', 'menu-back'); }}>
               {renderStaticText('返回欢迎页', 'landing-static-text animated-button-text')}
             </GlassSurface>
           </div>
@@ -815,6 +820,7 @@ export default function App() {
                 borderRadius={999}
                 className={`hero-button ${landingPressed === 'online-back' ? 'is-pressing' : ''}`}
                 onClick={() => {
+                  playUIClick();
                   setLandingPressed('online-back');
                   leaveOnlineFlow('menu');
                   window.setTimeout(() => setLandingPressed(null), LANDING_PRESS_RESET_MS);
@@ -916,7 +922,7 @@ export default function App() {
         }}
       >
         <div className="compact-rail" aria-hidden={sidebarExpanded}>
-          <button type="button" className="rail-chip mode-chip" onClick={() => setSidebarVisible(true)} aria-label="展开侧边栏">
+          <button type="button" className="rail-chip mode-chip" onClick={() => { playUIClick(); setSidebarVisible(true); }} aria-label="展开侧边栏">
             <span>{gameMode === 'human-vs-ai' ? 'AI' : gameMode === 'online' ? 'NET' : 'VS'}</span>
           </button>
           <span className={`rail-stone ${displayState.currentPlayer}`} />
@@ -925,7 +931,7 @@ export default function App() {
             <span>:</span>
             <strong>{displayState.boardWinners.filter((winner) => winner === 'white').length}</strong>
           </div>
-          <button type="button" className="rail-chip pin-chip" onClick={() => setSidebarPinned((value) => !value)} aria-label="切换侧边栏固定状态">
+          <button type="button" className="rail-chip pin-chip" onClick={() => { playUIClick(); setSidebarPinned((value) => !value); }} aria-label="切换侧边栏固定状态">
             <span>{sidebarPinned ? '锁' : '悬'}</span>
           </button>
           <div className="rail-pulse" />
@@ -940,18 +946,18 @@ export default function App() {
             </div>
             <div className="sidebar-top-buttons">
               <GlassSurface width="auto" height="auto" borderRadius={999} className="shell-glass-button-wrap">
-                <button type="button" className="ghost-button shell-glass-button" onClick={() => setSidebarPinned((value) => !value)}>
+                <button type="button" className="ghost-button shell-glass-button" onClick={() => { playUIClick(); setSidebarPinned((value) => !value); }}>
                   {sidebarPinned ? '改为自动淡出' : '固定侧边栏'}
                 </button>
               </GlassSurface>
               <GlassSurface width="auto" height="auto" borderRadius={999} className="shell-glass-button-wrap">
-                <button type="button" className="ghost-button shell-glass-button" onClick={() => setSidebarVisible(false)}>
+                <button type="button" className="ghost-button shell-glass-button" onClick={() => { playUIClick(); setSidebarVisible(false); }}>
                   收起侧栏
                 </button>
               </GlassSurface>
               {sidebarSection !== 'menu' ? (
                 <GlassSurface width="auto" height="auto" borderRadius={999} className="shell-glass-button-wrap">
-                  <button type="button" className="ghost-button shell-glass-button back-chip" onClick={() => setSidebarSection('menu')} aria-label="返回词条列表">
+                  <button type="button" className="ghost-button shell-glass-button back-chip" onClick={() => { playUIClick(); setSidebarSection('menu'); }} aria-label="返回词条列表">
                     ← 词条
                   </button>
                 </GlassSurface>
@@ -961,6 +967,7 @@ export default function App() {
                   type="button"
                   className="ghost-button shell-glass-button"
                   onClick={() => {
+                    playUIClick();
                     if (isOnlineMode) {
                       leaveOnlineFlow('menu');
                       return;
@@ -979,7 +986,7 @@ export default function App() {
             <GlassSurface borderRadius={24} className="sidebar-menu-panel" aria-label="侧边栏词条列表">
               <div className="sidebar-entry-list">
                 {sidebarEntries.map((entry) => (
-                  <GlassSurface key={entry.key} tag="button" borderRadius={20} className="sidebar-entry" onClick={() => setSidebarSection(entry.key)}>
+                  <GlassSurface key={entry.key} tag="button" borderRadius={20} className="sidebar-entry" onClick={() => { playUIClick(); setSidebarSection(entry.key); }}>
                     <div className="sidebar-entry-badge">{entry.label.slice(0, 2)}</div>
                     <div className="sidebar-entry-copy">
                       <small>{entry.summary}</small>
@@ -1047,24 +1054,24 @@ export default function App() {
                 <small className="tutorial-auto-note">教程会随着你的实际对局进度自动推进，你也可以手动切换步骤。</small>
               </div>
               <div className="tutorial-actions">
-                <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={previousTutorialStep} disabled={tutorialStepIndex === 0}>
+                <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={() => { playUIClick(); previousTutorialStep(); }} disabled={tutorialStepIndex === 0}>
                   上一步
                 </GlassSurface>
-                <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={restartTutorial}>
+                <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={() => { playUIClick(); restartTutorial(); }}>
                   从头再看
                 </GlassSurface>
                 <GlassSurface
                   tag="button"
                   borderRadius={999}
                   className="ghost-button tutorial-primary"
-                  onClick={tutorialStepIndex === tutorialSteps.length - 1 ? () => setShowTutorial(false) : nextTutorialStep}
+                  onClick={tutorialStepIndex === tutorialSteps.length - 1 ? () => { playUIClick(); setShowTutorial(false); } : () => { playUIClick(); nextTutorialStep(); }}
                 >
                   {tutorialStepIndex === tutorialSteps.length - 1 ? '完成教程' : '下一步'}
                 </GlassSurface>
               </div>
             </GlassSurface>
           ) : sidebarSection === 'tutorial' ? (
-            <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={() => setShowTutorial(true)}>
+            <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={() => { playUIClick(); setShowTutorial(true); }}>
               重新打开教程
             </GlassSurface>
           ) : null}
@@ -1106,17 +1113,17 @@ export default function App() {
                     : '等对局开始后，这里会根据实际落子生成回放。'}
               </p>
             <div className="replay-controls">
-              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={() => setReplayIndex((index) => Math.max(index - 1, 0))} disabled={!replayMode || replayIndex === 0}>
+              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={() => { playUIClick(); setReplayIndex((index) => Math.max(index - 1, 0)); }} disabled={!replayMode || replayIndex === 0}>
                 上一手
               </GlassSurface>
-              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={() => (replayMode ? closeReplay() : openReplay())} disabled={state.history.length === 0}>
+              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={() => { playUIClick(); replayMode ? closeReplay() : openReplay(); }} disabled={state.history.length === 0}>
                 {replayMode ? '退出回放' : '进入回放'}
               </GlassSurface>
               <GlassSurface
                 tag="button"
                 borderRadius={999}
                 className="ghost-button"
-                onClick={() => setReplayIndex((index) => Math.min(index + 1, state.history.length))}
+                onClick={() => { playUIClick(); setReplayIndex((index) => Math.min(index + 1, state.history.length)); }}
                 disabled={!replayMode || replayIndex >= state.history.length}
               >
                 下一手
@@ -1142,10 +1149,10 @@ export default function App() {
           {sidebarSection === 'actions' && state.pendingDrawOffer && !replayMode ? (
               <GlassSurface tag="div" width="100%" height="auto" borderRadius={22} className="draw-banner">
                 <span>{playerLabel(state.pendingDrawOffer.offeredBy)}请求和棋</span>
-                <GlassSurface tag="button" borderRadius={999} onClick={() => handleDrawResponse(true)}>
+                <GlassSurface tag="button" borderRadius={999} onClick={() => { playUIClick(); handleDrawResponse(true); }}>
                   接受
                 </GlassSurface>
-                <GlassSurface tag="button" borderRadius={999} onClick={() => handleDrawResponse(false)}>
+                <GlassSurface tag="button" borderRadius={999} onClick={() => { playUIClick(); handleDrawResponse(false); }}>
                   拒绝
                 </GlassSurface>
               </GlassSurface>
@@ -1160,16 +1167,16 @@ export default function App() {
               className={`controls sidebar-controls action-panel ${tutorialHighlight('controls')}`}
               aria-label="游戏操作"
             >
-              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={handleSettle} disabled={replayMode || state.status !== 'playing' || !manualSettleAvailable || aiPending}>
+              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={() => { playUIClick(); handleSettle(); }} disabled={replayMode || state.status !== 'playing' || !manualSettleAvailable || aiPending}>
                 主动结算
               </GlassSurface>
-              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={handleOfferDraw} disabled={replayMode || state.status !== 'playing' || gameMode === 'human-vs-ai' || aiPending || (isOnlineMode && !isOnlinePlayerTurn)}>
+              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={() => { playUIClick(); handleOfferDraw(); }} disabled={replayMode || state.status !== 'playing' || gameMode === 'human-vs-ai' || aiPending || (isOnlineMode && !isOnlinePlayerTurn)}>
                 求和 ({3 - state.drawOfferCounts[state.currentPlayer]} 次)
               </GlassSurface>
-              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={handleResign} disabled={replayMode || state.status !== 'playing' || aiPending || (isOnlineMode && !isOnlinePlayerTurn)}>
+              <GlassSurface tag="button" borderRadius={999} className="ghost-button" onClick={() => { playUIClick(); handleResign(); }} disabled={replayMode || state.status !== 'playing' || aiPending || (isOnlineMode && !isOnlinePlayerTurn)}>
                 认输
               </GlassSurface>
-              <GlassSurface tag="button" borderRadius={999} className="ghost-button tutorial-primary" onClick={reset}>
+              <GlassSurface tag="button" borderRadius={999} className="ghost-button tutorial-primary" onClick={() => { playUIClick(); reset(); }}>
                 重新开始
               </GlassSurface>
             </GlassSurface>
@@ -1187,7 +1194,7 @@ export default function App() {
                 <strong>显示落子引导</strong>
                 <small>关闭后保留核心规则，但弱化信息面板中的提示依赖。</small>
               </div>
-              <GlassSurface tag="button" borderRadius={999} className={`toggle-button ${showMoveHints ? 'active' : ''}`} onClick={() => setShowMoveHints((value) => !value)}>
+              <GlassSurface tag="button" borderRadius={999} className={`toggle-button ${showMoveHints ? 'active' : ''}`} onClick={() => { playUIClick(); setShowMoveHints((value) => !value); }}>
                 {showMoveHints ? '已开启' : '已关闭'}
               </GlassSurface>
             </div>
@@ -1197,7 +1204,7 @@ export default function App() {
                 <strong>棋子落下动效</strong>
                 <small>关闭后仍可正常对局，只是不再强调落子瞬间的动态反馈。</small>
               </div>
-              <GlassSurface tag="button" borderRadius={999} className={`toggle-button ${enableStoneAnimation ? 'active' : ''}`} onClick={() => setEnableStoneAnimation((value) => !value)}>
+              <GlassSurface tag="button" borderRadius={999} className={`toggle-button ${enableStoneAnimation ? 'active' : ''}`} onClick={() => { playUIClick(); setEnableStoneAnimation((value) => !value); }}>
                 {enableStoneAnimation ? '已开启' : '已关闭'}
               </GlassSurface>
             </div>
@@ -1207,7 +1214,7 @@ export default function App() {
                 <strong>音效开关</strong>
                 <small>已接入轻量合成音：落子、占领、和棋、结算、认输和非法操作都会有不同反馈。</small>
               </div>
-              <GlassSurface tag="button" borderRadius={999} className={`toggle-button ${soundEnabled ? 'active' : ''}`} onClick={() => setSoundEnabled((value) => !value)}>
+              <GlassSurface tag="button" borderRadius={999} className={`toggle-button ${soundEnabled ? 'active' : ''}`} onClick={() => { playUIClick(); setSoundEnabled((value) => !value); }}>
                 {soundEnabled ? '已开启' : '已关闭'}
               </GlassSurface>
             </div>

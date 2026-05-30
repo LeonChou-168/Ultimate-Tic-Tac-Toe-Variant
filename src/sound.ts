@@ -1,7 +1,10 @@
-type AudioCue = 'move' | 'claim' | 'invalid' | 'settlement' | 'draw-offer' | 'draw-accepted' | 'draw-declined' | 'resign';
+import uiButtonClickUrl from './assets/ui-button-click.mp3';
+
+type AudioCue = 'move' | 'claim' | 'invalid' | 'settlement' | 'draw-offer' | 'draw-accepted' | 'draw-declined' | 'resign' | 'ui-click';
 
 let audioContext: AudioContext | null = null;
 let masterVolume = 0.72;
+let uiButtonAudio: HTMLAudioElement | null = null;
 
 function getAudioContext(): AudioContext | null {
   if (typeof window === 'undefined') {
@@ -22,6 +25,19 @@ function getAudioContext(): AudioContext | null {
   }
 
   return audioContext;
+}
+
+function getUIButtonAudio(): HTMLAudioElement | null {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  if (!uiButtonAudio) {
+    uiButtonAudio = new Audio(uiButtonClickUrl);
+    uiButtonAudio.preload = 'auto';
+  }
+
+  return uiButtonAudio;
 }
 
 function createEnvelope(context: AudioContext, startAt: number, duration: number, peak = 0.045): GainNode {
@@ -51,6 +67,20 @@ function playSequence(context: AudioContext, notes: Array<{ frequency: number; d
 }
 
 export function playSound(cue: AudioCue): void {
+  if (cue === 'ui-click') {
+    const audio = getUIButtonAudio();
+    if (!audio) {
+      return;
+    }
+
+    audio.currentTime = 0;
+    audio.volume = Math.min(1, Math.max(0, masterVolume));
+    void audio.play().catch(() => {
+      // Ignore autoplay or transient playback failures.
+    });
+    return;
+  }
+
   const context = getAudioContext();
   if (!context) {
     return;
