@@ -2,6 +2,8 @@
 
 根据 `docs/specs/Ultimate Tic-Tac-Toe Variant 规格说明书.md` 实现的 Web 版终极井字棋变体首个可运行里程碑。
 
+> 🌐 **在线试玩（GitHub Pages）**：<https://leonchou-168.github.io/Ultimate-Tic-Tac-Toe-Variant/>
+
 ## 界面预览
 
 ![欢迎页](docs/images/welcome.png)
