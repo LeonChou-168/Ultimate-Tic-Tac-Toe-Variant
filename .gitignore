@@ -4,5 +4,6 @@ dist/
 *.tsbuildinfo
 node_modules/.tmp/
 .playwright-mcp/
+tmp_*.py
 .ruff_cache/
 server/.env.backend
