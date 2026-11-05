@@ -2,6 +2,14 @@
 
 根据 `docs/specs/Ultimate Tic-Tac-Toe Variant 规格说明书.md` 实现的 Web 版终极井字棋变体首个可运行里程碑。
 
+## 界面预览
+
+![欢迎页](docs/images/welcome.png)
+
+![对战界面](docs/images/gameplay.png)
+
+![模式选择](docs/images/mode-select.png)
+
 ## 已实现
 
 - 本地双人对战。
@@ -118,6 +126,14 @@ npm run build
 
 构建产物会输出到 `dist/` 目录，可用于静态部署。
 
+如需构建 GitHub Pages 版本（仓库名为 `Ultimate-Tic-Tac-Toe-Variant`），使用：
+
+```bash
+GITHUB_PAGES=1 npm run build
+```
+
+该命令会把 base path 设为 `/Ultimate-Tic-Tac-Toe-Variant/`，产物可直接发布到 GitHub Pages。
+
 ## 联机服务器教程
 
 当前仓库是**前端 + 纯规则引擎**里程碑，联机服务器还没有落地。如果你要继续做双人在线对战，建议按照下面这份教程推进：
@@ -186,7 +202,11 @@ src/
 - 安全策略：[`SECURITY.md`](SECURITY.md)
 - 行为准则：[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
 
-> 说明：本仓库当前**没有新增许可证文件**，因为许可证选择应由仓库维护者明确决定。
+## 许可证
+
+本项目采用 [MIT License](LICENSE) 发布。
+
+许可证选择已由仓库维护者明确决定：你可以自由使用、修改和分发本项目，但需保留原始版权声明与许可声明。
 
 ## 后续里程碑建议
 
