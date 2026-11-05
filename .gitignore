@@ -5,3 +5,4 @@ dist/
 node_modules/.tmp/
 .playwright-mcp/
 .ruff_cache/
+server/.env.backend

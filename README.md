@@ -146,8 +146,17 @@ npm run build
 - `.env.example`
 - `railway.json`
 - `vercel.json`
+- `scripts/deploy_backend.sh`
 - [`docs/Railway 联机部署指南.md`](docs/Railway%20联机部署指南.md)
 - [`docs/Vercel 前端部署指南.md`](docs/Vercel%20前端部署指南.md)
+
+如果你已经买好服务器，且希望自动化部署当前联机后端，可直接使用：
+
+```bash
+scripts/deploy_backend.sh \
+  --host root@your-server-ip \
+  --client-origin https://your-frontend-domain.vercel.app
+```
 
 ## 项目结构
 

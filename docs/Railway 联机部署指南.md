@@ -31,6 +31,14 @@ npm run server:start
 - `.env.example`
 - `railway.json`
 
+如果你不是部署到 Railway，而是部署到自己的云服务器，也可以直接使用仓库里的自动化脚本：
+
+```bash
+scripts/deploy_backend.sh \
+  --host root@your-server-ip \
+  --client-origin https://your-frontend-domain.vercel.app
+```
+
 ---
 
 ## 3. Railway 创建服务
